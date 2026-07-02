@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DarkModeToggle from '../app/dark';
 
 const navItems = [
@@ -14,19 +14,48 @@ const navItems = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState('#features');
+
+  useEffect(() => {
+    const sections = navItems
+      .map((item) => document.querySelector(item.href))
+      .filter(Boolean) as Element[];
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActive(`#${entry.target.id}`);
+          }
+        });
+      },
+      { threshold: 0.45 }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-slate-950/90 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 sm:px-10 lg:px-16">
         <Link href="/" className="text-xl font-semibold tracking-tight text-white">
           ShikshaSetu
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
-          {navItems.map((item) => (
-            <a key={item.href} href={item.href} className="text-sm text-slate-300 transition hover:text-white">
-              {item.label}
-            </a>
-          ))}
+          {navItems.map((item) => {
+            const isActive = active === item.href;
+            return (
+              <a
+                key={item.href}
+                href={item.href}
+                className={`relative text-sm transition ${isActive ? 'text-white' : 'text-slate-300 hover:text-white'}`}
+              >
+                <span>{item.label}</span>
+                <span className={`absolute -bottom-1 left-0 h-0.5 rounded-full bg-violet-400 transition-all ${isActive ? 'w-full' : 'w-0 group-hover:w-full'}`} />
+              </a>
+            );
+          })}
           <Link href="/login" className="rounded-full border border-slate-700 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-violet-400 hover:text-white">
             Login
           </Link>
