@@ -11,6 +11,8 @@ import {
   signInWithPopup,
   signOut as firebaseSignOut,
   updateProfile,
+  setPersistence,
+  browserLocalPersistence,
   type User,
 } from 'firebase/auth';
 import { getFirebaseAuth, googleProvider, isFirebaseConfigured } from '../lib/firebase';
@@ -42,12 +44,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
-    });
+    // Ensure auth state persists across refreshes and attach listener
+    let unsubscribe: (() => void) | undefined;
+    let mounted = true;
 
-    return () => unsubscribe();
+    (async () => {
+      try {
+        await setPersistence(auth, browserLocalPersistence);
+      } catch (e) {
+        // ignore persistence errors; we'll still listen for auth state
+      }
+
+      if (!mounted) return;
+
+      unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        setUser(currentUser);
+        setLoading(false);
+      });
+    })();
+
+    return () => {
+      mounted = false;
+      if (unsubscribe) unsubscribe();
+    };
   }, []);
 
   const signUp = async (email: string, password: string, name: string) => {
@@ -115,7 +134,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       await firebaseSignOut(auth);
     }
     setUser(null);
-    router.push('/');
+    router.replace('/login');
   };
 
   const value = useMemo<AuthContextValue>(() => ({
