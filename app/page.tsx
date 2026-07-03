@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { BarChart3, BookOpen, ClipboardList, FileText, MessagesSquare, Sparkles } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import SectionHeading from '../components/SectionHeading';
@@ -121,6 +122,14 @@ export default function HomePage() {
                     {item}
                   </span>
                 ))}
+              </div>
+              <div className="flex flex-wrap gap-3 pt-2">
+                <Link href="/signup" className="rounded-full bg-violet-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-400">
+                  Create account
+                </Link>
+                <Link href="/login" className="rounded-full border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-200 transition hover:border-violet-400 hover:text-white">
+                  Sign in
+                </Link>
               </div>
             </div>
             <div className="rounded-[2rem] border border-slate-800 bg-slate-950/90 p-5">
