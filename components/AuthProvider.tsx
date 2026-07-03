@@ -15,11 +15,28 @@ import {
   browserLocalPersistence,
   type User,
 } from 'firebase/auth';
-import { getFirebaseAuth, googleProvider, isFirebaseConfigured } from '../lib/firebase';
+import {
+  doc,
+  getDoc,
+  setDoc,
+} from 'firebase/firestore';
+import { getFirebaseAuth, getFirebaseFirestore, googleProvider, isFirebaseConfigured } from '../lib/firebase';
+
+export type ProfileRole = 'student' | 'teacher' | 'admin';
+
+type UserProfile = {
+  name: string;
+  institute: string;
+  role: ProfileRole;
+  onboardingComplete: boolean;
+};
+
+type OnboardingProfileInput = Omit<UserProfile, 'onboardingComplete'>;
 
 type AuthContextValue = {
   user: User | null;
   loading: boolean;
+  profile: UserProfile | null;
   isConfigured: boolean;
   signUp: (email: string, password: string, name: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
@@ -27,14 +44,48 @@ type AuthContextValue = {
   resetPassword: (email: string) => Promise<void>;
   sendVerificationEmail: () => Promise<void>;
   logout: () => Promise<void>;
+  completeOnboarding: (profile: OnboardingProfileInput) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  const loadUserProfile = async (currentUser: User | null) => {
+    if (!currentUser) {
+      return null;
+    }
+
+    const firestore = getFirebaseFirestore();
+    if (!firestore) {
+      return null;
+    }
+
+    const profileRef = doc(firestore, 'users', currentUser.uid);
+
+    try {
+      const profileSnapshot = await getDoc(profileRef);
+      if (!profileSnapshot.exists()) {
+        return null;
+      }
+
+      const profileData = profileSnapshot.data() as Partial<UserProfile>;
+
+      return {
+        name: profileData.name ?? currentUser.displayName ?? '',
+        institute: profileData.institute ?? '',
+        role: (profileData.role as ProfileRole) ?? 'student',
+        onboardingComplete: Boolean(profileData.onboardingComplete),
+      } as UserProfile;
+    } catch (error) {
+      console.error('Failed to load user profile:', error);
+      return null;
+    }
+  };
 
   useEffect(() => {
     const auth = getFirebaseAuth();
@@ -44,9 +95,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    // Ensure auth state persists across refreshes and attach listener
     let unsubscribe: (() => void) | undefined;
     let mounted = true;
+
+    const handleAuthStateChanged = async (currentUser: User | null) => {
+      if (!mounted) {
+        return;
+      }
+
+      setUser(currentUser);
+      if (!currentUser) {
+        setProfile(null);
+        setLoading(false);
+        return;
+      }
+
+      const loadedProfile = await loadUserProfile(currentUser);
+      if (!mounted) {
+        return;
+      }
+
+      setProfile(loadedProfile);
+      setLoading(false);
+    };
 
     (async () => {
       try {
@@ -56,10 +127,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       if (!mounted) return;
-
       unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-        setUser(currentUser);
-        setLoading(false);
+        void handleAuthStateChanged(currentUser);
       });
     })();
 
@@ -68,6 +137,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (unsubscribe) unsubscribe();
     };
   }, []);
+
+  const completeOnboarding = async (profileInput: OnboardingProfileInput) => {
+    const auth = getFirebaseAuth();
+    if (!auth || !user) {
+      throw new Error('A signed-in user is required to complete onboarding.');
+    }
+
+    const firestore = getFirebaseFirestore();
+    if (!firestore) {
+      throw new Error('Firestore is not configured.');
+    }
+
+    const profileRef = doc(firestore, 'users', user.uid);
+    const profileToSave: UserProfile = {
+      ...profileInput,
+      onboardingComplete: true,
+    };
+
+    await setDoc(profileRef, profileToSave, { merge: true });
+
+    if (profileInput.name && user.displayName !== profileInput.name) {
+      await updateProfile(user, { displayName: profileInput.name });
+    }
+
+    setProfile(profileToSave);
+    router.replace('/dashboard');
+  };
 
   const signUp = async (email: string, password: string, name: string) => {
     const auth = getFirebaseAuth();
@@ -134,11 +230,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       await firebaseSignOut(auth);
     }
     setUser(null);
+    setProfile(null);
     router.replace('/login');
   };
 
   const value = useMemo<AuthContextValue>(() => ({
     user,
+    profile,
     loading,
     isConfigured: isFirebaseConfigured(),
     signUp,
@@ -147,7 +245,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     resetPassword,
     sendVerificationEmail,
     logout,
-  }), [loading, user]);
+    completeOnboarding,
+  }), [loading, user, profile]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

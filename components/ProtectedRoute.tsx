@@ -4,15 +4,27 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from './AuthProvider';
 
-export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { user, loading } = useAuth();
+type ProtectedRouteProps = {
+  children: React.ReactNode;
+  allowIncompleteProfile?: boolean;
+};
+
+export default function ProtectedRoute({ children, allowIncompleteProfile = false }: ProtectedRouteProps) {
+  const { user, profile, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.replace('/login');
+    if (!loading) {
+      if (!user) {
+        router.replace('/login');
+        return;
+      }
+
+      if (!allowIncompleteProfile && user && (!profile || !profile.onboardingComplete)) {
+        router.replace('/onboarding');
+      }
     }
-  }, [loading, user, router]);
+  }, [allowIncompleteProfile, loading, profile, router, user]);
 
   if (loading) {
     return (
@@ -23,6 +35,8 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
   }
 
   if (!user) return null;
+
+  if (!allowIncompleteProfile && (!profile || !profile.onboardingComplete)) return null;
 
   return <>{children}</>;
 }
