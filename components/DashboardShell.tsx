@@ -9,6 +9,7 @@ const navLinks = {
   student: [
     { href: '/dashboard/student', label: 'Dashboard', icon: LayoutDashboard },
     { href: '/dashboard/student/courses', label: 'My Courses', icon: BookOpen },
+    { href: '/courses', label: 'Explore Courses', icon: BookOpen },
     { href: '/dashboard/student/path', label: 'Learning Path', icon: CheckCircle2 },
     { href: '/dashboard/student/progress', label: 'Progress', icon: BarChart3 },
     { href: '/dashboard/student/assignments', label: 'Assignments', icon: ClipboardList },
