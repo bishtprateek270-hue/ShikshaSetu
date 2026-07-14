@@ -6,8 +6,42 @@ import {
   handleFallbackPlan,
 } from '../../../lib/ai/fallback-engine';
 
+// Helper to verify Firebase ID token via REST endpoint
+async function verifyFirebaseToken(token: string, firebaseApiKey: string): Promise<boolean> {
+  if (!token || !firebaseApiKey) return false;
+  try {
+    const res = await fetch(
+      `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${firebaseApiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken: token }),
+      }
+    );
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
 export async function POST(req: Request) {
   try {
+    // 1. Authenticate Request
+    const authHeader = req.headers.get('Authorization') ?? '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.substring(7) : '';
+    const firebaseApiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
+
+    // Verify token to ensure user is logged in
+    if (firebaseApiKey && token) {
+      const isValid = await verifyFirebaseToken(token, firebaseApiKey);
+      if (!isValid) {
+        return NextResponse.json({ error: 'Unauthorized: Invalid credentials token' }, { status: 401 });
+      }
+    } else if (process.env.NODE_ENV === 'production') {
+      // In production, enforce authentication strictly
+      return NextResponse.json({ error: 'Unauthorized: Credentials required' }, { status: 401 });
+    }
+
     const body = await req.json();
     const { action } = body;
     const apiKey = process.env.GEMINI_API_KEY;

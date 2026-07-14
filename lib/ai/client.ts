@@ -2,12 +2,23 @@
 
 import type { QuizQuestion } from '../lms/types';
 import type { FallbackSummaryResponse, FallbackPlanResponse } from './fallback-engine';
+import { getFirebaseAuth } from '../firebase';
+
+async function getAuthHeaders(): Promise<Record<string, string>> {
+  const auth = getFirebaseAuth();
+  const token = auth?.currentUser ? await auth.currentUser.getIdToken() : '';
+  return {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`,
+  };
+}
 
 export async function askAiTutor(message: string, history: { role: 'user' | 'assistant'; content: string }[]): Promise<string> {
   try {
+    const headers = await getAuthHeaders();
     const res = await fetch('/api/ai', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify({ action: 'chat', message, history }),
     });
     const data = await res.json();
@@ -20,9 +31,10 @@ export async function askAiTutor(message: string, history: { role: 'user' | 'ass
 
 export async function generateAiQuiz(topic: string): Promise<QuizQuestion[]> {
   try {
+    const headers = await getAuthHeaders();
     const res = await fetch('/api/ai', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify({ action: 'quiz', topic }),
     });
     const data = await res.json();
@@ -35,9 +47,10 @@ export async function generateAiQuiz(topic: string): Promise<QuizQuestion[]> {
 
 export async function generateNotesAndSummary(text: string): Promise<FallbackSummaryResponse> {
   try {
+    const headers = await getAuthHeaders();
     const res = await fetch('/api/ai', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify({ action: 'summary', text }),
     });
     return await res.json();
@@ -57,9 +70,10 @@ export async function generateStudyPlan(
   hours: number
 ): Promise<FallbackPlanResponse> {
   try {
+    const headers = await getAuthHeaders();
     const res = await fetch('/api/ai', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify({ action: 'planner', courseTitle, days, hours }),
     });
     return await res.json();
