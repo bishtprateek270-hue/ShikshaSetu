@@ -1,91 +1,216 @@
 'use client';
 
 import { useMemo } from 'react';
+import Link from 'next/link';
+import { Users, BookOpen, AlertTriangle, ShieldAlert, Award, Settings, CheckCircle2, Server, Activity } from 'lucide-react';
 import RoleProtectedRoute from '../../../components/RoleProtectedRoute';
 import DashboardShell from '../../../components/DashboardShell';
 import DashboardCard from '../../../components/DashboardCard';
 import DashboardStatCard from '../../../components/DashboardStatCard';
+import LmsSkeletonLoader from '../../../components/lms/LmsSkeletonLoader';
 import { useAuth } from '../../../components/AuthProvider';
+import { useAdminAnalytics, useAdminIssues } from '../../../lib/lms/hooks-admin';
+import { formatDate } from '../../../lib/lms/utils';
 
 export default function AdminDashboardPage() {
   const { profile } = useAuth();
+  
+  // Load admin hooks
+  const { stats, usersRoleRatio, loading } = useAdminAnalytics();
+  const { issues, resolveIssue } = useAdminIssues();
+
+  const openIssuesList = useMemo(() => {
+    return issues.filter((i) => i.status === 'open').slice(0, 3);
+  }, [issues]);
 
   const statCards = useMemo(
     () => [
-      { label: 'Total users', value: '1.2K', subtext: 'Active accounts across roles' },
-      { label: 'Teachers onboarded', value: '128', subtext: 'Verified instructors' },
-      { label: 'Courses live', value: '46', subtext: 'Published learning paths' },
-      { label: 'Platform health', value: 'Excellent', subtext: 'System performance and uptime' },
+      { label: 'Total users', value: String(stats.totalUsers), subtext: 'Active accounts across roles' },
+      { label: 'Teachers onboarded', value: String(stats.teachersCount), subtext: 'Verified instructors' },
+      { label: 'Courses live', value: String(stats.coursesCount), subtext: 'Published learning paths' },
+      { label: 'Platform health', value: stats.platformHealth, subtext: `${stats.openIssues} unresolved reports` },
     ],
-    []
+    [stats]
   );
 
   return (
     <RoleProtectedRoute allowedRoles={['admin']}>
-      <DashboardShell title="Admin Dashboard" subtitle="Monitor users, courses, and platform analytics." breadcrumbs={[{ label: 'Dashboard' }]}> 
-        <div className="grid gap-6 xl:grid-cols-[1.4fr_0.85fr]">
-          <div className="space-y-6">
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-2">
-              {statCards.map((item) => (
-                <DashboardStatCard key={item.label} label={item.label} value={item.value} subtext={item.subtext} />
-              ))}
-            </div>
-
-            <DashboardCard title="Platform overview" description="Track performance signals and administrative actions.">
-              <div className="grid gap-4">
-                <div className="rounded-[1.5rem] border border-slate-800/80 bg-slate-900/80 p-6">
-                  <p className="text-sm uppercase tracking-[0.3em] text-slate-400">Engagement</p>
-                  <div className="mt-4 flex items-end gap-3">
-                    <div className="flex-1 space-y-2">
-                      <div className="h-3 rounded-full bg-slate-800" />
-                      <div className="h-3 rounded-full bg-slate-800/80" />
-                      <div className="h-3 rounded-full bg-slate-800/60" />
-                    </div>
-                    <span className="text-sm font-semibold text-white">Stable</span>
-                  </div>
-                </div>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-3xl border border-slate-800 bg-slate-950/80 p-4">
-                    <p className="text-sm text-slate-400">Review alerts</p>
-                    <p className="mt-2 text-lg font-semibold text-white">3 new issues</p>
-                  </div>
-                  <div className="rounded-3xl border border-slate-800 bg-slate-950/80 p-4">
-                    <p className="text-sm text-slate-400">Security checks</p>
-                    <p className="mt-2 text-lg font-semibold text-white">All clear</p>
-                  </div>
-                </div>
-              </div>
-            </DashboardCard>
-
-            <DashboardCard title="Admin actions" description="Common tasks you can complete right now.">
-              <div className="grid gap-3 sm:grid-cols-2">
-                {['Review new applications', 'Manage course catalog', 'Audit user roles', 'View reports'].map((item) => (
-                  <button key={item} className="rounded-2xl border border-slate-800 bg-slate-900/80 px-4 py-4 text-left text-sm font-medium text-slate-100 transition hover:border-violet-400">
-                    {item}
-                  </button>
+      <DashboardShell
+        title="Admin Control Center"
+        subtitle="Monitor users, courses, platform health, and tickets."
+        breadcrumbs={[{ label: 'Dashboard' }]}
+      >
+        {loading ? (
+          <LmsSkeletonLoader type="lessonContent" />
+        ) : (
+          <div className="grid gap-6 xl:grid-cols-[1.45fr_0.95fr]">
+            <div className="space-y-6">
+              {/* Stat Cards */}
+              <div className="grid gap-4 sm:grid-cols-2">
+                {statCards.map((item) => (
+                  <DashboardStatCard key={item.label} label={item.label} value={item.value} subtext={item.subtext} />
                 ))}
               </div>
-            </DashboardCard>
-          </div>
 
-          <div className="space-y-6">
-            <DashboardCard title="Platform health" description="Status and performance indicators.">
-              <div className="space-y-4 text-sm text-slate-300">
-                <p><span className="font-semibold text-slate-100">Server status:</span> Online</p>
-                <p><span className="font-semibold text-slate-100">New signups:</span> 42 today</p>
-                <p><span className="font-semibold text-slate-100">Support tickets:</span> 5 open</p>
-              </div>
-            </DashboardCard>
+              {/* Support issues / Troubleshooting queue */}
+              <DashboardCard
+                title="Platform Support & Alerts"
+                description="Reported technical errors or customer support requests."
+              >
+                {openIssuesList.length === 0 ? (
+                  <div className="py-6 text-center text-xs text-slate-500 flex flex-col items-center justify-center gap-2">
+                    <CheckCircle2 className="h-8 w-8 text-emerald-400" />
+                    No unresolved support tickets. Everything is running smoothly!
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {openIssuesList.map((issue) => (
+                      <div
+                        key={issue.id}
+                        className="rounded-2xl border border-slate-850 bg-slate-900/40 p-4 space-y-3 text-xs"
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div>
+                            <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider ${
+                              issue.severity === 'high' 
+                                ? 'border-rose-500/20 bg-rose-500/10 text-rose-300' 
+                                : issue.severity === 'medium'
+                                ? 'border-amber-500/20 bg-amber-500/10 text-amber-300'
+                                : 'border-blue-500/20 bg-blue-500/10 text-blue-300'
+                            }`}>
+                              {issue.severity} priority
+                            </span>
+                            <h4 className="text-sm font-semibold text-white mt-1.5">{issue.title}</h4>
+                            <p className="text-slate-400 mt-1.5 leading-normal">{issue.description}</p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => resolveIssue(issue.id)}
+                            className="rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 px-3 py-1.5 text-[10px] font-bold hover:bg-emerald-500/25 transition flex-shrink-0"
+                          >
+                            Mark Resolved
+                          </button>
+                        </div>
+                        <div className="pt-2 border-t border-slate-900 text-slate-500 flex items-center justify-between">
+                          <span>Reported by: <span className="font-semibold text-slate-400">{issue.reporterName}</span></span>
+                          <span>{formatDate(issue.createdAt)}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </DashboardCard>
 
-            <DashboardCard title="Admin profile" description="Your administration workspace at a glance.">
-              <div className="space-y-3 text-sm text-slate-300">
-                <p><span className="font-semibold text-slate-100">Name:</span> {profile?.name}</p>
-                <p><span className="font-semibold text-slate-100">Institute:</span> {profile?.institute}</p>
-                <p><span className="font-semibold text-slate-100">Role:</span> {profile?.role}</p>
-              </div>
-            </DashboardCard>
+              {/* Quick Actions Panel */}
+              <DashboardCard
+                title="Administrative Tools"
+                description="Common platform operations you can complete right now."
+              >
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <Link
+                    href="/dashboard/admin/users"
+                    className="rounded-2xl border border-slate-800 bg-slate-900/80 px-4 py-4 text-left text-sm font-medium text-slate-100 transition hover:border-violet-400"
+                  >
+                    <p className="font-semibold text-white">Audit User Roles</p>
+                    <p className="mt-1.5 text-xs text-slate-400">View and change credentials for students and instructors.</p>
+                  </Link>
+
+                  <Link
+                    href="/dashboard/admin/courses"
+                    className="rounded-2xl border border-slate-800 bg-slate-900/80 px-4 py-4 text-left text-sm font-medium text-slate-100 transition hover:border-violet-400"
+                  >
+                    <p className="font-semibold text-white">Manage Course Catalog</p>
+                    <p className="mt-1.5 text-xs text-slate-400">Review, search, and delete courses across all educators.</p>
+                  </Link>
+
+                  <Link
+                    href="/dashboard/admin/analytics"
+                    className="rounded-2xl border border-slate-800 bg-slate-900/80 px-4 py-4 text-left text-sm font-medium text-slate-100 transition hover:border-violet-400"
+                  >
+                    <p className="font-semibold text-white">Platform Analytics</p>
+                    <p className="mt-1.5 text-xs text-slate-400">Inspect demographic splits and student ratios.</p>
+                  </Link>
+
+                  <Link
+                    href="/dashboard/admin/settings"
+                    className="rounded-2xl border border-slate-800 bg-slate-900/80 px-4 py-4 text-left text-sm font-medium text-slate-100 transition hover:border-violet-400"
+                  >
+                    <p className="font-semibold text-white">Platform Settings</p>
+                    <p className="mt-1.5 text-xs text-slate-400">Manage hosting settings and diagnostic integrations.</p>
+                  </Link>
+                </div>
+              </DashboardCard>
+            </div>
+
+            {/* Right hand columns */}
+            <div className="space-y-6">
+              {/* User Roles ratio Widget */}
+              <DashboardCard
+                title="User Demographics"
+                description="Percentage ratio of platform registrations."
+              >
+                <div className="space-y-4 pt-2 text-xs">
+                  {/* Students */}
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-slate-300">Students</span>
+                      <span className="font-bold text-white">{usersRoleRatio.students}%</span>
+                    </div>
+                    <div className="h-1.5 w-full rounded-full bg-slate-900">
+                      <div className="h-full rounded-full bg-violet-500" style={{ width: `${usersRoleRatio.students}%` }} />
+                    </div>
+                  </div>
+
+                  {/* Teachers */}
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-slate-300">Instructors</span>
+                      <span className="font-bold text-white">{usersRoleRatio.teachers}%</span>
+                    </div>
+                    <div className="h-1.5 w-full rounded-full bg-slate-900">
+                      <div className="h-full rounded-full bg-fuchsia-500" style={{ width: `${usersRoleRatio.teachers}%` }} />
+                    </div>
+                  </div>
+
+                  {/* Admins */}
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-slate-300">Platform Admins</span>
+                      <span className="font-bold text-white">{usersRoleRatio.admins}%</span>
+                    </div>
+                    <div className="h-1.5 w-full rounded-full bg-slate-900">
+                      <div className="h-full rounded-full bg-emerald-500" style={{ width: `${usersRoleRatio.admins}%` }} />
+                    </div>
+                  </div>
+                </div>
+              </DashboardCard>
+
+              {/* Diagnostis card */}
+              <DashboardCard
+                title="System Diagnostics"
+                description="Hosting services and database check logs."
+              >
+                <div className="space-y-3 text-xs text-slate-400">
+                  <div className="flex items-center justify-between border-b border-slate-900 pb-2">
+                    <span className="flex items-center gap-1.5 text-slate-300">
+                      <Server className="h-4 w-4 text-violet-400" />
+                      App Firestore Database
+                    </span>
+                    <span className="font-semibold text-emerald-400">ONLINE</span>
+                  </div>
+
+                  <div className="flex items-center justify-between border-b border-slate-900 pb-2">
+                    <span className="flex items-center gap-1.5 text-slate-300">
+                      <Activity className="h-4 w-4 text-violet-400" />
+                      API Latency
+                    </span>
+                    <span className="font-semibold text-white">42ms (Stable)</span>
+                  </div>
+                </div>
+              </DashboardCard>
+            </div>
           </div>
-        </div>
+        )}
       </DashboardShell>
     </RoleProtectedRoute>
   );
