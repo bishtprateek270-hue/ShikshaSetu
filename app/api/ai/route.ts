@@ -1,10 +1,4 @@
 import { NextResponse } from 'next/server';
-import {
-  handleFallbackChat,
-  handleFallbackQuiz,
-  handleFallbackSummary,
-  handleFallbackPlan,
-} from '../../../lib/ai/fallback-engine';
 
 // Helper to verify Firebase ID token via REST endpoint
 async function verifyFirebaseToken(token: string, firebaseApiKey: string): Promise<boolean> {
@@ -47,12 +41,14 @@ export async function POST(req: Request) {
     const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
-      // Gracefully route to high-fidelity local fallback engine
-      return executeFallback(action, body);
+      return NextResponse.json(
+        { error: 'Gemini API key is not configured. Please configure GEMINI_API_KEY in your environment.' },
+        { status: 500 }
+      );
     }
 
-    // Direct Gemini REST API fetch to avoid extra npm packages
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    // Direct Gemini REST API fetch
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`;
 
     if (action === 'chat') {
       const { message, history } = body;
@@ -70,7 +66,7 @@ Student's question: ${message}
 Tutor:`;
 
       const reply = await callGemini(geminiUrl, prompt);
-      return NextResponse.json({ reply: reply || handleFallbackChat(message).reply });
+      return NextResponse.json({ reply });
     }
 
     if (action === 'quiz') {
@@ -89,13 +85,8 @@ Output MUST be valid JSON conforming to this TypeScript type:
 Output only the JSON block. Do not write markdown tags or text around the JSON.`;
 
       const responseText = await callGemini(geminiUrl, prompt);
-      try {
-        const cleanedText = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
-        const json = JSON.parse(cleanedText);
-        return NextResponse.json(json);
-      } catch (e) {
-        return NextResponse.json(handleFallbackQuiz(topic));
-      }
+      const json = cleanAndParseJson(responseText);
+      return NextResponse.json(json);
     }
 
     if (action === 'summary') {
@@ -111,13 +102,8 @@ Output MUST be valid JSON conforming to this TypeScript type:
 Output only the JSON block. Do not write markdown tags or text around the JSON.`;
 
       const responseText = await callGemini(geminiUrl, prompt);
-      try {
-        const cleanedText = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
-        const json = JSON.parse(cleanedText);
-        return NextResponse.json(json);
-      } catch (e) {
-        return NextResponse.json(handleFallbackSummary(text));
-      }
+      const json = cleanAndParseJson(responseText);
+      return NextResponse.json(json);
     }
 
     if (action === 'planner') {
@@ -134,19 +120,65 @@ Output MUST be valid JSON conforming to this TypeScript type:
 Output only the JSON block. Do not write markdown tags or text around the JSON.`;
 
       const responseText = await callGemini(geminiUrl, prompt);
-      try {
-        const cleanedText = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
-        const json = JSON.parse(cleanedText);
-        return NextResponse.json(json);
-      } catch (e) {
-        return NextResponse.json(handleFallbackPlan(courseTitle, days, hours));
-      }
+      const json = cleanAndParseJson(responseText);
+      return NextResponse.json(json);
     }
 
-    return executeFallback(action, body);
-  } catch (err) {
-    console.error('Server AI endpoint error, executing fallback:', err);
-    return executeFallback('', {});
+    if (action === 'search') {
+      const { query, courses } = body;
+      const coursesPrompt = (courses ?? []).map((c: any) => `ID: ${c.id}\nTitle: ${c.title}\nDescription: ${c.description}\nCategory: ${c.category}\nTags: ${c.tags?.join(', ')}\nLevel: ${c.level}`).join('\n\n');
+      
+      const prompt = `You are an educational search assistant for ShikshaSetu LMS.
+Given a student's search query and a list of available courses, perform a semantic search.
+Identify which courses are relevant to the query and rank them in order of relevance.
+Return the results as a JSON object containing a list of course IDs sorted from most relevant to least relevant:
+{
+  "rankedIds": string[]
+}
+If no courses are relevant, return an empty array for "rankedIds".
+Output only the JSON block. Do not write markdown tags or text around the JSON.
+
+Search query: "${query}"
+
+Available courses:
+${coursesPrompt}`;
+
+      const responseText = await callGemini(geminiUrl, prompt);
+      const json = cleanAndParseJson(responseText);
+      return NextResponse.json(json);
+    }
+
+    if (action === 'recommendations') {
+      const { enrollments, availableCourses } = body;
+      const enrollmentsPrompt = (enrollments ?? []).map((e: any) => `Course ID: ${e.courseId}, Progress: ${e.progress}%`).join('\n');
+      const coursesPrompt = (availableCourses ?? []).map((c: any) => `ID: ${c.id}\nTitle: ${c.title}\nCategory: ${c.category}\nLevel: ${c.level}\nTags: ${c.tags?.join(', ')}`).join('\n\n');
+
+      const prompt = `You are an educational advisor for ShikshaSetu LMS.
+Given a student's enrolled courses and their progress, plus a list of all available courses in the catalog:
+1. Write a personalized, highly encouraging, and specific study recommendation on what they should focus on next (e.g., resuming a course they are currently in and mentioning their exact progress). Limit this text to under 3 sentences.
+2. Suggest exactly 2 courses from the available courses list that the student is NOT currently enrolled in (progress is not present or 0) that match their learning interests/categories.
+Return the results as a JSON object of this structure:
+{
+  "focusRecommendation": string,
+  "recommendedCourseIds": string[]
+}
+Output only the JSON block. Do not write markdown tags or text around the JSON.
+
+Enrolled courses:
+${enrollmentsPrompt || 'None (no active enrollments)'}
+
+Available catalog courses:
+${coursesPrompt}`;
+
+      const responseText = await callGemini(geminiUrl, prompt);
+      const json = cleanAndParseJson(responseText);
+      return NextResponse.json(json);
+    }
+
+    return NextResponse.json({ error: `Invalid action type parameters: ${action}` }, { status: 400 });
+  } catch (err: any) {
+    console.error('Server AI endpoint error:', err);
+    return NextResponse.json({ error: err.message || 'Server error calling AI API' }, { status: 500 });
   }
 }
 
@@ -164,22 +196,11 @@ async function callGemini(url: string, prompt: string): Promise<string> {
   return data.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
 }
 
-function executeFallback(action: string, body: any) {
-  if (action === 'chat') {
-    return NextResponse.json(handleFallbackChat(body.message));
-  }
-  if (action === 'quiz') {
-    return NextResponse.json(handleFallbackQuiz(body.topic));
-  }
-  if (action === 'summary') {
-    return NextResponse.json(handleFallbackSummary(body.text));
-  }
-  if (action === 'planner') {
-    return NextResponse.json(handleFallbackPlan(body.courseTitle, body.days, body.hours));
-  }
-  
-  // Default general response
-  return NextResponse.json({
-    reply: 'Fallthrough. Please configure action type parameters.',
-  });
+function cleanAndParseJson(text: string) {
+  const cleaned = text
+    .replace(/```json/gi, '')
+    .replace(/```/gi, '')
+    .trim();
+  return JSON.parse(cleaned);
 }
+

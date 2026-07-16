@@ -5,6 +5,7 @@ import type { Course, Enrollment, Note, Bookmark, Notification, Certificate, Cou
 import type { SortOption } from './utils';
 import { courses as allCourses } from './data/courses';
 import { searchCourses, filterByCategory, filterByLevel, sortCourses } from './utils';
+import { smartSearchCourses } from '../ai/client';
 import {
   getEnrollments as fetchEnrollments,
   getEnrollment as fetchEnrollment,
@@ -25,25 +26,80 @@ type UseCoursesFilters = {
 };
 
 export function useCourses(filters: UseCoursesFilters = {}) {
+  const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
-
-  const filtered = useMemo(() => {
-    let result = [...allCourses].filter((c) => c.status === 'published');
-    if (filters.search) result = searchCourses(result, filters.search);
-    if (filters.category) result = filterByCategory(result, filters.category);
-    if (filters.level) result = filterByLevel(result, filters.level);
-    result = sortCourses(result, filters.sort ?? 'popular');
-    return result;
-  }, [filters.search, filters.category, filters.level, filters.sort]);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    // Simulate initial load
-    const timer = setTimeout(() => setLoading(false), 300);
-    return () => clearTimeout(timer);
-  }, []);
+    let cancelled = false;
+    const fetchFilteredCourses = async () => {
+      setLoading(true);
+      try {
+        let result = [...allCourses].filter((c) => c.status === 'published');
 
-  return { courses: filtered, loading, total: allCourses.length };
+        if (filters.search?.trim()) {
+          const searchParams = result.map((c) => ({
+            id: c.id,
+            title: c.title,
+            description: c.description,
+            category: c.category,
+            tags: c.tags,
+            level: c.level,
+          }));
+          const rankedIds = await smartSearchCourses(filters.search, searchParams);
+          if (!cancelled && rankedIds && rankedIds.length > 0) {
+            const rankedCourses = rankedIds
+              .map((id) => result.find((c) => c.id === id))
+              .filter((c): c is Course => !!c);
+            if (rankedCourses.length > 0) {
+              result = rankedCourses;
+            } else {
+              result = searchCourses(result, filters.search);
+            }
+          } else if (!cancelled) {
+            result = searchCourses(result, filters.search);
+          }
+        }
+
+        if (filters.category && !cancelled) {
+          result = filterByCategory(result, filters.category);
+        }
+        if (filters.level && !cancelled) {
+          result = filterByLevel(result, filters.level);
+        }
+        if (!cancelled) {
+          result = sortCourses(result, filters.sort ?? 'popular');
+          setCourses(result);
+          setTotal(result.length);
+        }
+      } catch (err) {
+        console.error('Smart search error:', err);
+        if (!cancelled) {
+          let result = [...allCourses].filter((c) => c.status === 'published');
+          if (filters.search) result = searchCourses(result, filters.search);
+          if (filters.category) result = filterByCategory(result, filters.category);
+          if (filters.level) result = filterByLevel(result, filters.level);
+          result = sortCourses(result, filters.sort ?? 'popular');
+          setCourses(result);
+          setTotal(result.length);
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchFilteredCourses();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [filters.search, filters.category, filters.level, filters.sort]);
+
+  return { courses, loading, total };
 }
+
 
 /* ── useCourse ────────────────────────────────────────────── */
 

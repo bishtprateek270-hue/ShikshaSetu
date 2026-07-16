@@ -1,16 +1,56 @@
 'use client';
 
-import { useMemo } from 'react';
-import { Award, BookOpen, Flame, Sparkles, TrendingUp, Lightbulb } from 'lucide-react';
+import { useMemo, useState, useEffect } from 'react';
+import { Award, BookOpen, Flame, Sparkles, Lightbulb } from 'lucide-react';
 import type { Enrollment } from '../../lib/lms/types';
 import { courses } from '../../lib/lms/data/courses';
 import ProgressBar from './ProgressBar';
+import { getAiRecommendations } from '../../lib/ai/client';
 
 type AiInsightsPanelProps = {
   enrollments: Enrollment[];
 };
 
 export default function AiInsightsPanel({ enrollments }: AiInsightsPanelProps) {
+  const [recommendations, setRecommendations] = useState<{
+    focusRecommendation: string;
+    recommendedCourseIds: string[];
+  } | null>(null);
+  const [loadingRecs, setLoadingRecs] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    const fetchRecommendations = async () => {
+      setLoadingRecs(true);
+      try {
+        const enrollmentsData = enrollments.map(e => ({ courseId: e.courseId, progress: e.progress }));
+        const availableCoursesData = courses.map(c => ({
+          id: c.id,
+          title: c.title,
+          category: c.category,
+          level: c.level,
+          tags: c.tags
+        }));
+        const data = await getAiRecommendations(enrollmentsData, availableCoursesData);
+        if (!cancelled) {
+          setRecommendations(data);
+        }
+      } catch (err) {
+        console.error('Failed to load AI recommendations:', err);
+      } finally {
+        if (!cancelled) {
+          setLoadingRecs(false);
+        }
+      }
+    };
+
+    fetchRecommendations();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [enrollments]);
+
   // Mock study metrics
   const stats = useMemo(() => {
     const total = enrollments.length;
@@ -34,6 +74,15 @@ export default function AiInsightsPanel({ enrollments }: AiInsightsPanelProps) {
       focusEnrollment: primaryFocusEnrollment,
     };
   }, [enrollments]);
+
+  const recommendedCourses = useMemo(() => {
+    if (!recommendations?.recommendedCourseIds || recommendations.recommendedCourseIds.length === 0) {
+      return courses.slice(0, 2);
+    }
+    return recommendations.recommendedCourseIds
+      .map(id => courses.find(c => c.id === id))
+      .filter((c): c is typeof courses[0] => !!c);
+  }, [recommendations]);
 
   return (
     <div className="space-y-6">
@@ -85,28 +134,37 @@ export default function AiInsightsPanel({ enrollments }: AiInsightsPanelProps) {
             <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">AI Study Recommendation</span>
           </div>
 
-          {stats.focusCourse && stats.focusEnrollment ? (
+          {loadingRecs ? (
+            <div className="flex flex-col items-center justify-center py-10 text-center text-slate-500">
+              <div className="h-6 w-6 rounded-full border-2 border-violet-500 border-t-transparent animate-spin mb-2" />
+              <p className="text-xs">Analyzing study focus recommendations...</p>
+            </div>
+          ) : recommendations?.focusRecommendation ? (
             <div className="space-y-4 text-xs">
-              <p className="text-slate-300 leading-relaxed">
-                We recommend focusing on your ongoing course **{stats.focusCourse.title}**. You are currently at **{stats.focusEnrollment.progress}%** completion.
+              <p className="text-slate-350 leading-relaxed leading-normal">
+                {recommendations.focusRecommendation}
               </p>
 
-              <div className="rounded-2xl border border-slate-900 bg-slate-900/30 p-4 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="font-semibold text-white">{stats.focusCourse.title}</span>
-                  <span className="text-slate-500 font-bold">{stats.focusEnrollment.progress}% done</span>
+              {stats.focusCourse && stats.focusEnrollment && (
+                <div className="rounded-2xl border border-slate-900 bg-slate-900/30 p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold text-white">{stats.focusCourse.title}</span>
+                    <span className="text-slate-500 font-bold">{stats.focusEnrollment.progress}% done</span>
+                  </div>
+                  <ProgressBar value={stats.focusEnrollment.progress} size="sm" showLabel={false} />
                 </div>
-                <ProgressBar value={stats.focusEnrollment.progress} size="sm" showLabel={false} />
-              </div>
+              )}
 
-              <div className="pt-2 flex justify-end">
-                <a
-                  href={`/learn/${stats.focusCourse.id}`}
-                  className="rounded-full bg-violet-500 px-4 py-2 font-semibold text-white hover:bg-violet-400 transition"
-                >
-                  Resume Course
-                </a>
-              </div>
+              {stats.focusCourse && (
+                <div className="pt-2 flex justify-end">
+                  <a
+                    href={`/learn/${stats.focusCourse.id}`}
+                    className="rounded-full bg-violet-500 px-4 py-2 font-semibold text-white hover:bg-violet-400 transition"
+                  >
+                    Resume Course
+                  </a>
+                </div>
+              )}
             </div>
           ) : (
             <p className="text-xs text-slate-500 py-6">
@@ -123,30 +181,38 @@ export default function AiInsightsPanel({ enrollments }: AiInsightsPanelProps) {
           </div>
 
           <p className="text-xs text-slate-400 leading-normal">
-            Based on your active interest in programming and UI/UX design tracks, we recommend adding these courses to your library:
+            Based on your dynamic interest profile, we recommend adding these courses to your library:
           </p>
 
-          <div className="space-y-3">
-            {courses.slice(0, 2).map((course) => (
-              <div
-                key={course.id}
-                className="rounded-2xl border border-slate-900 bg-slate-900/30 p-3 flex justify-between items-center text-xs"
-              >
-                <div>
-                  <h4 className="font-semibold text-white truncate max-w-[200px]">{course.title}</h4>
-                  <p className="text-[10px] text-slate-500 mt-0.5">{course.category} • {course.level}</p>
-                </div>
-                <a
-                  href={`/courses/${course.slug}`}
-                  className="text-violet-400 hover:text-violet-300 font-bold font-semibold shrink-0"
+          {loadingRecs ? (
+            <div className="flex flex-col items-center justify-center py-10 text-center text-slate-500">
+              <div className="h-6 w-6 rounded-full border-2 border-violet-500 border-t-transparent animate-spin mb-2" />
+              <p className="text-xs">Curating catalog recommendations...</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {recommendedCourses.map((course) => (
+                <div
+                  key={course.id}
+                  className="rounded-2xl border border-slate-900 bg-slate-900/30 p-3 flex justify-between items-center text-xs"
                 >
-                  Details →
-                </a>
-              </div>
-            ))}
-          </div>
+                  <div>
+                    <h4 className="font-semibold text-white truncate max-w-[200px]">{course.title}</h4>
+                    <p className="text-[10px] text-slate-500 mt-0.5">{course.category} • {course.level}</p>
+                  </div>
+                  <a
+                    href={`/courses/${course.slug}`}
+                    className="text-violet-400 hover:text-violet-300 font-bold font-semibold shrink-0"
+                  >
+                    Details →
+                  </a>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
       </div>
     </div>
   );
 }
+
