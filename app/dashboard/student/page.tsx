@@ -49,8 +49,8 @@ export default function StudentDashboardPage() {
                 </div>
                 <DashboardActions
                   items={[
-                    { label: 'Resume course', description: 'Jump directly back into your learning path.' },
-                    { label: 'Open study tools', description: 'Access notes, cards, and practice flows.' },
+                    { label: 'Resume course', description: 'Jump directly back into your learning path.', href: '/dashboard/student/courses' },
+                    { label: 'Open study tools', description: 'Access notes, cards, and practice flows.', href: '/dashboard/student/tools' },
                   ]}
                 />
               </div>
@@ -77,9 +77,9 @@ export default function StudentDashboardPage() {
               <div className="grid gap-3">
                 <DashboardActions
                   items={[
-                    { label: 'Flashcards', description: 'Review concepts with fast memory cycles.' },
-                    { label: 'Practice tests', description: 'Check readiness with quick quizzes.' },
-                    { label: 'Notes library', description: 'Access saved insights and summaries.' },
+                    { label: 'Flashcards', description: 'Review concepts with fast memory cycles.', href: '/dashboard/student/tools?tab=summary' },
+                    { label: 'Practice tests', description: 'Check readiness with quick quizzes.', href: '/dashboard/student/tools?tab=quiz' },
+                    { label: 'Notes library', description: 'Access saved insights and summaries.', href: '/dashboard/student/tools?tab=summary' },
                   ]}
                 />
               </div>

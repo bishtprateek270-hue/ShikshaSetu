@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { Menu, Bell, ChevronDown, Grid, BookOpen, CheckCircle2, ClipboardList, BarChart3, CalendarDays, Users, Settings, LayoutDashboard } from 'lucide-react';
 import { useAuth, type ProfileRole } from './AuthProvider';
+import { useNotifications } from '../lib/lms/hooks';
+import NotificationBell from './lms/NotificationBell';
 
 const navLinks = {
   student: [
@@ -48,7 +50,8 @@ type DashboardShellProps = {
 
 export default function DashboardShell({ title, subtitle, breadcrumbs, children }: DashboardShellProps) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { profile, logout } = useAuth();
+  const { profile, logout, user } = useAuth();
+  const { notifications, unreadCount, markAsRead } = useNotifications(user?.uid);
 
   const links = useMemo(() => {
     if (profile?.role === 'teacher') return navLinks.teacher;
@@ -71,9 +74,11 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
           </div>
 
           <div className="hidden items-center gap-4 md:flex">
-            <button type="button" className="rounded-2xl border border-slate-800/70 bg-slate-900/90 px-4 py-2 text-sm text-slate-200 transition hover:border-violet-400">
-              <Bell className="mr-2 inline-block h-4 w-4" /> Notifications
-            </button>
+            <NotificationBell
+              notifications={notifications}
+              unreadCount={unreadCount}
+              onMarkRead={markAsRead}
+            />
             <div className="rounded-3xl border border-slate-800/80 bg-slate-950/80 px-4 py-2 text-sm text-slate-200">
               {profile?.name ?? 'Learner'} • {profile?.role?.toUpperCase()}
             </div>
@@ -120,9 +125,12 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
                   <span className="block text-xs uppercase text-slate-500">Active</span>
                   <span className="font-semibold text-white">{title}</span>
                 </div>
-                <button type="button" className="flex items-center gap-2 rounded-full bg-slate-900/90 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-900">
+                <Link
+                  href={profile?.role === 'admin' ? '/dashboard/admin/settings' : `/dashboard/${profile?.role || 'student'}/profile`}
+                  className="flex items-center gap-2 rounded-full bg-slate-900/90 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-900"
+                >
                   <ChevronDown className="h-4 w-4" /> Profile
-                </button>
+                </Link>
               </div>
             </div>
             <p className="mt-4 text-slate-400">{subtitle}</p>

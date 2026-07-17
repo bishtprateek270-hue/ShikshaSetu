@@ -28,9 +28,11 @@ export default function Onboarding() {
         router.replace('/login');
       } else if (profile?.onboardingComplete) {
         router.replace('/dashboard');
+      } else if (user.displayName && !name) {
+        setName(user.displayName);
       }
     }
-  }, [loading, profile, router, user]);
+  }, [loading, profile, router, user, name]);
 
   if (loading) {
     return (

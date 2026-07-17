@@ -150,6 +150,14 @@ export default function LessonPlayerPage() {
             </div>
 
             <div className="flex items-center gap-3">
+              {enrollment && enrollment.progress >= 100 && (
+                <Link
+                  href={`/learn/${courseId}/certificate`}
+                  className="rounded-full bg-emerald-500/10 border border-emerald-500/30 px-3 py-1.5 text-xs font-bold text-emerald-400 transition hover:bg-emerald-500/20"
+                >
+                  View Certificate
+                </Link>
+              )}
               <div className="hidden w-40 sm:block">
                 <ProgressBar value={enrollment?.progress ?? 0} size="sm" showLabel={false} />
               </div>

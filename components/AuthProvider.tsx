@@ -29,6 +29,8 @@ type UserProfile = {
   institute: string;
   role: ProfileRole;
   onboardingComplete: boolean;
+  title?: string;
+  bio?: string;
 };
 
 type OnboardingProfileInput = Omit<UserProfile, 'onboardingComplete'>;
@@ -80,6 +82,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         institute: profileData.institute ?? '',
         role: (profileData.role as ProfileRole) ?? 'student',
         onboardingComplete: Boolean(profileData.onboardingComplete),
+        title: profileData.title ?? '',
+        bio: profileData.bio ?? '',
       } as UserProfile;
     } catch (error) {
       console.error('Failed to load user profile:', error);

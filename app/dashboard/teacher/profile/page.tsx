@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { User, School, Award, FileText, Check } from 'lucide-react';
 import RoleProtectedRoute from '../../../../components/RoleProtectedRoute';
 import DashboardShell from '../../../../components/DashboardShell';
 import DashboardCard from '../../../../components/DashboardCard';
 import { useAuth } from '../../../../components/AuthProvider';
 import { getFirebaseFirestore } from '../../../../lib/firebase';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 
 export default function EducatorProfilePage() {
   const { user, profile } = useAuth();
@@ -20,6 +20,15 @@ export default function EducatorProfilePage() {
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
 
+  useEffect(() => {
+    if (profile) {
+      setName(profile.name ?? '');
+      setInstitute(profile.institute ?? '');
+      setTitle((profile as any).title ?? 'Course Instructor');
+      setBio((profile as any).bio ?? '');
+    }
+  }, [profile]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
@@ -31,12 +40,12 @@ export default function EducatorProfilePage() {
       const db = getFirebaseFirestore();
       if (db) {
         const ref = doc(db, 'users', user.uid);
-        await updateDoc(ref, {
+        await setDoc(ref, {
           name,
           institute,
           title,
           bio,
-        });
+        }, { merge: true });
       }
       
       // Update local profile state in memory if needed (will refresh on page reload)

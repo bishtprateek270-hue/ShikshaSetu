@@ -107,9 +107,9 @@ export default function AuthForm({ mode }: AuthFormProps) {
           </label>
         ) : null}
         {mode !== 'forgot' ? (
-          <a href="/forgot-password" className="font-semibold text-slate-200 transition hover:text-white">
+          <Link href="/forgot-password" className="font-semibold text-slate-200 transition hover:text-white">
             Forgot password?
-          </a>
+          </Link>
         ) : null}
       </div>
 
@@ -142,11 +142,11 @@ export default function AuthForm({ mode }: AuthFormProps) {
 
       <div className="text-center text-sm text-slate-400">
         {mode === 'login' ? (
-          <>New here? <a href="/signup" className="font-semibold text-slate-100 hover:text-white">Create an account</a></>
+          <>New here? <Link href="/signup" className="font-semibold text-slate-100 hover:text-white">Create an account</Link></>
         ) : mode === 'signup' ? (
-          <>Already have an account? <a href="/login" className="font-semibold text-slate-100 hover:text-white">Sign in</a></>
+          <>Already have an account? <Link href="/login" className="font-semibold text-slate-100 hover:text-white">Sign in</Link></>
         ) : (
-          <>Remembered your password? <a href="/login" className="font-semibold text-slate-100 hover:text-white">Sign in</a></>
+          <>Remembered your password? <Link href="/login" className="font-semibold text-slate-100 hover:text-white">Sign in</Link></>
         )}
       </div>
     </form>

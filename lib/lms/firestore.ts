@@ -49,8 +49,15 @@ export async function getEnrollments(userId: string): Promise<Enrollment[]> {
   try {
     const q = query(collection(db, 'enrollments'), where('userId', '==', userId));
     const snap = await getDocs(q);
-    if (snap.empty) return mockEnrollments.filter((e) => e.userId === 'mock-user');
-    return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Enrollment);
+    const dbEnrolls = snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Enrollment);
+
+    const merged = [...dbEnrolls];
+    for (const mockEnroll of mockEnrollments) {
+      if (mockEnroll.userId === 'mock-user' && !merged.some((e) => e.courseId === mockEnroll.courseId)) {
+        merged.push(mockEnroll);
+      }
+    }
+    return merged;
   } catch {
     return mockEnrollments.filter((e) => e.userId === 'mock-user');
   }
@@ -272,8 +279,15 @@ export async function getNotifications(userId: string): Promise<Notification[]> 
   try {
     const q = query(collection(db, 'notifications'), where('userId', '==', userId));
     const snap = await getDocs(q);
-    if (snap.empty) return mockNotifications;
-    return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Notification);
+    const dbNotifs = snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Notification);
+
+    const merged = [...dbNotifs];
+    for (const mockNotif of mockNotifications) {
+      if (!merged.some((n) => n.id === mockNotif.id)) {
+        merged.push(mockNotif);
+      }
+    }
+    return merged;
   } catch {
     return mockNotifications;
   }
@@ -302,8 +316,15 @@ export async function getCertificates(userId: string): Promise<Certificate[]> {
   try {
     const q = query(collection(db, 'certificates'), where('userId', '==', userId));
     const snap = await getDocs(q);
-    if (snap.empty) return mockCertificates;
-    return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Certificate);
+    const dbCerts = snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Certificate);
+
+    const merged = [...dbCerts];
+    for (const mockCert of mockCertificates) {
+      if (!merged.some((c) => c.id === mockCert.id)) {
+        merged.push(mockCert);
+      }
+    }
+    return merged;
   } catch {
     return mockCertificates;
   }

@@ -31,22 +31,22 @@ let localAnnouncements = [...mockAnnouncements];
 
 export async function getTeacherCourses(userId: string): Promise<Course[]> {
   const db = getDb();
-  // If no Firestore, return local courses
   if (!db) {
-    // For demo/mock, if userId matches our mock-user, or just return everything taught by anyone to let the user see data
     return localCourses;
   }
 
   try {
-    // Standard structure: query courses where teacherId or instructor name matches
-    // Since we'll write created courses to firestore with teacherId: userId
     const q = query(collection(db, 'courses'), where('teacherId', '==', userId));
     const snap = await getDocs(q);
-    if (snap.empty) {
-      // Seed initial courses to firestore if they don't exist yet, or just return local
-      return localCourses;
+    const dbCourses = snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Course);
+
+    const merged = [...dbCourses];
+    for (const localCourse of localCourses) {
+      if (!merged.some((c) => c.id === localCourse.id)) {
+        merged.push(localCourse);
+      }
     }
-    return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Course);
+    return merged;
   } catch {
     return localCourses;
   }
@@ -243,53 +243,59 @@ export async function getCourseStudents(courseId: string): Promise<StudentProgre
 
 export async function getCourseSubmissions(courseId?: string): Promise<TeacherSubmission[]> {
   const db = getDb();
-  if (!db) {
-    return courseId
-      ? localSubmissions.filter((s) => s.courseId === courseId)
-      : localSubmissions;
-  }
+  let dbSubmissions: TeacherSubmission[] = [];
 
-  try {
-    const collRef = collection(db, 'submissions');
-    const q = courseId
-      ? query(collRef, where('courseId', '==', courseId))
-      : collRef;
-    const snap = await getDocs(q);
-    const list: TeacherSubmission[] = [];
+  if (db) {
+    try {
+      const collRef = collection(db, 'submissions');
+      const q = courseId
+        ? query(collRef, where('courseId', '==', courseId))
+        : collRef;
+      const snap = await getDocs(q);
 
-    for (const d of snap.docs) {
-      const data = d.data();
-      const s = data as TeacherSubmission;
-      
-      // Load course & student details
-      const c = localCourses.find((course) => course.id === s.courseId);
-      let studentName = s.studentName ?? 'Learner';
-      let studentEmail = s.studentEmail ?? '';
+      for (const d of snap.docs) {
+        const data = d.data();
+        const s = data as TeacherSubmission;
+        
+        // Load course & student details
+        const c = localCourses.find((course) => course.id === s.courseId);
+        let studentName = s.studentName ?? 'Learner';
+        let studentEmail = s.studentEmail ?? '';
 
-      try {
-        const userDoc = await getDoc(doc(db, 'users', s.userId));
-        if (userDoc.exists()) {
-          const u = userDoc.data();
-          studentName = u.name ?? studentName;
-          studentEmail = u.email ?? studentEmail;
-        }
-      } catch {}
+        try {
+          const userDoc = await getDoc(doc(db, 'users', s.userId));
+          if (userDoc.exists()) {
+            const u = userDoc.data();
+            studentName = u.name ?? studentName;
+            studentEmail = u.email ?? studentEmail;
+          }
+        } catch {}
 
-      list.push({
-        ...s,
-        id: d.id,
-        courseTitle: c?.title ?? 'Course',
-        studentName,
-        studentEmail,
-        status: s.score !== undefined ? 'graded' : 'ungraded',
-      });
+        dbSubmissions.push({
+          ...s,
+          id: d.id,
+          courseTitle: c?.title ?? 'Course',
+          studentName,
+          studentEmail,
+          status: s.score !== undefined ? 'graded' : 'ungraded',
+        });
+      }
+    } catch (e) {
+      console.error('Failed to load submissions from Firestore:', e);
     }
-    return list;
-  } catch {
-    return courseId
-      ? localSubmissions.filter((s) => s.courseId === courseId)
-      : localSubmissions;
   }
+
+  const merged = [...dbSubmissions];
+  for (const localSub of localSubmissions) {
+    if (courseId && localSub.courseId !== courseId) continue;
+    const dbSubIdx = merged.findIndex((s) => s.id === localSub.id);
+    if (dbSubIdx === -1) {
+      merged.push(localSub);
+    } else {
+      merged[dbSubIdx] = localSub;
+    }
+  }
+  return merged;
 }
 
 export async function gradeSubmission(

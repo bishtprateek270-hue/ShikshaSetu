@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Sparkles, BrainCircuit, GraduationCap, FileText, CalendarDays, BarChart2 } from 'lucide-react';
 import RoleProtectedRoute from '../../../../components/RoleProtectedRoute';
 import DashboardShell from '../../../../components/DashboardShell';
@@ -21,6 +21,16 @@ export default function StudyToolsPage() {
   
   // Fetch active student enrollments for insights panel context
   const { enrollments, loading } = useEnrollments(user?.uid);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const tab = params.get('tab');
+      if (tab && ['tutor', 'quiz', 'summary', 'planner', 'insights'].includes(tab)) {
+        setActiveTab(tab as ToolTab);
+      }
+    }
+  }, []);
 
   return (
     <RoleProtectedRoute allowedRoles={['student']}>

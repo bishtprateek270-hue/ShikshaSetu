@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Settings, Shield, Bell, Database, Save, Check } from 'lucide-react';
 import RoleProtectedRoute from '../../../../components/RoleProtectedRoute';
 import DashboardShell from '../../../../components/DashboardShell';
@@ -15,9 +15,31 @@ export default function AdminSettingsPage() {
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedMaintenance = localStorage.getItem('setting_maintenanceMode');
+      const savedReg = localStorage.getItem('setting_allowRegistration');
+      const savedTeacher = localStorage.getItem('setting_allowTeacherSignup');
+      const savedLogs = localStorage.getItem('setting_diagnosticLogs');
+
+      if (savedMaintenance !== null) setMaintenanceMode(savedMaintenance === 'true');
+      if (savedReg !== null) setAllowRegistration(savedReg === 'true');
+      if (savedTeacher !== null) setAllowTeacherSignup(savedTeacher === 'true');
+      if (savedLogs !== null) setDiagnosticLogs(savedLogs === 'true');
+    }
+  }, []);
+
   const handleSave = () => {
     setSaving(true);
     setSuccess(false);
+
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('setting_maintenanceMode', String(maintenanceMode));
+      localStorage.setItem('setting_allowRegistration', String(allowRegistration));
+      localStorage.setItem('setting_allowTeacherSignup', String(allowTeacherSignup));
+      localStorage.setItem('setting_diagnosticLogs', String(diagnosticLogs));
+    }
+
     setTimeout(() => {
       setSaving(false);
       setSuccess(true);

@@ -73,7 +73,8 @@ export default function AssignmentForm({ assignment, onSubmit }: AssignmentFormP
       <div className="flex items-center justify-between">
         <button
           type="button"
-          className="inline-flex items-center gap-2 rounded-xl border border-dashed border-slate-700 px-4 py-2.5 text-sm text-slate-400 transition hover:border-slate-600 hover:text-slate-300"
+          disabled
+          className="inline-flex items-center gap-2 rounded-xl border border-dashed border-slate-800 px-4 py-2.5 text-sm text-slate-500 cursor-not-allowed opacity-50"
         >
           <Upload className="h-4 w-4" />
           Attach file (coming soon)

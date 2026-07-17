@@ -6,6 +6,7 @@ import type { Enrollment } from '../../lib/lms/types';
 import { courses } from '../../lib/lms/data/courses';
 import ProgressBar from './ProgressBar';
 import { getAiRecommendations } from '../../lib/ai/client';
+import Link from 'next/link';
 
 type AiInsightsPanelProps = {
   enrollments: Enrollment[];
@@ -157,12 +158,12 @@ export default function AiInsightsPanel({ enrollments }: AiInsightsPanelProps) {
 
               {stats.focusCourse && (
                 <div className="pt-2 flex justify-end">
-                  <a
+                  <Link
                     href={`/learn/${stats.focusCourse.id}`}
                     className="rounded-full bg-violet-500 px-4 py-2 font-semibold text-white hover:bg-violet-400 transition"
                   >
                     Resume Course
-                  </a>
+                  </Link>
                 </div>
               )}
             </div>
@@ -200,12 +201,12 @@ export default function AiInsightsPanel({ enrollments }: AiInsightsPanelProps) {
                     <h4 className="font-semibold text-white truncate max-w-[200px]">{course.title}</h4>
                     <p className="text-[10px] text-slate-500 mt-0.5">{course.category} • {course.level}</p>
                   </div>
-                  <a
+                  <Link
                     href={`/courses/${course.slug}`}
                     className="text-violet-400 hover:text-violet-300 font-bold font-semibold shrink-0"
                   >
                     Details →
-                  </a>
+                  </Link>
                 </div>
               ))}
             </div>

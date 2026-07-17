@@ -33,3 +33,17 @@ select {
   background: rgba(124, 58, 237, 0.35);
   color: #fff;
 }
+
+/* Flashcard 3D flip helper classes */
+.perspective {
+  perspective: 1000px;
+}
+.transform-style {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}

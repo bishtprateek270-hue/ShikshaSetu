@@ -32,8 +32,7 @@ export async function getAllUsers(): Promise<AdminUser[]> {
   try {
     const q = collection(db, 'users');
     const snap = await getDocs(q);
-    if (snap.empty) return localAdminUsers;
-    return snap.docs.map((d) => {
+    const dbUsers = snap.docs.map((d) => {
       const data = d.data();
       return {
         uid: d.id,
@@ -46,6 +45,17 @@ export async function getAllUsers(): Promise<AdminUser[]> {
         status: data.status ?? 'active',
       } as AdminUser;
     });
+
+    const merged = [...dbUsers];
+    for (const localUser of localAdminUsers) {
+      const dbIdx = merged.findIndex((u) => u.uid === localUser.uid);
+      if (dbIdx === -1) {
+        merged.push(localUser);
+      } else {
+        merged[dbIdx] = localUser;
+      }
+    }
+    return merged;
   } catch {
     return localAdminUsers;
   }
@@ -105,8 +115,15 @@ export async function getAllCoursesAdmin(): Promise<Course[]> {
   try {
     const q = collection(db, 'courses');
     const snap = await getDocs(q);
-    if (snap.empty) return localCourses;
-    return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Course);
+    const dbCourses = snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Course);
+
+    const merged = [...dbCourses];
+    for (const localCourse of localCourses) {
+      if (!merged.some((c) => c.id === localCourse.id)) {
+        merged.push(localCourse);
+      }
+    }
+    return merged;
   } catch {
     return localCourses;
   }
@@ -134,8 +151,18 @@ export async function getPlatformIssues(): Promise<PlatformIssue[]> {
   try {
     const q = collection(db, 'platformIssues');
     const snap = await getDocs(q);
-    if (snap.empty) return localPlatformIssues;
-    return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as PlatformIssue);
+    const dbIssues = snap.docs.map((d) => ({ id: d.id, ...d.data() }) as PlatformIssue);
+
+    const merged = [...dbIssues];
+    for (const localIssue of localPlatformIssues) {
+      const dbIdx = merged.findIndex((i) => i.id === localIssue.id);
+      if (dbIdx === -1) {
+        merged.push(localIssue);
+      } else {
+        merged[dbIdx] = localIssue;
+      }
+    }
+    return merged;
   } catch {
     return localPlatformIssues;
   }
