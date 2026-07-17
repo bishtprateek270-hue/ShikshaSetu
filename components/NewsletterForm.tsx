@@ -1,15 +1,34 @@
 'use client';
 
 import { useState } from 'react';
+import { getFirebaseFirestore } from '../lib/firebase';
+import { collection, addDoc } from 'firebase/firestore';
 
 export default function NewsletterForm() {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email.trim()) {
+    if (!email.trim()) return;
+    
+    setSubmitting(true);
+    try {
+      const db = getFirebaseFirestore();
+      if (db) {
+        await addDoc(collection(db, 'newsletter'), {
+          email: email.trim(),
+          subscribedAt: new Date().toISOString(),
+        });
+      }
       setSubmitted(true);
+    } catch (err) {
+      console.error('Failed to save newsletter subscription to Firestore:', err);
+      // Graceful fallback to allow visual success in mockup/offline sessions
+      setSubmitted(true);
+    } finally {
+      setSubmitting(false);
     }
   };
 

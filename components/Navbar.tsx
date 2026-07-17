@@ -6,26 +6,29 @@ import { useEffect, useState } from 'react';
 import DarkModeToggle from '../app/dark';
 
 const navItems = [
-  { href: '#features', label: 'Features' },
-  { href: '#testimonials', label: 'Stories' },
-  { href: '#faqs', label: 'FAQs' },
-  { href: '#newsletter', label: 'Updates' }
+  { href: '/#features', label: 'Features' },
+  { href: '/#testimonials', label: 'Stories' },
+  { href: '/#faqs', label: 'FAQs' },
+  { href: '/#newsletter', label: 'Updates' }
 ];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState('#features');
+  const [active, setActive] = useState('/#features');
 
   useEffect(() => {
     const sections = navItems
-      .map((item) => document.querySelector(item.href))
+      .map((item) => {
+        const hash = item.href.includes('#') ? item.href.substring(item.href.indexOf('#')) : '';
+        return hash ? document.querySelector(hash) : null;
+      })
       .filter(Boolean) as Element[];
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setActive(`#${entry.target.id}`);
+            setActive(`/#${entry.target.id}`);
           }
         });
       },

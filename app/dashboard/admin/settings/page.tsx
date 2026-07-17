@@ -17,15 +17,19 @@ export default function AdminSettingsPage() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const savedMaintenance = localStorage.getItem('setting_maintenanceMode');
-      const savedReg = localStorage.getItem('setting_allowRegistration');
-      const savedTeacher = localStorage.getItem('setting_allowTeacherSignup');
-      const savedLogs = localStorage.getItem('setting_diagnosticLogs');
+      try {
+        const savedMaintenance = localStorage.getItem('setting_maintenanceMode');
+        const savedReg = localStorage.getItem('setting_allowRegistration');
+        const savedTeacher = localStorage.getItem('setting_allowTeacherSignup');
+        const savedLogs = localStorage.getItem('setting_diagnosticLogs');
 
-      if (savedMaintenance !== null) setMaintenanceMode(savedMaintenance === 'true');
-      if (savedReg !== null) setAllowRegistration(savedReg === 'true');
-      if (savedTeacher !== null) setAllowTeacherSignup(savedTeacher === 'true');
-      if (savedLogs !== null) setDiagnosticLogs(savedLogs === 'true');
+        if (savedMaintenance !== null) setMaintenanceMode(savedMaintenance === 'true');
+        if (savedReg !== null) setAllowRegistration(savedReg === 'true');
+        if (savedTeacher !== null) setAllowTeacherSignup(savedTeacher === 'true');
+        if (savedLogs !== null) setDiagnosticLogs(savedLogs === 'true');
+      } catch (e) {
+        console.warn('Failed to read settings from LocalStorage:', e);
+      }
     }
   }, []);
 
@@ -34,10 +38,14 @@ export default function AdminSettingsPage() {
     setSuccess(false);
 
     if (typeof window !== 'undefined') {
-      localStorage.setItem('setting_maintenanceMode', String(maintenanceMode));
-      localStorage.setItem('setting_allowRegistration', String(allowRegistration));
-      localStorage.setItem('setting_allowTeacherSignup', String(allowTeacherSignup));
-      localStorage.setItem('setting_diagnosticLogs', String(diagnosticLogs));
+      try {
+        localStorage.setItem('setting_maintenanceMode', String(maintenanceMode));
+        localStorage.setItem('setting_allowRegistration', String(allowRegistration));
+        localStorage.setItem('setting_allowTeacherSignup', String(allowTeacherSignup));
+        localStorage.setItem('setting_diagnosticLogs', String(diagnosticLogs));
+      } catch (e) {
+        console.warn('Failed to save settings to LocalStorage:', e);
+      }
     }
 
     setTimeout(() => {

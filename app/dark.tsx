@@ -7,17 +7,25 @@ export default function DarkModeToggle() {
   const [mode, setMode] = useState<'light' | 'dark'>('dark');
 
   useEffect(() => {
-    const stored = window.localStorage.getItem('theme');
-    const initial = stored === 'light' ? 'light' : 'dark';
-    setMode(initial);
-    document.documentElement.classList.toggle('dark', initial === 'dark');
+    try {
+      const stored = window.localStorage.getItem('theme');
+      const initial = stored === 'light' ? 'light' : 'dark';
+      setMode(initial);
+      document.documentElement.classList.toggle('dark', initial === 'dark');
+    } catch (e) {
+      console.warn('LocalStorage is not accessible:', e);
+    }
   }, []);
 
   const toggleTheme = () => {
     const next = mode === 'dark' ? 'light' : 'dark';
     setMode(next);
     document.documentElement.classList.toggle('dark', next === 'dark');
-    window.localStorage.setItem('theme', next);
+    try {
+      window.localStorage.setItem('theme', next);
+    } catch (e) {
+      console.warn('Failed to save theme in LocalStorage:', e);
+    }
   };
 
   return (
