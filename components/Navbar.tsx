@@ -7,7 +7,6 @@ import DarkModeToggle from '../app/dark';
 
 const navItems = [
   { href: '/#features', label: 'Features' },
-  { href: '/#testimonials', label: 'Stories' },
   { href: '/#faqs', label: 'FAQs' },
   { href: '/#newsletter', label: 'Updates' }
 ];

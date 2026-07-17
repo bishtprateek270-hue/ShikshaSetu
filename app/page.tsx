@@ -46,40 +46,34 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl rounded-[2rem] border border-slate-800 bg-slate-950/80 p-8 sm:p-10 lg:p-12">
           <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
             <div className="space-y-6">
-              <span className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">Trusted by students</span>
+              <span className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">Built for focus</span>
               <h2 className="text-4xl font-semibold text-white sm:text-5xl">From scattered notes to calm, confident prep.</h2>
               <p className="max-w-xl text-lg leading-8 text-slate-300">
                 Students use ShikshaSetu to study smarter, convert PDFs into engaging quizzes, and stay on top of their goals.
               </p>
-
+              <div className="flex flex-wrap gap-3 pt-2">
+                <Link href="/signup" className="rounded-full bg-violet-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-400">
+                  Get started free
+                </Link>
+                <Link href="/login" className="rounded-full border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-200 transition hover:border-violet-400 hover:text-white">
+                  Sign in
+                </Link>
+              </div>
             </div>
             <div className="rounded-[1.75rem] border border-slate-800 bg-slate-900/90 p-6">
-              <div className="rounded-[1.25rem] border border-slate-800 bg-slate-950/80 p-5">
+              <div className="rounded-[1.25rem] border border-slate-800 bg-slate-950/80 p-5 space-y-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Weekly focus</p>
-                    <p className="mt-1 text-xl font-semibold text-white">AI study dashboard</p>
-                  </div>
-                  <span className="rounded-full bg-violet-500/10 px-3 py-1 text-sm font-semibold text-violet-200">Live</span>
-                </div>
-                <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
-                    <p className="text-sm text-slate-400">Next quiz</p>
-                    <p className="mt-2 text-lg font-semibold text-white">Organic chemistry</p>
-                  </div>
-                  <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
-                    <p className="text-sm text-slate-400">Study streak</p>
-                    <p className="mt-2 text-lg font-semibold text-white">12 days strong</p>
+                    <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Platform features</p>
+                    <p className="mt-1 text-xl font-semibold text-white">Your AI study workspace</p>
                   </div>
                 </div>
-                <div className="mt-4 rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
-                  <div className="flex items-center justify-between text-sm text-slate-400">
-                    <span>Progress</span>
-                    <span>82%</span>
-                  </div>
-                  <div className="mt-3 h-2 rounded-full bg-slate-800">
-                    <div className="h-2 w-[82%] rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-400" />
-                  </div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {['AI-powered notes', 'Adaptive quizzes', 'PDF to quiz', 'Doubt solver'].map((item) => (
+                    <div key={item} className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
+                      <p className="text-sm font-medium text-white">{item}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -113,31 +107,19 @@ export default function HomePage() {
               </div>
             </div>
             <div className="rounded-[2rem] border border-slate-800 bg-slate-950/90 p-5">
-              <div className="rounded-[1.5rem] border border-slate-800 bg-slate-900/90 p-5">
+              <div className="rounded-[1.5rem] border border-slate-800 bg-slate-900/90 p-5 space-y-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-400">Today&apos;s focus</p>
+                    <p className="text-sm text-slate-400">Study tools</p>
                     <p className="mt-1 text-xl font-semibold text-white">AI study board</p>
                   </div>
-                  <div className="rounded-full border border-violet-500/20 bg-violet-500/10 px-3 py-1 text-sm font-semibold text-violet-200">Synced</div>
                 </div>
-                <div className="mt-5 grid gap-3 md:grid-cols-2">
-                  <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
-                    <p className="text-sm text-slate-400">AI Notes</p>
-                    <p className="mt-2 text-lg font-semibold text-white">Summarized instantly</p>
-                  </div>
-                  <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
-                    <p className="text-sm text-slate-400">Upcoming Tests</p>
-                    <p className="mt-2 text-lg font-semibold text-white">3 this week</p>
-                  </div>
-                  <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
-                    <p className="text-sm text-slate-400">PDF Upload</p>
-                    <p className="mt-2 text-lg font-semibold text-white">Ready to quiz</p>
-                  </div>
-                  <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
-                    <p className="text-sm text-slate-400">Streak</p>
-                    <p className="mt-2 text-lg font-semibold text-white">12 day streak</p>
-                  </div>
+                <div className="grid gap-3 md:grid-cols-2">
+                  {['AI Notes', 'Mock Tests', 'PDF Upload', 'Progress Tracking'].map((item) => (
+                    <div key={item} className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
+                      <p className="text-sm font-medium text-white">{item}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>

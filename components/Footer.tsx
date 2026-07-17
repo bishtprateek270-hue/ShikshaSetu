@@ -22,9 +22,9 @@ export default function Footer() {
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">Resources</h3>
             <div className="mt-5 space-y-3 text-sm text-slate-300">
-              <Link href="#faqs" className="block hover:text-white">FAQs</Link>
-              <Link href="#testimonials" className="block hover:text-white">Student stories</Link>
-              <Link href="#newsletter" className="block hover:text-white">Updates</Link>
+              <Link href="/#faqs" className="block hover:text-white">FAQs</Link>
+              <Link href="/#features" className="block hover:text-white">Features</Link>
+              <Link href="/#newsletter" className="block hover:text-white">Updates</Link>
             </div>
           </div>
           <div>

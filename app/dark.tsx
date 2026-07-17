@@ -7,14 +7,9 @@ export default function DarkModeToggle() {
   const [mode, setMode] = useState<'light' | 'dark'>('dark');
 
   useEffect(() => {
-    try {
-      const stored = window.localStorage.getItem('theme');
-      const initial = stored === 'light' ? 'light' : 'dark';
-      setMode(initial);
-      document.documentElement.classList.toggle('dark', initial === 'dark');
-    } catch (e) {
-      console.warn('LocalStorage is not accessible:', e);
-    }
+    // Read the actual class set by the blocking script in layout.tsx
+    const isDark = document.documentElement.classList.contains('dark');
+    setMode(isDark ? 'dark' : 'light');
   }, []);
 
   const toggleTheme = () => {

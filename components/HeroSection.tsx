@@ -49,12 +49,12 @@ export default function HeroSection() {
             </div>
             <div className="grid gap-3 text-sm text-slate-300 sm:grid-cols-3">
               <div className="rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-3">
-                <p className="font-semibold text-white">10k+</p>
-                <p className="mt-1 text-slate-400">Active learners</p>
+                <p className="font-semibold text-white">AI-powered</p>
+                <p className="mt-1 text-slate-400">Study tools</p>
               </div>
               <div className="rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-3">
-                <p className="font-semibold text-white">4.9/5</p>
-                <p className="mt-1 text-slate-400">Average rating</p>
+                <p className="font-semibold text-white">Adaptive</p>
+                <p className="mt-1 text-slate-400">Quiz engine</p>
               </div>
               <div className="rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-3">
                 <p className="font-semibold text-white">24/7</p>
@@ -96,11 +96,8 @@ export default function HeroSection() {
               <div className="mt-4 rounded-2xl border border-violet-500/20 bg-violet-500/10 p-4">
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <p className="text-sm font-semibold text-white">Daily momentum</p>
-                    <p className="text-sm text-slate-300">3 AI quizzes queued • 2 PDFs ready</p>
-                  </div>
-                  <div className="rounded-full bg-slate-950/70 px-3 py-2 text-sm font-semibold text-violet-200">
-                    +82%
+                    <p className="text-sm font-semibold text-white">Get started today</p>
+                    <p className="text-sm text-slate-300">Sign up and explore your AI workspace</p>
                   </div>
                 </div>
               </div>

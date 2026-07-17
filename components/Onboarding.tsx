@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import ProtectedRoute from './ProtectedRoute';
 import { useAuth } from './AuthProvider';
+import DarkModeToggle from '../app/dark';
 
 const roles = [
   { value: 'student', label: 'Student' },
@@ -59,7 +60,10 @@ export default function Onboarding() {
 
   return (
     <ProtectedRoute allowIncompleteProfile>
-      <main className="min-h-screen bg-slate-950 text-slate-100 px-6 py-16 sm:px-10 lg:px-16">
+      <main className="relative min-h-screen bg-slate-950 text-slate-100 px-6 py-16 sm:px-10 lg:px-16">
+        <div className="absolute top-4 right-4 z-50">
+          <DarkModeToggle />
+        </div>
         <div className="mx-auto max-w-xl rounded-[2rem] border border-slate-800 bg-slate-900/95 p-8 shadow-[0_30px_80px_rgba(2,8,23,0.55)] sm:p-10">
           <h1 className="text-3xl font-semibold text-white">Tell us about yourself</h1>
           <p className="mt-3 text-slate-400">Complete your profile so we can show the right dashboard and content.</p>

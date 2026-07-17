@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import DarkModeToggle from '../app/dark';
 
 type AuthPageShellProps = {
   accentTitle: string;
@@ -10,6 +11,9 @@ type AuthPageShellProps = {
 export default function AuthPageShell({ accentTitle, title, description, children }: AuthPageShellProps) {
   return (
     <main className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(139,92,246,0.25),_transparent_45%),_linear-gradient(135deg,_#020617,_#0f172a)] text-slate-100">
+      <div className="absolute top-4 right-4 z-50">
+        <DarkModeToggle />
+      </div>
       <div className="mx-auto flex min-h-screen max-w-6xl items-center justify-center px-6 py-16 sm:px-10">
         <div className="grid w-full gap-8 rounded-[2rem] border border-slate-800/80 bg-slate-900/95 p-8 shadow-[0_30px_80px_rgba(2,8,23,0.55)] sm:p-10 lg:grid-cols-[0.95fr_1.05fr] lg:p-12">
           <div className="space-y-5 rounded-[1.5rem] border border-slate-800/70 bg-slate-950/70 p-8">
