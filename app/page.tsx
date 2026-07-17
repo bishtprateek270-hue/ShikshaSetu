@@ -3,7 +3,6 @@ import { BarChart3, BookOpen, ClipboardList, FileText, MessagesSquare, Sparkles 
 import Navbar from '../components/Navbar';
 import SectionHeading from '../components/SectionHeading';
 import FeatureCard from '../components/FeatureCard';
-import TestimonialCard from '../components/TestimonialCard';
 import FaqItem from '../components/FaqItem';
 import NewsletterForm from '../components/NewsletterForm';
 import Footer from '../components/Footer';
@@ -17,18 +16,6 @@ const features = [
   { title: 'AI Doubt Solver', description: 'Get step-by-step explanations for confusing concepts and homework questions.', icon: MessagesSquare },
   { title: 'Progress Tracking', description: 'Monitor streaks, mastery, and completion trends with a clear dashboard view.', icon: BarChart3 },
   { title: 'Mock Tests', description: 'Practice with realistic timed assessments tailored to your learning goals.', icon: ClipboardList }
-];
-
-const stats = [
-  { value: '10k+', label: 'active learners' },
-  { value: '92%', label: 'better retention' },
-  { value: '4.9/5', label: 'student satisfaction' }
-];
-
-const testimonials = [
-  { name: 'Aarav Mehta', role: 'Computer Science • IIT Delhi', quote: 'The AI notes and quiz generator make revision feel effortless and incredibly focused.', avatar: 'AM' },
-  { name: 'Sneha Rao', role: 'Business Studies • Christ University', quote: 'I finally understand my progress clearly and feel more confident before every exam.', avatar: 'SR' },
-  { name: 'Rahul Verma', role: 'Engineering • NIT Jaipur', quote: 'The PDF to quiz flow saves me hours and turns dense chapters into manageable practice.', avatar: 'RV' }
 ];
 
 const faqs = [
@@ -64,14 +51,7 @@ export default function HomePage() {
               <p className="max-w-xl text-lg leading-8 text-slate-300">
                 Students use ShikshaSetu to study smarter, convert PDFs into engaging quizzes, and stay on top of their goals.
               </p>
-              <div className="grid gap-4 sm:grid-cols-3">
-                {stats.map((stat) => (
-                  <div key={stat.label} className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
-                    <p className="text-2xl font-semibold text-white">{stat.value}</p>
-                    <p className="mt-1 text-sm text-slate-400">{stat.label}</p>
-                  </div>
-                ))}
-              </div>
+
             </div>
             <div className="rounded-[1.75rem] border border-slate-800 bg-slate-900/90 p-6">
               <div className="rounded-[1.25rem] border border-slate-800 bg-slate-950/80 p-5">
@@ -165,16 +145,7 @@ export default function HomePage() {
         </div>
       </AnimatedSection>
 
-      <AnimatedSection id="testimonials" className="px-6 py-16 sm:px-10 lg:px-16">
-        <div className="mx-auto max-w-7xl">
-          <SectionHeading title="Loved by ambitious students" subtitle="A calm experience that keeps momentum feeling light and steady." />
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {testimonials.map((testimonial) => (
-              <TestimonialCard key={testimonial.name} name={testimonial.name} role={testimonial.role} quote={testimonial.quote} avatar={testimonial.avatar} />
-            ))}
-          </div>
-        </div>
-      </AnimatedSection>
+
 
       <AnimatedSection id="faqs" className="border-t border-slate-800/70 px-6 py-16 sm:px-10 lg:px-16">
         <div className="mx-auto max-w-7xl">

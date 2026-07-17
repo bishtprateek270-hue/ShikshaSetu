@@ -6,6 +6,7 @@ import { Menu, Bell, ChevronDown, Grid, BookOpen, CheckCircle2, ClipboardList, B
 import { useAuth, type ProfileRole } from './AuthProvider';
 import { useNotifications } from '../lib/lms/hooks';
 import NotificationBell from './lms/NotificationBell';
+import DarkModeToggle from '../app/dark';
 
 const navLinks = {
   student: [
@@ -73,6 +74,11 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
             </div>
           </div>
 
+          {/* Mobile Theme Toggle */}
+          <div className="flex items-center gap-2 md:hidden">
+            <DarkModeToggle />
+          </div>
+
           <div className="hidden items-center gap-4 md:flex">
             <NotificationBell
               notifications={notifications}
@@ -82,6 +88,7 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
             <div className="rounded-3xl border border-slate-800/80 bg-slate-950/80 px-4 py-2 text-sm text-slate-200">
               {profile?.name ?? 'Learner'} • {profile?.role?.toUpperCase()}
             </div>
+            <DarkModeToggle />
             <button onClick={() => logout()} className="rounded-full bg-violet-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-violet-400">
               Logout
             </button>
