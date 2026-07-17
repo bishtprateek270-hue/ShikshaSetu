@@ -20,6 +20,7 @@ import type {
   Certificate,
   QuizAttempt,
   AssignmentSubmission,
+  Course,
 } from './types';
 import { generateCertificateId } from './utils';
 import { courses } from './data/courses';
@@ -399,4 +400,40 @@ export async function submitAssignment(
   }
 
   return submission;
+}
+
+export async function getCourses(): Promise<Course[]> {
+  const db = getDb();
+  if (!db) return [];
+  try {
+    const q = query(collection(db, 'courses'), where('status', '==', 'published'));
+    const snap = await getDocs(q);
+    return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Course);
+  } catch (e) {
+    console.error('Failed to get courses from Firestore:', e);
+    return [];
+  }
+}
+
+export async function getCourseBySlug(idOrSlug: string): Promise<Course | null> {
+  const db = getDb();
+  if (!db) return null;
+  try {
+    const q = query(collection(db, 'courses'), where('slug', '==', idOrSlug));
+    const snap = await getDocs(q);
+    if (!snap.empty) {
+      const d = snap.docs[0];
+      return { id: d.id, ...d.data() } as Course;
+    }
+
+    const docSnap = await getDoc(doc(db, 'courses', idOrSlug));
+    if (docSnap.exists()) {
+      return { id: docSnap.id, ...docSnap.data() } as Course;
+    }
+
+    return null;
+  } catch (e) {
+    console.error('Failed to get course by slug or ID:', e);
+    return null;
+  }
 }

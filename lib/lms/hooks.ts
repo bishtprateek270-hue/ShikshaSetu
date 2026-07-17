@@ -14,6 +14,8 @@ import {
   getNotifications as fetchNotifications,
   getCertificates as fetchCertificates,
   markNotificationRead as markRead,
+  getCourses as fetchCourses,
+  getCourseBySlug as fetchCourseBySlug,
 } from './firestore';
 
 /* ── useCourses ───────────────────────────────────────────── */
@@ -35,7 +37,8 @@ export function useCourses(filters: UseCoursesFilters = {}) {
     const fetchFilteredCourses = async () => {
       setLoading(true);
       try {
-        let result = [...allCourses].filter((c) => c.status === 'published');
+        const allDbCourses = await fetchCourses();
+        let result = [...allDbCourses];
 
         if (filters.search?.trim()) {
           const searchParams = result.map((c) => ({
@@ -75,7 +78,8 @@ export function useCourses(filters: UseCoursesFilters = {}) {
       } catch (err) {
         console.error('Smart search error:', err);
         if (!cancelled) {
-          let result = [...allCourses].filter((c) => c.status === 'published');
+          const allDbCourses = await fetchCourses();
+          let result = [...allDbCourses];
           if (filters.search) result = searchCourses(result, filters.search);
           if (filters.category) result = filterByCategory(result, filters.category);
           if (filters.level) result = filterByLevel(result, filters.level);
@@ -104,17 +108,31 @@ export function useCourses(filters: UseCoursesFilters = {}) {
 /* ── useCourse ────────────────────────────────────────────── */
 
 export function useCourse(idOrSlug: string) {
+  const [course, setCourse] = useState<Course | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const course = useMemo(
-    () => allCourses.find((c) => c.id === idOrSlug || c.slug === idOrSlug) ?? null,
-    [idOrSlug]
-  );
-
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 200);
-    return () => clearTimeout(timer);
-  }, []);
+    let active = true;
+    const fetchCourse = async () => {
+      setLoading(true);
+      try {
+        const c = await fetchCourseBySlug(idOrSlug);
+        if (active) {
+          setCourse(c);
+        }
+      } catch (e) {
+        console.error('Failed to load course details from Firestore:', e);
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    };
+    fetchCourse();
+    return () => {
+      active = false;
+    };
+  }, [idOrSlug]);
 
   return { course, loading };
 }
