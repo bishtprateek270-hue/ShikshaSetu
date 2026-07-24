@@ -9,6 +9,9 @@ import DashboardCard from '../../../components/DashboardCard';
 import { useAuth } from '../../../components/AuthProvider';
 import DonutChart from '../../../components/lms/DonutChart';
 import MiniCalendar from '../../../components/lms/MiniCalendar';
+import { motion } from 'framer-motion';
+
+const MotionLink = motion(Link);
 
 export default function StudentDashboardPage() {
   const { profile } = useAuth();
@@ -22,8 +25,13 @@ export default function StudentDashboardPage() {
   return (
     <RoleProtectedRoute allowedRoles={['student']}>
       <DashboardShell title="Dashboard" subtitle="Track courses, progress, and activities in one learning hub." breadcrumbs={[{ label: 'Dashboard' }]}>
-        <div className="grid gap-6 xl:grid-cols-[1.45fr_0.95fr]">
-          <div className="space-y-6">
+        <div className="grid gap-6 lg:grid-cols-[1.4fr_0.9fr]">
+          <motion.div
+            initial={{ opacity: 0, x: -16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.45, delay: 0.05 }}
+            className="space-y-6"
+          >
             
             {/* Hero Banner with illustration */}
             <div className="rounded-2xl border border-slate-100 dark:border-slate-800/80 bg-white dark:bg-slate-900 p-6 relative overflow-hidden shadow-soft flex items-center justify-between">
@@ -57,7 +65,11 @@ export default function StudentDashboardPage() {
 
               <div className="grid gap-4 md:grid-cols-3">
                 {/* Course Card 1 */}
-                <div className="rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-soft border-l-4 border-l-indigo-500 flex flex-col justify-between h-40 relative group cursor-pointer">
+                <motion.div 
+                  whileHover={{ y: -4, scale: 1.015 }}
+                  transition={{ duration: 0.2 }}
+                  className="rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-soft border-l-4 border-l-indigo-500 flex flex-col justify-between h-40 relative group cursor-pointer"
+                >
                   <div>
                     <p className="text-sm font-extrabold text-slate-855 dark:text-white">User Experience</p>
                     <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">Jony Deo</p>
@@ -66,10 +78,14 @@ export default function StudentDashboardPage() {
                     <span className="text-xs font-bold text-indigo-500">Master King</span>
                     <span className="text-lg text-indigo-500 group-hover:translate-x-1 transition-transform">→</span>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Course Card 2 */}
-                <div className="rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-soft border-l-4 border-l-pink-500 flex flex-col justify-between h-40 relative group cursor-pointer">
+                <motion.div 
+                  whileHover={{ y: -4, scale: 1.015 }}
+                  transition={{ duration: 0.2 }}
+                  className="rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-soft border-l-4 border-l-pink-500 flex flex-col justify-between h-40 relative group cursor-pointer"
+                >
                   <div>
                     <p className="text-sm font-extrabold text-slate-855 dark:text-white">User Interface</p>
                     <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">Jasmine</p>
@@ -78,10 +94,14 @@ export default function StudentDashboardPage() {
                     <span className="text-xs font-bold text-pink-500">Intermediate</span>
                     <span className="text-lg text-pink-500 group-hover:translate-x-1 transition-transform">→</span>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Course Card 3 */}
-                <div className="rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-soft border-l-4 border-l-orange-500 flex flex-col justify-between h-40 relative group cursor-pointer">
+                <motion.div 
+                  whileHover={{ y: -4, scale: 1.015 }}
+                  transition={{ duration: 0.2 }}
+                  className="rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-soft border-l-4 border-l-orange-500 flex flex-col justify-between h-40 relative group cursor-pointer"
+                >
                   <div>
                     <p className="text-sm font-extrabold text-slate-855 dark:text-white">3D Designs</p>
                     <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">Jasmine</p>
@@ -90,7 +110,7 @@ export default function StudentDashboardPage() {
                     <span className="text-xs font-bold text-orange-400">Beginer</span>
                     <span className="text-lg text-orange-400 group-hover:translate-x-1 transition-transform">→</span>
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
 
@@ -142,10 +162,15 @@ export default function StudentDashboardPage() {
                 </div>
               </DashboardCard>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Column */}
-          <div className="space-y-6">
+          <motion.div 
+            initial={{ opacity: 0, x: 16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.45, delay: 0.15 }}
+            className="space-y-6"
+          >
             {/* Calendar widget */}
             <div>
               <div className="mb-3 flex items-center justify-between">
@@ -162,8 +187,10 @@ export default function StudentDashboardPage() {
             {/* Quick Link Cards */}
             <div className="space-y-3">
               {/* Upcoming Courses Button */}
-              <Link
+              <MotionLink
                 href="/dashboard/student/courses"
+                whileHover={{ y: -2, scale: 1.015 }}
+                transition={{ duration: 0.15 }}
                 className="flex items-center justify-between rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-soft hover:border-indigo-400 dark:hover:border-indigo-500 transition group"
               >
                 <div className="flex items-center gap-3">
@@ -173,11 +200,13 @@ export default function StudentDashboardPage() {
                   <span className="text-xs font-bold text-slate-800 dark:text-slate-100">Upcoming Courses</span>
                 </div>
                 <ChevronRight className="h-4 w-4 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
-              </Link>
+              </MotionLink>
 
               {/* Event Activities Button */}
-              <Link
+              <MotionLink
                 href="/dashboard/student/tools"
+                whileHover={{ y: -2, scale: 1.015 }}
+                transition={{ duration: 0.15 }}
                 className="flex items-center justify-between rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-soft hover:border-pink-400 dark:hover:border-pink-500 transition group"
               >
                 <div className="flex items-center gap-3">
@@ -187,11 +216,15 @@ export default function StudentDashboardPage() {
                   <span className="text-xs font-bold text-slate-800 dark:text-slate-100">Event Activities</span>
                 </div>
                 <ChevronRight className="h-4 w-4 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
-              </Link>
+              </MotionLink>
             </div>
 
             {/* Mobile App Promo Card */}
-            <div className="rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-soft relative overflow-hidden flex flex-col justify-between min-h-[220px]">
+            <motion.div 
+              whileHover={{ y: -4, scale: 1.015 }}
+              transition={{ duration: 0.2 }}
+              className="rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-soft relative overflow-hidden flex flex-col justify-between min-h-[220px]"
+            >
               <div className="max-w-[150px] relative z-10">
                 <p className="text-xs font-black text-slate-800 dark:text-white leading-normal">
                   Work anywhere with the Edugate learning App
@@ -221,9 +254,9 @@ export default function StudentDashboardPage() {
                   className="h-44 object-contain ml-auto"
                 />
               </div>
-            </div>
+            </motion.div>
 
-          </div>
+          </motion.div>
         </div>
       </DashboardShell>
     </RoleProtectedRoute>

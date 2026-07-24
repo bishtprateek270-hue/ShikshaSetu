@@ -75,32 +75,70 @@ export default function HeroSection() {
                   <p className="text-xs uppercase tracking-[0.25em] text-slate-500">AI learning workspace</p>
                   <p className="mt-1 text-lg font-semibold text-white">Today&apos;s prep plan</p>
                 </div>
-                <div className="rounded-full border border-violet-500/20 bg-violet-500/10 px-3 py-1 text-xs font-medium text-violet-200">
+                <motion.div 
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                  className="rounded-full border border-violet-500/20 bg-violet-500/10 px-3 py-1 text-xs font-medium text-violet-200"
+                >
                   Live
-                </div>
+                </motion.div>
               </div>
-              <div className="grid gap-3 sm:grid-cols-2">
+              
+              <motion.div 
+                variants={{
+                  hidden: { opacity: 0 },
+                  show: {
+                    opacity: 1,
+                    transition: {
+                      staggerChildren: 0.05
+                    }
+                  }
+                }}
+                initial="hidden"
+                animate="show"
+                className="grid gap-3 sm:grid-cols-2"
+              >
                 {dashboardItems.map((item) => {
                   const Icon = item.icon;
                   return (
-                    <div key={item.title} className="rounded-2xl border border-slate-800 bg-slate-900/80 p-3">
+                    <motion.div
+                      key={item.title}
+                      variants={{
+                        hidden: { opacity: 0, y: 12, scale: 0.97 },
+                        show: { opacity: 1, y: 0, scale: 1 }
+                      }}
+                      whileHover={{ 
+                        y: -4, 
+                        scale: 1.02, 
+                        borderColor: 'rgba(139, 92, 246, 0.4)', 
+                        boxShadow: '0 8px 24px -8px rgba(139, 92, 246, 0.3)' 
+                      }}
+                      whileTap={{ scale: 0.985 }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                      className="rounded-2xl border border-slate-800 bg-slate-900/80 p-3 cursor-pointer group transition-colors duration-250"
+                    >
                       <div className="flex items-center gap-2 text-violet-200">
-                        <Icon className="h-4 w-4" />
-                        <span className="text-sm font-semibold text-white">{item.title}</span>
+                        <Icon className="h-4 w-4 transition-transform duration-300 group-hover:scale-[1.15] group-hover:rotate-[6deg] text-violet-400" />
+                        <span className="text-sm font-semibold text-white group-hover:text-violet-300 transition-colors duration-200">{item.title}</span>
                       </div>
-                      <p className="mt-2 text-sm text-slate-400">{item.description}</p>
-                    </div>
+                      <p className="mt-2 text-sm text-slate-400 group-hover:text-slate-350 transition-colors duration-200">{item.description}</p>
+                    </motion.div>
                   );
                 })}
-              </div>
-              <div className="mt-4 rounded-2xl border border-violet-500/20 bg-violet-500/10 p-4">
+              </motion.div>
+
+              <motion.div 
+                whileHover={{ scale: 1.015, borderColor: 'rgba(139, 92, 246, 0.4)' }}
+                whileTap={{ scale: 0.99 }}
+                className="mt-4 rounded-2xl border border-violet-500/20 bg-violet-500/10 p-4 cursor-pointer transition-all duration-200"
+              >
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <p className="text-sm font-semibold text-white">Get started today</p>
-                    <p className="text-sm text-slate-300">Sign up and explore your AI workspace</p>
+                    <p className="text-sm text-slate-305">Sign up and explore your AI workspace</p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         </div>

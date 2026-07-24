@@ -63,74 +63,81 @@ html:not(.dark) body {
 }
 
 /* Background overrides */
-html:not(.dark) .bg-slate-950,
-html:not(.dark) .bg-slate-900,
-html:not(.dark) .bg-slate-900\/40,
-html:not(.dark) .bg-slate-900\/80,
-html:not(.dark) .bg-slate-950\/90,
-html:not(.dark) .bg-slate-950\/95,
-html:not(.dark) .bg-slate-950\/70,
-html:not(.dark) .bg-slate-950\/80,
-html:not(.dark) .bg-slate-900\/60,
-html:not(.dark) .bg-slate-950\/50,
-html:not(.dark) .bg-slate-900\/95 {
+html:not(.dark) .bg-slate-950:not(.dark *),
+html:not(.dark) .bg-slate-900:not(.dark *),
+html:not(.dark) .bg-slate-900\/40:not(.dark *),
+html:not(.dark) .bg-slate-900\/80:not(.dark *),
+html:not(.dark) .bg-slate-955\/90:not(.dark *),
+html:not(.dark) .bg-slate-950\/90:not(.dark *),
+html:not(.dark) .bg-slate-950\/95:not(.dark *),
+html:not(.dark) .bg-slate-955\/70:not(.dark *),
+html:not(.dark) .bg-slate-950\/70:not(.dark *),
+html:not(.dark) .bg-slate-955\/80:not(.dark *),
+html:not(.dark) .bg-slate-955\/90:not(.dark *),
+html:not(.dark) .bg-slate-950\/80:not(.dark *),
+html:not(.dark) .bg-slate-900\/60:not(.dark *),
+html:not(.dark) .bg-slate-955\/50:not(.dark *),
+html:not(.dark) .bg-slate-900\/95:not(.dark *) {
   background-color: #ffffff !important;
   color: #0f172a;
 }
 
-html:not(.dark) .bg-slate-900\/20,
-html:not(.dark) .bg-slate-900\/30,
-html:not(.dark) .bg-slate-850,
-html:not(.dark) .bg-slate-800,
-html:not(.dark) .bg-violet-500\/10,
-html:not(.dark) .bg-violet-500\/15 {
+html:not(.dark) .bg-slate-900\/20:not(.dark *),
+html:not(.dark) .bg-slate-900\/30:not(.dark *),
+html:not(.dark) .bg-slate-850:not(.dark *),
+html:not(.dark) .bg-slate-800:not(.dark *),
+html:not(.dark) .bg-violet-500\/10:not(.dark *),
+html:not(.dark) .bg-violet-500\/15:not(.dark *) {
   background-color: #f1f5f9 !important;
 }
 
 /* Border overrides */
-html:not(.dark) .border-slate-800,
-html:not(.dark) .border-slate-900,
-html:not(.dark) .border-slate-800\/50,
-html:not(.dark) .border-slate-800\/70,
-html:not(.dark) .border-slate-800\/80,
-html:not(.dark) .border-slate-850 {
+html:not(.dark) .border-slate-800:not(.dark *),
+html:not(.dark) .border-slate-900:not(.dark *),
+html:not(.dark) .border-slate-805\/50:not(.dark *),
+html:not(.dark) .border-slate-800\/50:not(.dark *),
+html:not(.dark) .border-slate-805\/70:not(.dark *),
+html:not(.dark) .border-slate-800\/70:not(.dark *),
+html:not(.dark) .border-slate-805\/80:not(.dark *),
+html:not(.dark) .border-slate-800\/80:not(.dark *),
+html:not(.dark) .border-slate-850:not(.dark *) {
   border-color: #e2e8f0 !important;
 }
 
 /* Text overrides */
-html:not(.dark) .text-slate-100,
-html:not(.dark) .text-slate-200,
-html:not(.dark) .text-white {
+html:not(.dark) .text-slate-100:not(.dark *),
+html:not(.dark) .text-slate-200:not(.dark *),
+html:not(.dark) .text-white:not(.dark *) {
   color: #0f172a !important;
 }
 
-html:not(.dark) .text-slate-300,
-html:not(.dark) .text-slate-350,
-html:not(.dark) .text-slate-400,
-html:not(.dark) .text-slate-500,
-html:not(.dark) .text-violet-300 {
+html:not(.dark) .text-slate-300:not(.dark *),
+html:not(.dark) .text-slate-350:not(.dark *),
+html:not(.dark) .text-slate-400:not(.dark *),
+html:not(.dark) .text-slate-500:not(.dark *),
+html:not(.dark) .text-violet-300:not(.dark *) {
   color: #475569 !important;
 }
 
-html:not(.dark) input,
-html:not(.dark) select,
-html:not(.dark) textarea {
+html:not(.dark) input:not(.dark *),
+html:not(.dark) select:not(.dark *),
+html:not(.dark) textarea:not(.dark *) {
   background-color: #ffffff !important;
   color: #0f172a !important;
   border-color: #cbd5e1 !important;
 }
 
-html:not(.dark) input::placeholder,
-html:not(.dark) textarea::placeholder {
+html:not(.dark) input::placeholder:not(.dark *),
+html:not(.dark) textarea::placeholder:not(.dark *) {
   color: #94a3b8 !important;
 }
 
 /* Interactive elements */
-html:not(.dark) .hover\:bg-slate-900:hover,
-html:not(.dark) .hover\:bg-slate-900\/20:hover {
+html:not(.dark) .hover\:bg-slate-900:hover:not(.dark *),
+html:not(.dark) .hover\:bg-slate-900\/20:hover:not(.dark *) {
   background-color: #f1f5f9 !important;
 }
 
-html:not(.dark) .hover\:text-white:hover {
+html:not(.dark) .hover\:text-white:hover:not(.dark *) {
   color: #000000 !important;
 }

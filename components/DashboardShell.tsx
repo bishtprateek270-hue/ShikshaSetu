@@ -9,6 +9,7 @@ import NotificationBell from './lms/NotificationBell';
 import DarkModeToggle from '../app/dark';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const navLinks = {
   student: [
@@ -75,9 +76,12 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
     return navLinks.student;
   }, [profile?.role]);
 
-  const sidebarClass = menuOpen
-    ? 'block rounded-[2rem] border border-slate-100 dark:border-slate-800/80 bg-white dark:bg-slate-900/90 p-4 shadow-soft dark:shadow-[0_24px_80px_rgba(15,23,42,0.35)] md:block transition-all duration-300'
-    : 'hidden rounded-[2rem] border border-slate-100 dark:border-slate-800/80 bg-white dark:bg-slate-900/90 p-4 shadow-soft dark:shadow-[0_24px_80px_rgba(15,23,42,0.35)] md:block transition-all duration-300';
+  const sidebarClass = clsx(
+    "rounded-[2rem] border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-soft transition-all duration-300",
+    menuOpen
+      ? "fixed left-4 top-[85px] bottom-4 z-50 w-[270px] overflow-y-auto block shadow-2xl animate-in slide-in-from-left duration-300 md:static md:z-0 md:w-auto md:h-auto md:shadow-soft"
+      : "hidden md:block md:static md:w-auto md:h-auto"
+  );
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-350">
@@ -126,50 +130,65 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
                 <ChevronDown className="h-4 w-4 text-slate-400" />
               </button>
 
-              {profileDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 origin-top-right rounded-2xl border border-slate-100 dark:border-slate-800/80 bg-white dark:bg-slate-950 p-2 shadow-soft dark:shadow-[0_24px_80px_rgba(0,0,0,0.55)] focus:outline-none z-50">
-                  <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800/50 mb-1">
-                    <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Signed in as</p>
-                    <p className="text-xs font-bold text-slate-800 dark:text-white truncate mt-0.5">{profile?.name ?? 'Learner'}</p>
-                    <p className="text-[10px] text-indigo-500 dark:text-indigo-400 font-semibold uppercase mt-0.5">{profile?.role ?? 'Student'}</p>
-                  </div>
-                  
-                  <Link
-                    href={profile?.role === 'admin' ? '/dashboard/admin/settings' : `/dashboard/${profile?.role || 'student'}/profile`}
-                    onClick={() => setProfileDropdownOpen(false)}
-                    className="flex w-full items-center rounded-xl px-3 py-2 text-xs text-slate-600 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-900/60 hover:text-indigo-600 dark:hover:text-white transition"
+              <AnimatePresence>
+                {profileDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                    transition={{ duration: 0.15, ease: 'easeOut' }}
+                    className="absolute right-0 mt-2 w-48 origin-top-right rounded-2xl border border-slate-100 dark:border-slate-800/80 bg-white dark:bg-slate-950 p-2 shadow-soft dark:shadow-[0_24px_80px_rgba(0,0,0,0.55)] focus:outline-none z-50"
                   >
-                    My Profile
-                  </Link>
-                  
-                  <Link
-                    href={profile?.role === 'admin' ? '/dashboard/admin/settings' : `/dashboard/${profile?.role || 'student'}/settings`}
-                    onClick={() => setProfileDropdownOpen(false)}
-                    className="flex w-full items-center rounded-xl px-3 py-2 text-xs text-slate-600 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-900/60 hover:text-indigo-600 dark:hover:text-white transition"
-                  >
-                    Settings
-                  </Link>
-                  
-                  <div className="my-1 border-t border-slate-100 dark:border-slate-800/50" />
-                  
-                  <button
-                    onClick={() => {
-                      setProfileDropdownOpen(false);
-                      logout();
-                    }}
-                    type="button"
-                    className="flex w-full items-center rounded-xl px-3 py-2 text-xs font-semibold text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
+                    <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800/50 mb-1">
+                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Signed in as</p>
+                      <p className="text-xs font-bold text-slate-800 dark:text-white truncate mt-0.5">{profile?.name ?? 'Learner'}</p>
+                      <p className="text-[10px] text-indigo-500 dark:text-indigo-400 font-semibold uppercase mt-0.5">{profile?.role ?? 'Student'}</p>
+                    </div>
+                    
+                    <Link
+                      href={profile?.role === 'admin' ? '/dashboard/admin/settings' : `/dashboard/${profile?.role || 'student'}/profile`}
+                      onClick={() => setProfileDropdownOpen(false)}
+                      className="flex w-full items-center rounded-xl px-3 py-2 text-xs text-slate-600 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-900/60 hover:text-indigo-600 dark:hover:text-white transition"
+                    >
+                      My Profile
+                    </Link>
+                    
+                    <Link
+                      href={profile?.role === 'admin' ? '/dashboard/admin/settings' : `/dashboard/${profile?.role || 'student'}/settings`}
+                      onClick={() => setProfileDropdownOpen(false)}
+                      className="flex w-full items-center rounded-xl px-3 py-2 text-xs text-slate-600 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-900/60 hover:text-indigo-600 dark:hover:text-white transition"
+                    >
+                      Settings
+                    </Link>
+                    
+                    <div className="my-1 border-t border-slate-100 dark:border-slate-800/50" />
+                    
+                    <button
+                      onClick={() => {
+                        setProfileDropdownOpen(false);
+                        logout();
+                      }}
+                      type="button"
+                      className="flex w-full items-center rounded-xl px-3 py-2 text-xs font-semibold text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition"
+                    >
+                      Logout
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </div>
       </div>
 
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[260px_1fr] lg:px-8">
+        {/* Mobile backdrop overlay */}
+        {menuOpen && (
+          <div
+            className="fixed inset-0 z-40 bg-slate-950/45 backdrop-blur-sm md:hidden"
+            onClick={() => setMenuOpen(false)}
+          />
+        )}
         <aside className={sidebarClass}>
           <div className="mb-8 flex items-center justify-between gap-3 px-2">
             <span className="text-2xl font-black tracking-tight text-indigo-600 dark:text-indigo-400">
@@ -184,12 +203,19 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
                   key={item.href}
                   href={item.href}
                   className={clsx(
-                    "flex items-center px-4 py-3 text-sm font-medium transition duration-150 ease-in-out border-y border-r border-transparent",
+                    "relative flex items-center px-4 py-3 text-sm font-medium transition-all duration-200 ease-in-out rounded-2xl overflow-hidden z-10",
                     isActive
-                      ? "bg-indigo-50/50 dark:bg-indigo-950/20 text-indigo-600 dark:text-indigo-400 border-l-4 border-l-indigo-600 rounded-r-2xl font-bold"
-                      : "text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900/40 hover:text-slate-800 dark:hover:text-white rounded-2xl border-l-4 border-l-transparent"
+                      ? "text-indigo-600 dark:text-indigo-400 font-bold"
+                      : "text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900/30 hover:text-slate-800 dark:hover:text-white"
                   )}
                 >
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeSidebarIndicator"
+                      className="absolute inset-0 bg-indigo-50/50 dark:bg-indigo-950/25 border-l-4 border-l-indigo-650 -z-10"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
                   <item.icon className={clsx("mr-2.5 h-4 w-4", isActive ? "text-indigo-500 dark:text-indigo-400" : "text-slate-400 dark:text-slate-500")} /> {item.label}
                 </Link>
               );

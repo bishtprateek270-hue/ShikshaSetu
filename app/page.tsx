@@ -81,7 +81,7 @@ export default function HomePage() {
         </div>
       </AnimatedSection>
 
-      <AnimatedSection className="px-6 py-16 sm:px-10 lg:px-16">
+      <AnimatedSection className="dark px-6 py-16 sm:px-10 lg:px-16">
         <div className="mx-auto max-w-7xl rounded-[2.5rem] border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 p-8 sm:p-10 lg:p-12">
           <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
             <div className="space-y-6">
