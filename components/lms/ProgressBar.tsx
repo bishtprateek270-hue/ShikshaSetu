@@ -17,15 +17,15 @@ export default function ProgressBar({ value, showLabel = true, size = 'md', clas
   return (
     <div className={clsx('w-full', className)}>
       {showLabel && (
-        <div className="mb-2 flex items-center justify-between text-sm">
-          <span className="text-slate-400">Progress</span>
-          <span className="font-semibold text-white">{clamped}%</span>
+        <div className="mb-2 flex items-center justify-between text-xs font-semibold">
+          <span className="text-slate-500 dark:text-slate-400 uppercase tracking-wider">Progress</span>
+          <span className="text-slate-800 dark:text-slate-200">{clamped}%</span>
         </div>
       )}
-      <div className={clsx('w-full overflow-hidden rounded-full bg-slate-800', heightMap[size])}>
+      <div className={clsx('w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800', heightMap[size])}>
         <div
           className={clsx(
-            'rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-400 transition-all duration-700 ease-out',
+            'rounded-full bg-gradient-to-r from-indigo-500 via-pink-500 to-orange-400 transition-all duration-700 ease-out',
             heightMap[size]
           )}
           style={{ width: `${clamped}%` }}

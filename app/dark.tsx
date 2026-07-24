@@ -27,19 +27,13 @@ export default function DarkModeToggle() {
     <button
       type="button"
       onClick={toggleTheme}
-      className="rounded-full border border-slate-700/80 bg-slate-900/80 px-3.5 py-1.5 text-xs font-semibold text-slate-100 transition hover:border-slate-500 flex items-center justify-center gap-1.5"
+      className="rounded-full border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/90 p-2.5 text-slate-600 dark:text-slate-200 transition hover:border-indigo-400 dark:hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 shadow-soft flex items-center justify-center"
       aria-label="Toggle theme mode"
     >
       {mode === 'dark' ? (
-        <>
-          <Sun className="h-3.5 w-3.5 text-amber-400" />
-          <span>Light Mode</span>
-        </>
+        <Sun className="h-5 w-5 text-amber-400" />
       ) : (
-        <>
-          <Moon className="h-3.5 w-3.5 text-violet-400" />
-          <span>Dark Mode</span>
-        </>
+        <Moon className="h-5 w-5 text-indigo-500" />
       )}
     </button>
   );

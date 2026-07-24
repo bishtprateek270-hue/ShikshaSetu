@@ -11,6 +11,7 @@ import DashboardActions from '../../../components/DashboardActions';
 import { useAuth } from '../../../components/AuthProvider';
 import { useTeacherAnalytics, useCourseSubmissions } from '../../../lib/lms/hooks-teacher';
 import { formatDate } from '../../../lib/lms/utils';
+import MiniCalendar from '../../../components/lms/MiniCalendar';
 
 export default function TeacherDashboardPage() {
   const { profile, user } = useAuth();
@@ -54,46 +55,46 @@ export default function TeacherDashboardPage() {
               <div className="grid gap-3 sm:grid-cols-2">
                 <Link
                   href="/dashboard/teacher/courses/new"
-                  className="rounded-2xl border border-slate-800 bg-slate-900/80 px-4 py-4 text-left text-sm font-medium text-slate-100 transition hover:border-violet-400 group"
+                  className="rounded-2xl border border-slate-150 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/40 px-4 py-4 text-left text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:border-indigo-400 dark:hover:border-indigo-500 group"
                 >
-                  <p className="font-semibold text-white flex items-center gap-1.5 group-hover:text-violet-300">
+                  <p className="font-bold text-slate-900 dark:text-white flex items-center gap-1.5 group-hover:text-indigo-600 dark:group-hover:text-indigo-300">
                     <Plus className="h-4 w-4" />
                     Create course
                   </p>
-                  <p className="mt-2 text-sm text-slate-400">Launch a new class or curriculum block.</p>
+                  <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">Launch a new class or curriculum block.</p>
                 </Link>
 
                 <Link
                   href="/dashboard/teacher/assignments"
-                  className="rounded-2xl border border-slate-800 bg-slate-900/80 px-4 py-4 text-left text-sm font-medium text-slate-100 transition hover:border-violet-400 group"
+                  className="rounded-2xl border border-slate-150 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/40 px-4 py-4 text-left text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:border-indigo-400 dark:hover:border-indigo-500 group"
                 >
-                  <p className="font-semibold text-white flex items-center gap-1.5 group-hover:text-violet-300">
+                  <p className="font-bold text-slate-900 dark:text-white flex items-center gap-1.5 group-hover:text-indigo-600 dark:group-hover:text-indigo-300">
                     <ClipboardList className="h-4 w-4" />
                     Grade assignments
                   </p>
-                  <p className="mt-2 text-sm text-slate-400">Review, grade, and feedback student submissions.</p>
+                  <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">Review, grade, and feedback student submissions.</p>
                 </Link>
 
                 <Link
                   href="/dashboard/teacher/schedule"
-                  className="rounded-2xl border border-slate-800 bg-slate-900/80 px-4 py-4 text-left text-sm font-medium text-slate-100 transition hover:border-violet-400 group"
+                  className="rounded-2xl border border-slate-150 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/40 px-4 py-4 text-left text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:border-indigo-400 dark:hover:border-indigo-500 group"
                 >
-                  <p className="font-semibold text-white flex items-center gap-1.5 group-hover:text-violet-300">
+                  <p className="font-bold text-slate-900 dark:text-white flex items-center gap-1.5 group-hover:text-indigo-600 dark:group-hover:text-indigo-300">
                     <Megaphone className="h-4 w-4" />
                     Post announcement
                   </p>
-                  <p className="mt-2 text-sm text-slate-400">Broadcast notices and links to your students.</p>
+                  <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">Broadcast notices and links to your students.</p>
                 </Link>
 
                 <Link
                   href="/dashboard/teacher/analytics"
-                  className="rounded-2xl border border-slate-800 bg-slate-900/80 px-4 py-4 text-left text-sm font-medium text-slate-100 transition hover:border-violet-400 group"
+                  className="rounded-2xl border border-slate-150 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/40 px-4 py-4 text-left text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:border-indigo-400 dark:hover:border-indigo-500 group"
                 >
-                  <p className="font-semibold text-white flex items-center gap-1.5 group-hover:text-violet-300">
+                  <p className="font-bold text-slate-900 dark:text-white flex items-center gap-1.5 group-hover:text-indigo-600 dark:group-hover:text-indigo-300">
                     <BarChart3 className="h-4 w-4" />
                     View performance
                   </p>
-                  <p className="mt-2 text-sm text-slate-400">Analyze course completions and scores.</p>
+                  <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">Analyze course completions and scores.</p>
                 </Link>
               </div>
             </DashboardCard>
@@ -105,15 +106,15 @@ export default function TeacherDashboardPage() {
               ) : (
                 <ul className="space-y-4">
                   {pendingSubmissions.map((sub) => (
-                    <li key={sub.id} className="rounded-[1.5rem] border border-slate-800/80 bg-slate-900/80 p-4 flex justify-between items-center gap-4">
+                    <li key={sub.id} className="rounded-2xl border border-slate-150 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/40 p-4 border-l-4 border-l-pink-500 pl-5 flex justify-between items-center gap-4">
                       <div>
-                        <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{sub.courseTitle}</p>
-                        <p className="mt-1 text-base font-semibold text-white">{sub.assignmentTitle}</p>
-                        <p className="mt-1 text-xs text-slate-400">Submitted by: <span className="font-medium text-white">{sub.studentName}</span> • {formatDate(sub.submittedAt)}</p>
+                        <p className="text-xs uppercase tracking-wider font-semibold text-slate-450 dark:text-slate-500">{sub.courseTitle}</p>
+                        <p className="mt-1 text-base font-bold text-slate-900 dark:text-white">{sub.assignmentTitle}</p>
+                        <p className="mt-1 text-xs text-slate-550 dark:text-slate-400">Submitted by: <span className="font-medium text-slate-800 dark:text-white">{sub.studentName}</span> • {formatDate(sub.submittedAt)}</p>
                       </div>
                       <Link
                         href="/dashboard/teacher/assignments"
-                        className="flex-shrink-0 text-xs font-bold text-violet-400 hover:text-violet-300 transition"
+                        className="flex-shrink-0 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition"
                       >
                         Grade Now →
                       </Link>
@@ -127,21 +128,21 @@ export default function TeacherDashboardPage() {
           {/* Right hand details cards */}
           <div className="space-y-6">
             <DashboardCard title="Profile Snapshot" description="Educator credentials and institution details.">
-              <div className="space-y-3 text-sm text-slate-300">
+              <div className="space-y-3 text-sm text-slate-600 dark:text-slate-300">
                 <p>
-                  <span className="font-semibold text-slate-100">Name:</span> {profile?.name ?? user?.displayName}
+                  <span className="font-semibold text-slate-700 dark:text-slate-100">Name:</span> {profile?.name ?? user?.displayName}
                 </p>
                 <p>
-                  <span className="font-semibold text-slate-100">Institute:</span> {profile?.institute}
+                  <span className="font-semibold text-slate-700 dark:text-slate-100">Institute:</span> {profile?.institute}
                 </p>
                 <p>
-                  <span className="font-semibold text-slate-100">Role:</span> {profile?.role?.toUpperCase()}
+                  <span className="font-semibold text-slate-700 dark:text-slate-100">Role:</span> {profile?.role?.toUpperCase()}
                 </p>
               </div>
-              <div className="mt-4 pt-3 border-t border-slate-900">
+              <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/60">
                 <Link
                   href="/dashboard/teacher/profile"
-                  className="block text-center rounded-xl border border-slate-800 bg-slate-900/40 py-2.5 text-xs font-semibold text-violet-300 hover:text-white hover:border-violet-500 transition"
+                  className="block text-center rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40 py-2.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-white hover:border-indigo-400 transition"
                 >
                   Edit Profile Biography
                 </Link>
@@ -149,14 +150,15 @@ export default function TeacherDashboardPage() {
             </DashboardCard>
 
             <DashboardCard title="Calendar Study scheduler" description="Upcoming deadlines and lecture scheduling.">
-              <div className="space-y-3 text-xs text-slate-400">
-                <div className="flex items-center gap-2">
-                  <CalendarDays className="h-4 w-4 text-violet-400" />
+              <div className="space-y-4 text-xs">
+                <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+                  <CalendarDays className="h-4 w-4 text-indigo-500 dark:text-indigo-400" />
                   <span>2 office hours sessions scheduled this week.</span>
                 </div>
+                <MiniCalendar highlightedDays={[10, 18]} />
                 <Link
                   href="/dashboard/teacher/schedule"
-                  className="block text-center rounded-xl border border-slate-800 bg-slate-900/40 py-2.5 text-xs font-semibold text-violet-300 hover:text-white hover:border-violet-500 transition"
+                  className="block text-center rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40 py-2.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-white hover:border-indigo-400 transition"
                 >
                   Configure study calendar
                 </Link>

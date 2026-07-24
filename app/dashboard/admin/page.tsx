@@ -67,32 +67,38 @@ export default function AdminDashboardPage() {
                     {openIssuesList.map((issue) => (
                       <div
                         key={issue.id}
-                        className="rounded-2xl border border-slate-850 bg-slate-900/40 p-4 space-y-3 text-xs"
+                        className={`rounded-2xl border border-slate-150 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/40 p-4 pl-5 space-y-3 text-xs border-l-4 ${
+                          issue.severity === 'high' 
+                            ? 'border-l-rose-500' 
+                            : issue.severity === 'medium'
+                            ? 'border-l-amber-500'
+                            : 'border-l-blue-500'
+                        }`}
                       >
                         <div className="flex items-start justify-between gap-4">
                           <div>
                             <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider ${
                               issue.severity === 'high' 
-                                ? 'border-rose-500/20 bg-rose-500/10 text-rose-300' 
+                                ? 'border-rose-500/20 bg-rose-500/10 text-rose-600 dark:text-rose-300' 
                                 : issue.severity === 'medium'
-                                ? 'border-amber-500/20 bg-amber-500/10 text-amber-300'
-                                : 'border-blue-500/20 bg-blue-500/10 text-blue-300'
+                                ? 'border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-300'
+                                : 'border-blue-500/20 bg-blue-500/10 text-blue-600 dark:text-blue-300'
                             }`}>
                               {issue.severity} priority
                             </span>
-                            <h4 className="text-sm font-semibold text-white mt-1.5">{issue.title}</h4>
-                            <p className="text-slate-400 mt-1.5 leading-normal">{issue.description}</p>
+                            <h4 className="text-sm font-bold text-slate-905 dark:text-white mt-1.5">{issue.title}</h4>
+                            <p className="text-slate-600 dark:text-slate-400 mt-1.5 leading-normal">{issue.description}</p>
                           </div>
                           <button
                             type="button"
                             onClick={() => resolveIssue(issue.id)}
-                            className="rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 px-3 py-1.5 text-[10px] font-bold hover:bg-emerald-500/25 transition flex-shrink-0"
+                            className="rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-300 px-3 py-1.5 text-[10px] font-bold hover:bg-emerald-500/25 dark:hover:bg-emerald-500/25 transition flex-shrink-0"
                           >
                             Mark Resolved
                           </button>
                         </div>
-                        <div className="pt-2 border-t border-slate-900 text-slate-500 flex items-center justify-between">
-                          <span>Reported by: <span className="font-semibold text-slate-400">{issue.reporterName}</span></span>
+                        <div className="pt-2 border-t border-slate-100 dark:border-slate-800/50 text-slate-500 flex items-center justify-between">
+                          <span>Reported by: <span className="font-semibold text-slate-700 dark:text-slate-400">{issue.reporterName}</span></span>
                           <span>{formatDate(issue.createdAt)}</span>
                         </div>
                       </div>
@@ -109,34 +115,34 @@ export default function AdminDashboardPage() {
                 <div className="grid gap-3 sm:grid-cols-2">
                   <Link
                     href="/dashboard/admin/users"
-                    className="rounded-2xl border border-slate-800 bg-slate-900/80 px-4 py-4 text-left text-sm font-medium text-slate-100 transition hover:border-violet-400"
+                    className="rounded-2xl border border-slate-150 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/40 px-4 py-4 text-left text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:border-indigo-400 dark:hover:border-indigo-500 hover:shadow-soft group"
                   >
-                    <p className="font-semibold text-white">Audit User Roles</p>
-                    <p className="mt-1.5 text-xs text-slate-400">View and change credentials for students and instructors.</p>
+                    <p className="font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-300">Audit User Roles</p>
+                    <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400">View and change credentials for students and instructors.</p>
                   </Link>
 
                   <Link
                     href="/dashboard/admin/courses"
-                    className="rounded-2xl border border-slate-800 bg-slate-900/80 px-4 py-4 text-left text-sm font-medium text-slate-100 transition hover:border-violet-400"
+                    className="rounded-2xl border border-slate-150 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/40 px-4 py-4 text-left text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:border-indigo-400 dark:hover:border-indigo-500 hover:shadow-soft group"
                   >
-                    <p className="font-semibold text-white">Manage Course Catalog</p>
-                    <p className="mt-1.5 text-xs text-slate-400">Review, search, and delete courses across all educators.</p>
+                    <p className="font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-300">Manage Course Catalog</p>
+                    <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400">Review, search, and delete courses across all educators.</p>
                   </Link>
 
                   <Link
                     href="/dashboard/admin/analytics"
-                    className="rounded-2xl border border-slate-800 bg-slate-900/80 px-4 py-4 text-left text-sm font-medium text-slate-100 transition hover:border-violet-400"
+                    className="rounded-2xl border border-slate-150 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/40 px-4 py-4 text-left text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:border-indigo-400 dark:hover:border-indigo-500 hover:shadow-soft group"
                   >
-                    <p className="font-semibold text-white">Platform Analytics</p>
-                    <p className="mt-1.5 text-xs text-slate-400">Inspect demographic splits and student ratios.</p>
+                    <p className="font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-300">Platform Analytics</p>
+                    <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400">Inspect demographic splits and student ratios.</p>
                   </Link>
 
                   <Link
                     href="/dashboard/admin/settings"
-                    className="rounded-2xl border border-slate-800 bg-slate-900/80 px-4 py-4 text-left text-sm font-medium text-slate-100 transition hover:border-violet-400"
+                    className="rounded-2xl border border-slate-150 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/40 px-4 py-4 text-left text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:border-indigo-400 dark:hover:border-indigo-500 hover:shadow-soft group"
                   >
-                    <p className="font-semibold text-white">Platform Settings</p>
-                    <p className="mt-1.5 text-xs text-slate-400">Manage hosting settings and diagnostic integrations.</p>
+                    <p className="font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-300">Platform Settings</p>
+                    <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400">Manage hosting settings and diagnostic integrations.</p>
                   </Link>
                 </div>
               </DashboardCard>
@@ -153,33 +159,33 @@ export default function AdminDashboardPage() {
                   {/* Students */}
                   <div className="space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="font-semibold text-slate-300">Students</span>
-                      <span className="font-bold text-white">{usersRoleRatio.students}%</span>
+                      <span className="font-semibold text-slate-600 dark:text-slate-350">Students</span>
+                      <span className="font-bold text-slate-800 dark:text-white">{usersRoleRatio.students}%</span>
                     </div>
-                    <div className="h-1.5 w-full rounded-full bg-slate-900">
-                      <div className="h-full rounded-full bg-violet-500" style={{ width: `${usersRoleRatio.students}%` }} />
+                    <div className="h-1.5 w-full rounded-full bg-slate-100 dark:bg-slate-800">
+                      <div className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-indigo-400" style={{ width: `${usersRoleRatio.students}%` }} />
                     </div>
                   </div>
 
                   {/* Teachers */}
                   <div className="space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="font-semibold text-slate-300">Instructors</span>
-                      <span className="font-bold text-white">{usersRoleRatio.teachers}%</span>
+                      <span className="font-semibold text-slate-600 dark:text-slate-350">Instructors</span>
+                      <span className="font-bold text-slate-800 dark:text-white">{usersRoleRatio.teachers}%</span>
                     </div>
-                    <div className="h-1.5 w-full rounded-full bg-slate-900">
-                      <div className="h-full rounded-full bg-fuchsia-500" style={{ width: `${usersRoleRatio.teachers}%` }} />
+                    <div className="h-1.5 w-full rounded-full bg-slate-100 dark:bg-slate-800">
+                      <div className="h-full rounded-full bg-gradient-to-r from-pink-500 to-orange-400" style={{ width: `${usersRoleRatio.teachers}%` }} />
                     </div>
                   </div>
 
                   {/* Admins */}
                   <div className="space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="font-semibold text-slate-300">Platform Admins</span>
-                      <span className="font-bold text-white">{usersRoleRatio.admins}%</span>
+                      <span className="font-semibold text-slate-600 dark:text-slate-350">Platform Admins</span>
+                      <span className="font-bold text-slate-800 dark:text-white">{usersRoleRatio.admins}%</span>
                     </div>
-                    <div className="h-1.5 w-full rounded-full bg-slate-900">
-                      <div className="h-full rounded-full bg-emerald-500" style={{ width: `${usersRoleRatio.admins}%` }} />
+                    <div className="h-1.5 w-full rounded-full bg-slate-100 dark:bg-slate-800">
+                      <div className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-400" style={{ width: `${usersRoleRatio.admins}%` }} />
                     </div>
                   </div>
                 </div>
@@ -190,21 +196,21 @@ export default function AdminDashboardPage() {
                 title="System Diagnostics"
                 description="Hosting services and database check logs."
               >
-                <div className="space-y-3 text-xs text-slate-400">
-                  <div className="flex items-center justify-between border-b border-slate-900 pb-2">
-                    <span className="flex items-center gap-1.5 text-slate-300">
-                      <Server className="h-4 w-4 text-violet-400" />
+                <div className="space-y-3 text-xs text-slate-500 dark:text-slate-400">
+                  <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-2">
+                    <span className="flex items-center gap-1.5 text-slate-650 dark:text-slate-300">
+                      <Server className="h-4 w-4 text-indigo-500 dark:text-indigo-400" />
                       App Firestore Database
                     </span>
-                    <span className="font-semibold text-emerald-400">ONLINE</span>
+                    <span className="font-semibold text-emerald-500 dark:text-emerald-450">ONLINE</span>
                   </div>
 
-                  <div className="flex items-center justify-between border-b border-slate-900 pb-2">
-                    <span className="flex items-center gap-1.5 text-slate-300">
-                      <Activity className="h-4 w-4 text-violet-400" />
+                  <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-2">
+                    <span className="flex items-center gap-1.5 text-slate-650 dark:text-slate-300">
+                      <Activity className="h-4 w-4 text-indigo-500 dark:text-indigo-400" />
                       API Latency
                     </span>
-                    <span className="font-semibold text-white">42ms (Stable)</span>
+                    <span className="font-semibold text-slate-800 dark:text-white">42ms (Stable)</span>
                   </div>
                 </div>
               </DashboardCard>

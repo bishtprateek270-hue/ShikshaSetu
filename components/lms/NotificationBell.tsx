@@ -14,7 +14,7 @@ type NotificationBellProps = {
 };
 
 const typeColors: Record<string, string> = {
-  enrollment: 'bg-violet-500',
+  enrollment: 'bg-indigo-500',
   completion: 'bg-emerald-500',
   assignment: 'bg-amber-500',
   quiz: 'bg-blue-500',
@@ -41,12 +41,12 @@ export default function NotificationBell({ notifications, unreadCount, onMarkRea
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="relative rounded-2xl border border-slate-800/70 bg-slate-900/90 px-4 py-2 text-sm text-slate-200 transition hover:border-violet-400"
+        className="relative rounded-full border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/90 p-2.5 text-slate-600 dark:text-slate-200 transition hover:border-indigo-400 dark:hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 shadow-soft"
+        aria-label="Notifications"
       >
-        <Bell className="mr-2 inline-block h-4 w-4" />
-        Notifications
+        <Bell className="h-5 w-5" />
         {unreadCount > 0 && (
-          <span className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-violet-500 text-[10px] font-bold text-white">
+          <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-500 text-[10px] font-bold text-white">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}
