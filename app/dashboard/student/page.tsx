@@ -2,11 +2,10 @@
 
 import { useMemo } from 'react';
 import Link from 'next/link';
+import { CalendarDays, ChevronRight, Zap, PlayCircle } from 'lucide-react';
 import RoleProtectedRoute from '../../../components/RoleProtectedRoute';
 import DashboardShell from '../../../components/DashboardShell';
 import DashboardCard from '../../../components/DashboardCard';
-import DashboardStatCard from '../../../components/DashboardStatCard';
-import DashboardActions from '../../../components/DashboardActions';
 import { useAuth } from '../../../components/AuthProvider';
 import DonutChart from '../../../components/lms/DonutChart';
 import MiniCalendar from '../../../components/lms/MiniCalendar';
@@ -14,129 +13,216 @@ import MiniCalendar from '../../../components/lms/MiniCalendar';
 export default function StudentDashboardPage() {
   const { profile } = useAuth();
 
-  const stats = useMemo(
-    () => [
-      { label: 'Active courses', value: '5', subtext: 'Remaining study topics' },
-      { label: 'Weekly progress', value: '74%', subtext: 'Completed this week' },
-      { label: 'Assignments due', value: '2', subtext: 'Due in 3 days' },
-      { label: 'Study streak', value: '12 days', subtext: 'Last login streak' },
-    ],
-    []
-  );
+  const donutData = useMemo(() => [
+    { label: 'UX Design', value: 45, color: '#6366F1' },
+    { label: 'UI Design', value: 35, color: '#EC4899' },
+    { label: '3D Design', value: 20, color: '#F59E0B' },
+  ], []);
 
   return (
     <RoleProtectedRoute allowedRoles={['student']}>
-      <DashboardShell title="Student Dashboard" subtitle="Track courses, progress, and activities in one learning hub." breadcrumbs={[{ label: 'Dashboard' }]}>
+      <DashboardShell title="Dashboard" subtitle="Track courses, progress, and activities in one learning hub." breadcrumbs={[{ label: 'Dashboard' }]}>
         <div className="grid gap-6 xl:grid-cols-[1.45fr_0.95fr]">
           <div className="space-y-6">
             
-            {/* Promo banner section using bg-hero-gradient */}
-            <div className="rounded-2xl bg-hero-gradient border border-indigo-500/10 p-6 relative overflow-hidden shadow-soft">
-              <div className="relative z-10 max-w-xl">
-                <span className="inline-flex rounded-full bg-indigo-500/10 dark:bg-indigo-950/40 px-3 py-1 text-xs font-bold text-indigo-600 dark:text-indigo-400 mb-3 uppercase tracking-wider">
-                  New Feature
-                </span>
-                <h3 className="text-xl font-bold text-slate-905 dark:text-white">AI Study Buddy is Live!</h3>
-                <p className="mt-2 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                  Boost your grades with our new automated study tools. Generate interactive practice tests, quick flashcard decks, and summarized study notes in seconds.
+            {/* Hero Banner with illustration */}
+            <div className="rounded-2xl border border-slate-100 dark:border-slate-800/80 bg-white dark:bg-slate-900 p-6 relative overflow-hidden shadow-soft flex items-center justify-between">
+              <div className="relative z-10 max-w-md">
+                <h3 className="text-xl font-bold text-slate-850 dark:text-white">
+                  Happy Morning {profile?.name ? profile.name.split(' ')[0] : 'Vicky'}
+                </h3>
+                <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                  You have completed 65% of your goal this week! set a new goal and improve your skills.
                 </p>
-                <div className="mt-4 flex flex-wrap gap-3">
-                  <Link
-                    href="/dashboard/student/tools"
-                    className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-pink-500 to-orange-500 px-4 py-2.5 text-xs font-bold text-white shadow-md hover:opacity-90 transition-all hover:scale-[1.02]"
-                  >
-                    Launch Study Tools
-                  </Link>
-                </div>
               </div>
-              <div className="absolute right-0 bottom-0 top-0 w-1/3 opacity-20 pointer-events-none bg-[radial-gradient(circle_at_right,rgba(236,72,153,0.3),transparent_70%)]" />
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              {stats.map((stat) => (
-                <DashboardStatCard key={stat.label} label={stat.label} value={stat.value} subtext={stat.subtext} />
-              ))}
-            </div>
-
-            <DashboardCard title="Continue learning" description="Resume the course that’s furthest along and stay on track.">
-              <div className="space-y-4">
-                <div className="rounded-2xl border border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/40 p-5">
-                  <div className="flex items-center justify-between gap-4">
-                    <div>
-                      <p className="text-xs uppercase tracking-wider font-semibold text-slate-400 dark:text-slate-500">Current course</p>
-                      <p className="mt-1 text-lg font-bold text-slate-900 dark:text-white">Foundations of UI Design</p>
-                    </div>
-                    <span className="rounded-full bg-indigo-500/10 dark:bg-indigo-950/40 px-3 py-1 text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-300">In progress</span>
-                  </div>
-                  <div className="mt-4 h-2.5 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
-                    <div className="h-full w-3/5 rounded-full bg-gradient-to-r from-indigo-500 via-pink-500 to-orange-400" />
-                  </div>
-                  <p className="mt-3 text-xs font-medium text-slate-500 dark:text-slate-400">65% complete — next lesson in 9 minutes</p>
-                </div>
-                <DashboardActions
-                  items={[
-                    { label: 'Resume course', description: 'Jump directly back into your learning path.', href: '/dashboard/student/courses' },
-                    { label: 'Open study tools', description: 'Access notes, cards, and practice flows.', href: '/dashboard/student/tools' },
-                  ]}
+              <div className="relative z-10 hidden sm:block">
+                <img
+                  src="/student_study_3d.png"
+                  alt="Study illustration"
+                  className="h-28 md:h-32 object-contain"
                 />
               </div>
-            </DashboardCard>
+              {/* Left vertical gradient bar */}
+              <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-indigo-500 via-pink-500 to-orange-500" />
+            </div>
 
-            <DashboardCard title="Recent activity" description="Your latest study milestones and task updates.">
-              <ul className="space-y-4">
-                <li className="rounded-2xl border border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/40 p-4 border-l-4 border-l-indigo-500 pl-5">
-                  <p className="text-xs uppercase tracking-wider font-semibold text-slate-450 dark:text-slate-500">Completed Quiz</p>
-                  <p className="mt-1.5 text-base font-bold text-slate-900 dark:text-white">Data Structures challenge</p>
-                  <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">1 hour ago</p>
-                </li>
-                <li className="rounded-2xl border border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/40 p-4 border-l-4 border-l-pink-500 pl-5">
-                  <p className="text-xs uppercase tracking-wider font-semibold text-slate-455 dark:text-slate-500">New assignment</p>
-                  <p className="mt-1.5 text-base font-bold text-slate-900 dark:text-white">Submit your UX research summary</p>
-                  <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Due in 2 days</p>
-                </li>
-              </ul>
-            </DashboardCard>
+            {/* Your Courses Section */}
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-bold text-slate-850 dark:text-white">Your Courses</h2>
+                <Link href="/dashboard/student/courses" className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+                  View All
+                </Link>
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-3">
+                {/* Course Card 1 */}
+                <div className="rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-soft border-l-4 border-l-indigo-500 flex flex-col justify-between h-40 relative group cursor-pointer">
+                  <div>
+                    <p className="text-sm font-extrabold text-slate-855 dark:text-white">User Experience</p>
+                    <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">Jony Deo</p>
+                  </div>
+                  <div className="flex items-center justify-between mt-auto">
+                    <span className="text-xs font-bold text-indigo-500">Master King</span>
+                    <span className="text-lg text-indigo-500 group-hover:translate-x-1 transition-transform">→</span>
+                  </div>
+                </div>
+
+                {/* Course Card 2 */}
+                <div className="rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-soft border-l-4 border-l-pink-500 flex flex-col justify-between h-40 relative group cursor-pointer">
+                  <div>
+                    <p className="text-sm font-extrabold text-slate-855 dark:text-white">User Interface</p>
+                    <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">Jasmine</p>
+                  </div>
+                  <div className="flex items-center justify-between mt-auto">
+                    <span className="text-xs font-bold text-pink-500">Intermediate</span>
+                    <span className="text-lg text-pink-500 group-hover:translate-x-1 transition-transform">→</span>
+                  </div>
+                </div>
+
+                {/* Course Card 3 */}
+                <div className="rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-soft border-l-4 border-l-orange-500 flex flex-col justify-between h-40 relative group cursor-pointer">
+                  <div>
+                    <p className="text-sm font-extrabold text-slate-855 dark:text-white">3D Designs</p>
+                    <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">Jasmine</p>
+                  </div>
+                  <div className="flex items-center justify-between mt-auto">
+                    <span className="text-xs font-bold text-orange-400">Beginer</span>
+                    <span className="text-lg text-orange-400 group-hover:translate-x-1 transition-transform">→</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Statistics and Learning Progress row */}
+            <div className="grid gap-6 md:grid-cols-2">
+              <DashboardCard title="Progress Statistic" description="Target completion by track.">
+                <div className="pt-2">
+                  <DonutChart
+                    value={65}
+                    data={donutData}
+                  />
+                </div>
+              </DashboardCard>
+
+              <DashboardCard title="Learning Progress" description="Key training modules overview.">
+                <div className="space-y-5 pt-3">
+                  {/* Progress Item 1 */}
+                  <div className="space-y-1.5">
+                    <div className="flex justify-between text-xs font-semibold text-slate-700 dark:text-slate-350">
+                      <span>UX Research and Development</span>
+                      <span>80%</span>
+                    </div>
+                    <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                      <div className="h-full bg-indigo-500 rounded-full" style={{ width: '80%' }} />
+                    </div>
+                  </div>
+
+                  {/* Progress Item 2 */}
+                  <div className="space-y-1.5">
+                    <div className="flex justify-between text-xs font-semibold text-slate-700 dark:text-slate-350">
+                      <span>Visual Design and Development</span>
+                      <span>70%</span>
+                    </div>
+                    <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                      <div className="h-full bg-pink-500 rounded-full" style={{ width: '70%' }} />
+                    </div>
+                  </div>
+
+                  {/* Progress Item 3 */}
+                  <div className="space-y-1.5">
+                    <div className="flex justify-between text-xs font-semibold text-slate-700 dark:text-slate-350">
+                      <span>3D Design Concepts</span>
+                      <span>50%</span>
+                    </div>
+                    <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                      <div className="h-full bg-orange-400 rounded-full" style={{ width: '50%' }} />
+                    </div>
+                  </div>
+                </div>
+              </DashboardCard>
+            </div>
           </div>
 
+          {/* Right Column */}
           <div className="space-y-6">
-            <DashboardCard title="Syllabus Progress" description="Your target completion rates.">
-              <DonutChart
-                value={68}
-                data={[
-                  { label: 'Completed', value: 68, color: '#6366F1' },
-                  { label: 'In Progress', value: 20, color: '#EC4899' },
-                  { label: 'Unstarted', value: 12, color: '#94A3B8' },
-                ]}
+            {/* Calendar widget */}
+            <div>
+              <div className="mb-3 flex items-center justify-between">
+                <h3 className="text-base font-bold text-slate-850 dark:text-white">Class Schedule</h3>
+              </div>
+              <MiniCalendar 
+                monthLabel="January 2021" 
+                daysOffset={5} 
+                highlightedDays={[7, 12, 21]} 
+                todayDay={10} 
               />
-            </DashboardCard>
+            </div>
 
-            <DashboardCard title="Study tools" description="Helpful resources to keep learning efficient.">
-              <div className="grid gap-3">
-                <DashboardActions
-                  items={[
-                    { label: 'Flashcards', description: 'Review concepts with fast memory cycles.', href: '/dashboard/student/tools?tab=summary' },
-                    { label: 'Practice tests', description: 'Check readiness with quick quizzes.', href: '/dashboard/student/tools?tab=quiz' },
-                    { label: 'Notes library', description: 'Access saved insights and summaries.', href: '/dashboard/student/tools?tab=summary' },
-                  ]}
+            {/* Quick Link Cards */}
+            <div className="space-y-3">
+              {/* Upcoming Courses Button */}
+              <Link
+                href="/dashboard/student/courses"
+                className="flex items-center justify-between rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-soft hover:border-indigo-400 dark:hover:border-indigo-500 transition group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 dark:bg-indigo-950/40">
+                    <PlayCircle className="h-5 w-5 text-indigo-500 dark:text-indigo-400" />
+                  </div>
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-100">Upcoming Courses</span>
+                </div>
+                <ChevronRight className="h-4 w-4 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+
+              {/* Event Activities Button */}
+              <Link
+                href="/dashboard/student/tools"
+                className="flex items-center justify-between rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-soft hover:border-pink-400 dark:hover:border-pink-500 transition group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-pink-50 dark:bg-pink-950/40">
+                    <Zap className="h-5 w-5 text-pink-500 dark:text-pink-400" />
+                  </div>
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-100">Event Activities</span>
+                </div>
+                <ChevronRight className="h-4 w-4 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+            </div>
+
+            {/* Mobile App Promo Card */}
+            <div className="rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-soft relative overflow-hidden flex flex-col justify-between min-h-[220px]">
+              <div className="max-w-[150px] relative z-10">
+                <p className="text-xs font-black text-slate-800 dark:text-white leading-normal">
+                  Work anywhere with the Edugate learning App
+                </p>
+                <div className="mt-4 space-y-2">
+                  {/* Mock store badges */}
+                  <div className="flex items-center gap-1.5 py-1 px-2 rounded bg-slate-900 text-white text-[8px] font-bold w-24 cursor-pointer hover:bg-slate-850 transition">
+                    <span className="text-xs">▶</span>
+                    <div>
+                      <p className="text-[6px] text-slate-400 uppercase font-semibold">Get it on</p>
+                      <p className="leading-none text-slate-100">Google Play</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1.5 py-1 px-2 rounded bg-slate-900 text-white text-[8px] font-bold w-24 cursor-pointer hover:bg-slate-850 transition">
+                    <span className="text-xs"></span>
+                    <div>
+                      <p className="text-[6px] text-slate-400 uppercase font-semibold">Download on the</p>
+                      <p className="leading-none text-slate-100">App Store</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="absolute right-2 bottom-0 w-[140px] z-10 pointer-events-none">
+                <img
+                  src="/hand_phone_3d.png"
+                  alt="Edugate mobile illustration"
+                  className="h-44 object-contain ml-auto"
                 />
               </div>
-            </DashboardCard>
+            </div>
 
-            <DashboardCard title="Profile snapshot" description="Your enrolled role and institution details.">
-              <div className="space-y-3 text-sm text-slate-600 dark:text-slate-300">
-                <p>
-                  <span className="font-semibold text-slate-700 dark:text-slate-100">Name:</span> {profile?.name}
-                </p>
-                <p>
-                  <span className="font-semibold text-slate-700 dark:text-slate-100">Institute:</span> {profile?.institute}
-                </p>
-                <p>
-                  <span className="font-semibold text-slate-700 dark:text-slate-100">Role:</span> {profile?.role}
-                </p>
-              </div>
-            </DashboardCard>
-
-            <MiniCalendar highlightedDays={[8, 15, 29]} />
           </div>
         </div>
       </DashboardShell>

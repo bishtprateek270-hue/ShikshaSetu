@@ -171,11 +171,10 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
 
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[260px_1fr] lg:px-8">
         <aside className={sidebarClass}>
-          <div className="mb-6 flex items-center justify-between gap-3 px-2">
-            <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-slate-400 font-semibold">Workspace</p>
-              <p className="text-sm font-bold text-slate-800 dark:text-white mt-0.5">{profile?.role === 'admin' ? 'Admin control' : profile?.role === 'teacher' ? 'Instructor hub' : 'Student space'}</p>
-            </div>
+          <div className="mb-8 flex items-center justify-between gap-3 px-2">
+            <span className="text-2xl font-black tracking-tight text-indigo-600 dark:text-indigo-400">
+              EduGate
+            </span>
           </div>
           <nav className="space-y-1">
             {links.map((item) => {
@@ -187,8 +186,8 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
                   className={clsx(
                     "flex items-center px-4 py-3 text-sm font-medium transition duration-150 ease-in-out border-y border-r border-transparent",
                     isActive
-                      ? "bg-indigo-50/70 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 border-l-4 border-l-indigo-500 rounded-r-2xl font-semibold shadow-sm"
-                      : "text-slate-655 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900/50 hover:text-slate-900 dark:hover:text-white rounded-2xl border-l-4 border-l-transparent"
+                      ? "bg-indigo-50/50 dark:bg-indigo-950/20 text-indigo-600 dark:text-indigo-400 border-l-4 border-l-indigo-600 rounded-r-2xl font-bold"
+                      : "text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900/40 hover:text-slate-800 dark:hover:text-white rounded-2xl border-l-4 border-l-transparent"
                   )}
                 >
                   <item.icon className={clsx("mr-2.5 h-4 w-4", isActive ? "text-indigo-500 dark:text-indigo-400" : "text-slate-400 dark:text-slate-500")} /> {item.label}
@@ -196,6 +195,26 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
               );
             })}
           </nav>
+
+          {/* Upgrade to PRO box */}
+          <div className="mt-8 rounded-2xl bg-indigo-50/30 dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800/80 p-4 text-center shadow-sm relative overflow-hidden">
+            <div className="flex justify-center mb-3">
+              <img
+                src="/upgrade_pro_3d.png"
+                alt="Upgrade Pro illustration"
+                className="h-20 object-contain"
+              />
+            </div>
+            <p className="text-xs font-semibold text-slate-700 dark:text-slate-200 px-1 leading-snug">
+              Upgrade to PRO for more features.
+            </p>
+            <button
+              type="button"
+              className="mt-3.5 w-full rounded-xl bg-indigo-600 dark:bg-indigo-500 py-2.5 text-xs font-bold text-white shadow-sm hover:bg-indigo-500 dark:hover:bg-indigo-400 transition"
+            >
+              Upgrade
+            </button>
+          </div>
         </aside>
 
         <div className="space-y-6">

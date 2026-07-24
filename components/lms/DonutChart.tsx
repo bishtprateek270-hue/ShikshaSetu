@@ -13,13 +13,14 @@ type DonutChartProps = {
   data: LegendItem[];
 };
 
-export default function DonutChart({ value, size = 120, strokeWidth = 10, data }: DonutChartProps) {
+export default function DonutChart({ value, size = 130, strokeWidth = 12, data }: DonutChartProps) {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (value / 100) * circumference;
+
+  let accumulatedPercent = 0;
 
   return (
-    <div className="flex flex-col items-center gap-4">
+    <div className="flex flex-col items-center gap-5">
       <div className="relative" style={{ width: size, height: size }}>
         <svg width={size} height={size} className="-rotate-90">
           {/* Background circle */}
@@ -30,30 +31,39 @@ export default function DonutChart({ value, size = 120, strokeWidth = 10, data }
             className="fill-none stroke-slate-100 dark:stroke-slate-800"
             strokeWidth={strokeWidth}
           />
-          {/* Foreground circle with indigo accent */}
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            className="fill-none stroke-indigo-500 transition-all duration-700 ease-out"
-            strokeWidth={strokeWidth}
-            strokeDasharray={circumference}
-            strokeDashoffset={strokeDashoffset}
-            strokeLinecap="round"
-          />
+          {/* Multi-segments circles */}
+          {data.map((item, idx) => {
+            const segmentLength = (item.value / 100) * circumference;
+            const strokeDashoffset = -((accumulatedPercent / 100) * circumference);
+            accumulatedPercent += item.value;
+
+            return (
+              <circle
+                key={idx}
+                cx={size / 2}
+                cy={size / 2}
+                r={radius}
+                className="fill-none transition-all duration-700 ease-out"
+                stroke={item.color}
+                strokeWidth={strokeWidth}
+                strokeDasharray={`${segmentLength} ${circumference}`}
+                strokeDashoffset={strokeDashoffset}
+                strokeLinecap="round"
+              />
+            );
+          })}
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-          <span className="text-xl font-bold text-slate-800 dark:text-white">{value}%</span>
-          <span className="text-[10px] text-slate-400 font-semibold uppercase">Done</span>
+          <span className="text-2xl font-black text-slate-800 dark:text-white">{value}%</span>
         </div>
       </div>
       
       {/* Legend dots */}
-      <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs">
+      <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-[11px] font-medium">
         {data.map((item) => (
-          <div key={item.label} className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400">
-            <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: item.color }} />
-            <span>{item.label} ({item.value}%)</span>
+          <div key={item.label} className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
+            <span className="h-2 w-2 rounded-full" style={{ backgroundColor: item.color }} />
+            <span>{item.label}</span>
           </div>
         ))}
       </div>

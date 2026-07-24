@@ -1,31 +1,43 @@
 'use client';
 
+import { useMemo } from 'react';
 import clsx from 'clsx';
 
 type MiniCalendarProps = {
   highlightedDays?: number[]; // e.g. [8, 15]
+  monthLabel?: string;
+  daysOffset?: number; // number of empty slots before first day
+  todayDay?: number;
   className?: string;
 };
 
-export default function MiniCalendar({ highlightedDays = [8, 15], className }: MiniCalendarProps) {
+export default function MiniCalendar({ 
+  highlightedDays = [8, 15], 
+  monthLabel = 'July 2026', 
+  daysOffset = 2, 
+  todayDay = 24, 
+  className 
+}: MiniCalendarProps) {
   const daysOfWeek = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
   
-  // Render July 2026 for dashboard consistency
-  // July 2026 starts on a Wednesday (index 2 for Mon-start)
-  // 31 days total
-  const days = [
-    { day: null }, { day: null },
-    { day: 1 }, { day: 2 }, { day: 3 }, { day: 4 }, { day: 5 },
-    { day: 6 }, { day: 7 }, { day: 8 }, { day: 9 }, { day: 10 }, { day: 11 }, { day: 12 },
-    { day: 13 }, { day: 14 }, { day: 15 }, { day: 16 }, { day: 17 }, { day: 18 }, { day: 19 },
-    { day: 20 }, { day: 21 }, { day: 22 }, { day: 23 }, { day: 24 }, { day: 25 }, { day: 26 },
-    { day: 27 }, { day: 28 }, { day: 29 }, { day: 30 }, { day: 31 }
-  ];
+  // Construct empty padding slots + day slots
+  const days = useMemo(() => {
+    const list = [];
+    // Padding
+    for (let i = 0; i < daysOffset; i++) {
+      list.push({ day: null });
+    }
+    // Days of the month (always 31 for mockup simplicity)
+    for (let d = 1; d <= 31; d++) {
+      list.push({ day: d });
+    }
+    return list;
+  }, [daysOffset]);
 
   return (
     <div className={clsx("w-full rounded-2xl border border-slate-100 dark:border-slate-800/80 bg-white dark:bg-slate-900/60 p-4 shadow-soft", className)}>
       <div className="flex items-center justify-between mb-3">
-        <span className="text-sm font-semibold text-slate-800 dark:text-white">July 2026</span>
+        <span className="text-sm font-semibold text-slate-800 dark:text-white">{monthLabel}</span>
         <span className="text-[10px] text-indigo-500 dark:text-indigo-400 font-semibold bg-indigo-50 dark:bg-indigo-950/40 px-2 py-0.5 rounded-full">3 Events</span>
       </div>
       
@@ -42,7 +54,7 @@ export default function MiniCalendar({ highlightedDays = [8, 15], className }: M
           }
 
           const isHighlighted = highlightedDays.includes(item.day);
-          const isToday = item.day === 24; // Static active highlighted date corresponding to current month view
+          const isToday = item.day === todayDay;
 
           return (
             <span
