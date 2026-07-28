@@ -70,8 +70,11 @@ Tutor:`;
     }
 
     if (action === 'quiz') {
-      const { topic } = body;
-      const prompt = `You are an educational quiz generator. Generate exactly 3 multiple choice questions about "${topic}".
+      const { topic, text } = body;
+      const context = text || topic;
+      const prompt = `You are an educational quiz generator. Generate exactly 3 multiple choice questions about the following topic or source material:
+"${context}"
+
 Output MUST be valid JSON conforming to this TypeScript type:
 {
   questions: Array<{

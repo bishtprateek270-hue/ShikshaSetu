@@ -53,13 +53,13 @@ export async function askAiTutor(message: string, history: { role: 'user' | 'ass
   }
 }
 
-export async function generateAiQuiz(topic: string): Promise<QuizQuestion[]> {
+export async function generateAiQuiz(topic: string, text?: string): Promise<QuizQuestion[]> {
   try {
     const headers = await getAuthHeaders();
     const res = await fetch('/api/ai', {
       method: 'POST',
       headers,
-      body: JSON.stringify({ action: 'quiz', topic }),
+      body: JSON.stringify({ action: 'quiz', topic, text }),
     });
     if (!res.ok) {
       const errData = await res.json().catch(() => ({}));

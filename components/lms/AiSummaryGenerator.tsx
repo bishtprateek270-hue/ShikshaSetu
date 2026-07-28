@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { FileText, Sparkles, RefreshCw, Layers } from 'lucide-react';
 import { generateNotesAndSummary } from '../../lib/ai/client';
+import PdfDragDropUpload from './PdfDragDropUpload';
 
 type Flashcard = {
   front: string;
@@ -55,8 +56,13 @@ export default function AiSummaryGenerator() {
         </div>
 
         <p className="text-xs text-slate-400 leading-normal">
-          Paste reading materials, course pages, or transcript details below to generate structured takeaways and interactive study flashcards.
+          Paste reading materials below or drop a PDF file to extract notes, then generate structured takeaways and interactive study flashcards.
         </p>
+
+        <PdfDragDropUpload 
+          onTextExtracted={(extracted) => setText(extracted)} 
+          className="mb-2"
+        />
 
         <div className="space-y-3">
           <textarea
