@@ -157,6 +157,9 @@ const translations: Record<Language, Translations> = {
 
     // Student Dashboard
     student_greeting: 'Happy Morning',
+    greet_morning: 'Good Morning',
+    greet_afternoon: 'Good Afternoon',
+    greet_evening: 'Good Evening',
     student_goal_desc: 'You have completed 65% of your goal this week! set a new goal and improve your skills.',
     student_courses_title: 'Your Courses',
     student_view_all: 'View All',
@@ -328,6 +331,9 @@ const translations: Record<Language, Translations> = {
 
     // Student Dashboard
     student_greeting: 'शुभ प्रभात',
+    greet_morning: 'शुभ प्रभात',
+    greet_afternoon: 'शुभ दोपहर',
+    greet_evening: 'शुभ संध्या',
     student_goal_desc: 'आपने इस सप्ताह अपने लक्ष्य का 65% पूरा कर लिया है! एक नया लक्ष्य निर्धारित करें और अपने कौशल में सुधार करें।',
     student_courses_title: 'आपके पाठ्यक्रम',
     student_view_all: 'सभी देखें',

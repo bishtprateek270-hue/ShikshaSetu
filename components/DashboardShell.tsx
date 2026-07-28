@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useMemo, useState, useEffect, useRef } from 'react';
-import { Menu, ChevronDown, Grid, BookOpen, CheckCircle2, ClipboardList, BarChart3, CalendarDays, Users, Settings, LayoutDashboard, Globe } from 'lucide-react';
+import { Menu, ChevronDown, Grid, BookOpen, CheckCircle2, ClipboardList, BarChart3, CalendarDays, Users, Settings, LayoutDashboard, Globe, User } from 'lucide-react';
 import { useAuth } from './AuthProvider';
 import { useNotifications } from '../lib/lms/hooks';
 import { useLanguage } from '../lib/language/LanguageContext';
@@ -89,7 +89,7 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-350">
-      <div className="border-b border-slate-100 dark:border-slate-800/60 bg-white/80 dark:bg-slate-950/85 px-4 py-3 backdrop-blur-xl sm:px-6 lg:px-8 shadow-sm">
+      <div className="relative z-30 border-b border-slate-100 dark:border-slate-800/60 bg-white/80 dark:bg-slate-950/85 px-4 py-3 backdrop-blur-xl sm:px-6 lg:px-8 shadow-sm">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <button
@@ -294,7 +294,7 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
                   href={profile?.role === 'admin' ? '/dashboard/admin/settings' : `/dashboard/${profile?.role || 'student'}/profile`}
                   className="flex items-center gap-1.5 rounded-full border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-850 shadow-sm"
                 >
-                  <ChevronDown className="h-3 w-3 text-slate-400" /> {t('dash_profile_link')}
+                  <User className="h-3 w-3 text-slate-400" /> {t('dash_profile_link')}
                 </Link>
               </div>
             </div>

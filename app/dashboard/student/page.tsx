@@ -18,6 +18,13 @@ export default function StudentDashboardPage() {
   const { profile } = useAuth();
   const { t } = useLanguage();
 
+  const greetingKey = useMemo(() => {
+    const hour = new Date().getHours();
+    if (hour >= 5 && hour < 12) return 'greet_morning';
+    if (hour >= 12 && hour < 17) return 'greet_afternoon';
+    return 'greet_evening';
+  }, []);
+
   const donutData = useMemo(() => [
     { label: 'UX Design', value: 45, color: '#6366F1' },
     { label: 'UI Design', value: 35, color: '#EC4899' },
@@ -39,7 +46,7 @@ export default function StudentDashboardPage() {
             <div className="rounded-2xl border border-slate-100 dark:border-slate-800/80 bg-white dark:bg-slate-900 p-6 relative overflow-hidden shadow-soft flex items-center justify-between">
               <div className="relative z-10 max-w-md">
                 <h3 className="text-xl font-bold text-slate-850 dark:text-white">
-                  {t('student_greeting')} {profile?.name ? profile.name.split(' ')[0] : 'Vicky'}
+                  {t(greetingKey)} {profile?.name ? profile.name.split(' ')[0] : 'Vicky'}
                 </h3>
                 <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
                   {t('student_goal_desc')}
@@ -185,10 +192,7 @@ export default function StudentDashboardPage() {
                 <h3 className="text-base font-bold text-slate-855 dark:text-white">{t('student_schedule_title')}</h3>
               </div>
               <MiniCalendar 
-                monthLabel="January 2021" 
-                daysOffset={5} 
                 highlightedDays={[7, 12, 21]} 
-                todayDay={10} 
               />
             </div>
 

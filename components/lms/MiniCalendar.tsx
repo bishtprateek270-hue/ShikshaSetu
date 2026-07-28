@@ -13,31 +13,59 @@ type MiniCalendarProps = {
 
 export default function MiniCalendar({ 
   highlightedDays = [8, 15], 
-  monthLabel = 'July 2026', 
-  daysOffset = 2, 
-  todayDay = 24, 
+  monthLabel, 
+  daysOffset, 
+  todayDay, 
   className 
 }: MiniCalendarProps) {
   const daysOfWeek = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-  
+
+  const todayDate = useMemo(() => new Date(), []);
+  const currentYear = todayDate.getFullYear();
+  const currentMonth = todayDate.getMonth();
+
+  const resolvedToday = todayDay !== undefined ? todayDay : todayDate.getDate();
+
+  const resolvedMonthLabel = useMemo(() => {
+    if (monthLabel) return monthLabel;
+    const monthNames = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    return `${monthNames[currentMonth]} ${currentYear}`;
+  }, [monthLabel, currentMonth, currentYear]);
+
+  const resolvedDaysOffset = useMemo(() => {
+    if (daysOffset !== undefined) return daysOffset;
+    // Get the first day of the current month
+    const firstDay = new Date(currentYear, currentMonth, 1);
+    const dayOfWeek = firstDay.getDay(); // 0 is Sunday, 1 is Monday...
+    // M, T, W, T, F, S, S means Monday is index 0, Sunday is index 6
+    return dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+  }, [daysOffset, currentYear, currentMonth]);
+
+  const totalDays = useMemo(() => {
+    return new Date(currentYear, currentMonth + 1, 0).getDate();
+  }, [currentYear, currentMonth]);
+
   // Construct empty padding slots + day slots
   const days = useMemo(() => {
     const list = [];
     // Padding
-    for (let i = 0; i < daysOffset; i++) {
+    for (let i = 0; i < resolvedDaysOffset; i++) {
       list.push({ day: null });
     }
-    // Days of the month (always 31 for mockup simplicity)
-    for (let d = 1; d <= 31; d++) {
+    // Days of the month
+    for (let d = 1; d <= totalDays; d++) {
       list.push({ day: d });
     }
     return list;
-  }, [daysOffset]);
+  }, [resolvedDaysOffset, totalDays]);
 
   return (
     <div className={clsx("w-full rounded-2xl border border-slate-100 dark:border-slate-800/80 bg-white dark:bg-slate-900/60 p-4 shadow-soft", className)}>
       <div className="flex items-center justify-between mb-3">
-        <span className="text-sm font-semibold text-slate-800 dark:text-white">{monthLabel}</span>
+        <span className="text-sm font-semibold text-slate-800 dark:text-white">{resolvedMonthLabel}</span>
         <span className="text-[10px] text-indigo-500 dark:text-indigo-400 font-semibold bg-indigo-50 dark:bg-indigo-950/40 px-2 py-0.5 rounded-full">3 Events</span>
       </div>
       
@@ -54,7 +82,7 @@ export default function MiniCalendar({
           }
 
           const isHighlighted = highlightedDays.includes(item.day);
-          const isToday = item.day === todayDay;
+          const isToday = item.day === resolvedToday;
 
           return (
             <span
