@@ -9,12 +9,14 @@ import DashboardCard from '../../../components/DashboardCard';
 import { useAuth } from '../../../components/AuthProvider';
 import DonutChart from '../../../components/lms/DonutChart';
 import MiniCalendar from '../../../components/lms/MiniCalendar';
+import { useLanguage } from '../../../lib/language/LanguageContext';
 import { motion } from 'framer-motion';
 
 const MotionLink = motion(Link);
 
 export default function StudentDashboardPage() {
   const { profile } = useAuth();
+  const { t } = useLanguage();
 
   const donutData = useMemo(() => [
     { label: 'UX Design', value: 45, color: '#6366F1' },
@@ -24,7 +26,7 @@ export default function StudentDashboardPage() {
 
   return (
     <RoleProtectedRoute allowedRoles={['student']}>
-      <DashboardShell title="Dashboard" subtitle="Track courses, progress, and activities in one learning hub." breadcrumbs={[{ label: 'Dashboard' }]}>
+      <DashboardShell title={t('dash_nav_dashboard')} subtitle="Track courses, progress, and activities in one learning hub." breadcrumbs={[{ label: t('dash_nav_dashboard') }]}>
         <div className="grid gap-6 lg:grid-cols-[1.4fr_0.9fr]">
           <motion.div
             initial={{ opacity: 0, x: -16 }}
@@ -37,10 +39,10 @@ export default function StudentDashboardPage() {
             <div className="rounded-2xl border border-slate-100 dark:border-slate-800/80 bg-white dark:bg-slate-900 p-6 relative overflow-hidden shadow-soft flex items-center justify-between">
               <div className="relative z-10 max-w-md">
                 <h3 className="text-xl font-bold text-slate-850 dark:text-white">
-                  Happy Morning {profile?.name ? profile.name.split(' ')[0] : 'Vicky'}
+                  {t('student_greeting')} {profile?.name ? profile.name.split(' ')[0] : 'Vicky'}
                 </h3>
                 <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                  You have completed 65% of your goal this week! set a new goal and improve your skills.
+                  {t('student_goal_desc')}
                 </p>
               </div>
               <div className="relative z-10 hidden sm:block">
@@ -57,9 +59,9 @@ export default function StudentDashboardPage() {
             {/* Your Courses Section */}
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold text-slate-850 dark:text-white">Your Courses</h2>
+                <h2 className="text-lg font-bold text-slate-850 dark:text-white">{t('student_courses_title')}</h2>
                 <Link href="/dashboard/student/courses" className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
-                  View All
+                  {t('student_view_all')}
                 </Link>
               </div>
 
@@ -180,7 +182,7 @@ export default function StudentDashboardPage() {
             {/* Calendar widget */}
             <div>
               <div className="mb-3 flex items-center justify-between">
-                <h3 className="text-base font-bold text-slate-850 dark:text-white">Class Schedule</h3>
+                <h3 className="text-base font-bold text-slate-855 dark:text-white">{t('student_schedule_title')}</h3>
               </div>
               <MiniCalendar 
                 monthLabel="January 2021" 
@@ -203,7 +205,7 @@ export default function StudentDashboardPage() {
                   <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 dark:bg-indigo-950/40">
                     <PlayCircle className="h-5 w-5 text-indigo-500 dark:text-indigo-400" />
                   </div>
-                  <span className="text-xs font-bold text-slate-800 dark:text-slate-100">Upcoming Courses</span>
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-100">{t('student_upcoming_courses')}</span>
                 </div>
                 <ChevronRight className="h-4 w-4 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
               </MotionLink>
@@ -219,7 +221,7 @@ export default function StudentDashboardPage() {
                   <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-pink-50 dark:bg-pink-950/40">
                     <Zap className="h-5 w-5 text-pink-500 dark:text-pink-400" />
                   </div>
-                  <span className="text-xs font-bold text-slate-800 dark:text-slate-100">Event Activities</span>
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-100">{t('student_event_activities')}</span>
                 </div>
                 <ChevronRight className="h-4 w-4 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
               </MotionLink>
@@ -233,7 +235,7 @@ export default function StudentDashboardPage() {
             >
               <div className="max-w-[150px] relative z-10">
                 <p className="text-xs font-black text-slate-800 dark:text-white leading-normal">
-                  Work anywhere with the ShikshaSetu learning App
+                  {t('student_promo_title')}
                 </p>
                 <div className="mt-4 space-y-2">
                   {/* Mock store badges */}
@@ -241,14 +243,14 @@ export default function StudentDashboardPage() {
                     <span className="text-xs">▶</span>
                     <div>
                       <p className="text-[6px] text-slate-400 uppercase font-semibold">Get it on</p>
-                      <p className="leading-none text-slate-100">Google Play</p>
+                      <p className="leading-none text-slate-100">{t('student_promo_play')}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-1.5 py-1 px-2 rounded bg-slate-900 text-white text-[8px] font-bold w-24 cursor-pointer hover:bg-slate-850 transition">
                     <span className="text-xs"></span>
                     <div>
                       <p className="text-[6px] text-slate-400 uppercase font-semibold">Download on the</p>
-                      <p className="leading-none text-slate-100">App Store</p>
+                      <p className="leading-none text-slate-100">{t('student_promo_appstore')}</p>
                     </div>
                   </div>
                 </div>

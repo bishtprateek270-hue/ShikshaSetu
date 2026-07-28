@@ -2,63 +2,29 @@
 
 import Link from 'next/link';
 import { useMemo, useState, useEffect, useRef } from 'react';
-import { Menu, ChevronDown, Grid, BookOpen, CheckCircle2, ClipboardList, BarChart3, CalendarDays, Users, Settings, LayoutDashboard } from 'lucide-react';
+import { Menu, ChevronDown, Grid, BookOpen, CheckCircle2, ClipboardList, BarChart3, CalendarDays, Users, Settings, LayoutDashboard, Globe } from 'lucide-react';
 import { useAuth } from './AuthProvider';
 import { useNotifications } from '../lib/lms/hooks';
+import { useLanguage } from '../lib/language/LanguageContext';
 import NotificationBell from './lms/NotificationBell';
 import DarkModeToggle from '../app/dark';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const navLinks = {
-  student: [
-    { href: '/dashboard/student', label: 'Dashboard', icon: LayoutDashboard },
-    { href: '/dashboard/student/courses', label: 'My Courses', icon: BookOpen },
-    { href: '/courses', label: 'Explore Courses', icon: BookOpen },
-    { href: '/dashboard/student/path', label: 'Learning Path', icon: CheckCircle2 },
-    { href: '/dashboard/student/progress', label: 'Progress', icon: BarChart3 },
-    { href: '/dashboard/student/assignments', label: 'Assignments', icon: ClipboardList },
-    { href: '/dashboard/student/tools', label: 'Study Tools', icon: Grid },
-    { href: '/dashboard/student/profile', label: 'Profile', icon: Users },
-    { href: '/dashboard/student/settings', label: 'Settings', icon: Settings },
-  ],
-  teacher: [
-    { href: '/dashboard/teacher', label: 'Dashboard', icon: LayoutDashboard },
-    { href: '/dashboard/teacher/courses', label: 'My Courses', icon: BookOpen },
-    { href: '/dashboard/teacher/students', label: 'Students', icon: Users },
-    { href: '/dashboard/teacher/assignments', label: 'Assignments', icon: ClipboardList },
-    { href: '/dashboard/teacher/analytics', label: 'Analytics', icon: BarChart3 },
-    { href: '/dashboard/teacher/schedule', label: 'Schedule', icon: CalendarDays },
-    { href: '/dashboard/teacher/tools', label: 'Study Tools', icon: Grid },
-    { href: '/dashboard/teacher/profile', label: 'Profile', icon: Users },
-    { href: '/dashboard/teacher/settings', label: 'Settings', icon: Settings },
-  ],
-  admin: [
-    { href: '/dashboard/admin', label: 'Dashboard', icon: LayoutDashboard },
-    { href: '/dashboard/admin/users', label: 'Manage Users', icon: Users },
-    { href: '/dashboard/admin/students', label: 'Manage Students', icon: Users },
-    { href: '/dashboard/admin/teachers', label: 'Manage Teachers', icon: Users },
-    { href: '/dashboard/admin/courses', label: 'Manage Courses', icon: BookOpen },
-    { href: '/dashboard/admin/analytics', label: 'Platform Analytics', icon: BarChart3 },
-    { href: '/dashboard/admin/settings', label: 'Settings', icon: Settings },
-  ],
-};
-
-type DashboardShellProps = {
+export default function DashboardShell({ title, subtitle, breadcrumbs, children }: {
   title: string;
   subtitle: string;
   breadcrumbs: Array<{ label: string; href?: string }>;
   children: React.ReactNode;
-};
-
-export default function DashboardShell({ title, subtitle, breadcrumbs, children }: DashboardShellProps) {
+}) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const { profile, logout, user } = useAuth();
   const { notifications, unreadCount, markAsRead } = useNotifications(user?.uid);
   const pathname = usePathname();
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -70,11 +36,49 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const navLinks = useMemo(() => ({
+    student: [
+      { href: '/dashboard/student', label: t('dash_nav_dashboard'), icon: LayoutDashboard },
+      { href: '/dashboard/student/courses', label: t('dash_nav_my_courses'), icon: BookOpen },
+      { href: '/courses', label: t('dash_nav_explore'), icon: BookOpen },
+      { href: '/dashboard/student/path', label: t('dash_nav_learning_path'), icon: CheckCircle2 },
+      { href: '/dashboard/student/progress', label: t('dash_nav_progress'), icon: BarChart3 },
+      { href: '/dashboard/student/assignments', label: t('dash_nav_assignments'), icon: ClipboardList },
+      { href: '/dashboard/student/tools', label: t('dash_nav_study_tools'), icon: Grid },
+      { href: '/dashboard/student/profile', label: t('dash_nav_profile'), icon: Users },
+      { href: '/dashboard/student/settings', label: t('dash_nav_settings'), icon: Settings },
+    ],
+    teacher: [
+      { href: '/dashboard/teacher', label: t('dash_nav_dashboard'), icon: LayoutDashboard },
+      { href: '/dashboard/teacher/courses', label: t('dash_nav_my_courses'), icon: BookOpen },
+      { href: '/dashboard/teacher/students', label: 'Students', icon: Users },
+      { href: '/dashboard/teacher/assignments', label: t('dash_nav_assignments'), icon: ClipboardList },
+      { href: '/dashboard/teacher/analytics', label: 'Analytics', icon: BarChart3 },
+      { href: '/dashboard/teacher/schedule', label: 'Schedule', icon: CalendarDays },
+      { href: '/dashboard/teacher/tools', label: t('dash_nav_study_tools'), icon: Grid },
+      { href: '/dashboard/teacher/profile', label: t('dash_nav_profile'), icon: Users },
+      { href: '/dashboard/teacher/settings', label: t('dash_nav_settings'), icon: Settings },
+    ],
+    admin: [
+      { href: '/dashboard/admin', label: t('dash_nav_dashboard'), icon: LayoutDashboard },
+      { href: '/dashboard/admin/users', label: 'Manage Users', icon: Users },
+      { href: '/dashboard/admin/students', label: 'Manage Students', icon: Users },
+      { href: '/dashboard/admin/teachers', label: 'Manage Teachers', icon: Users },
+      { href: '/dashboard/admin/courses', label: 'Manage Courses', icon: BookOpen },
+      { href: '/dashboard/admin/analytics', label: 'Platform Analytics', icon: BarChart3 },
+      { href: '/dashboard/admin/settings', label: t('dash_nav_settings'), icon: Settings },
+    ],
+  }), [t]);
+
   const links = useMemo(() => {
     if (profile?.role === 'teacher') return navLinks.teacher;
     if (profile?.role === 'admin') return navLinks.admin;
     return navLinks.student;
-  }, [profile?.role]);
+  }, [profile?.role, navLinks]);
+
+  const toggleLanguage = () => {
+    setLanguage(language === 'en' ? 'hi' : 'en');
+  };
 
   const sidebarClass = clsx(
     "rounded-[2rem] border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-soft transition-all duration-300",
@@ -96,17 +100,34 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
               <Menu className="h-5 w-5" />
             </button>
             <div>
-              <p className="text-xs uppercase tracking-[0.3em] text-slate-400 font-semibold">ShikshaSetu</p>
+              <p className="text-xs uppercase tracking-[0.3em] text-slate-400 font-semibold">{t('dash_sidebar_title')}</p>
               <h1 className="text-xl font-bold text-slate-900 dark:text-white">{title}</h1>
             </div>
           </div>
 
-          {/* Mobile Theme Toggle */}
+          {/* Mobile Header elements */}
           <div className="flex items-center gap-2 md:hidden">
+            <button
+              type="button"
+              onClick={toggleLanguage}
+              className="rounded-full border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/90 p-2.5 text-slate-600 dark:text-slate-200 transition hover:border-indigo-450 shadow-soft"
+            >
+              <Globe className="h-4 w-4" />
+            </button>
             <DarkModeToggle />
           </div>
 
           <div className="hidden items-center gap-4 md:flex">
+            {/* Language Selector */}
+            <button
+              type="button"
+              onClick={toggleLanguage}
+              className="flex items-center gap-1.5 rounded-full border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/90 px-3 py-1.5 text-xs font-semibold text-slate-650 dark:text-slate-200 hover:border-indigo-400 dark:hover:border-indigo-500 hover:text-indigo-650 dark:hover:text-indigo-400 transition shadow-soft"
+            >
+              <Globe className="h-3.5 w-3.5" />
+              <span>{language === 'en' ? 'हिन्दी' : 'English'}</span>
+            </button>
+
             <DarkModeToggle />
             <NotificationBell
               notifications={notifications}
@@ -140,9 +161,9 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
                     className="absolute right-0 mt-2 w-48 origin-top-right rounded-2xl border border-slate-100 dark:border-slate-800/80 bg-white dark:bg-slate-950 p-2 shadow-soft dark:shadow-[0_24px_80px_rgba(0,0,0,0.55)] focus:outline-none z-50"
                   >
                     <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800/50 mb-1">
-                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Signed in as</p>
+                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">{t('dash_profile_dropdown_signed_in')}</p>
                       <p className="text-xs font-bold text-slate-800 dark:text-white truncate mt-0.5">{profile?.name ?? 'Learner'}</p>
-                      <p className="text-[10px] text-indigo-500 dark:text-indigo-400 font-semibold uppercase mt-0.5">{profile?.role ?? 'Student'}</p>
+                      <p className="text-[10px] text-indigo-500 dark:text-indigo-400 font-semibold uppercase mt-0.5">{profile?.role === 'teacher' ? t('dash_role_teacher') : profile?.role === 'admin' ? t('dash_role_admin') : t('dash_role_student')}</p>
                     </div>
                     
                     <Link
@@ -150,7 +171,7 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
                       onClick={() => setProfileDropdownOpen(false)}
                       className="flex w-full items-center rounded-xl px-3 py-2 text-xs text-slate-600 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-900/60 hover:text-indigo-600 dark:hover:text-white transition"
                     >
-                      My Profile
+                      {t('dash_profile_link')}
                     </Link>
                     
                     <Link
@@ -158,7 +179,7 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
                       onClick={() => setProfileDropdownOpen(false)}
                       className="flex w-full items-center rounded-xl px-3 py-2 text-xs text-slate-600 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-900/60 hover:text-indigo-600 dark:hover:text-white transition"
                     >
-                      Settings
+                      {t('dash_nav_settings')}
                     </Link>
                     
                     <div className="my-1 border-t border-slate-100 dark:border-slate-800/50" />
@@ -171,7 +192,7 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
                       type="button"
                       className="flex w-full items-center rounded-xl px-3 py-2 text-xs font-semibold text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition"
                     >
-                      Logout
+                      {t('nav_logout')}
                     </button>
                   </motion.div>
                 )}
@@ -192,7 +213,7 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
         <aside className={sidebarClass}>
           <div className="mb-8 flex items-center justify-between gap-3 px-2">
             <span className="text-2xl font-black tracking-tight text-indigo-600 dark:text-indigo-400">
-              ShikshaSetu
+              {t('brand_name')}
             </span>
           </div>
           <nav className="space-y-1">
@@ -232,7 +253,7 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
               />
             </div>
             <p className="text-xs font-semibold text-slate-700 dark:text-slate-200 px-1 leading-snug">
-              Upgrade to PRO for more features.
+              {t('dash_upgrade_desc')}
             </p>
             <button
               type="button"
@@ -245,7 +266,7 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
               }}
               className="mt-3.5 w-full rounded-xl bg-indigo-600 dark:bg-indigo-500 py-2.5 text-xs font-bold text-white shadow-sm hover:bg-indigo-500 dark:hover:bg-indigo-400 transition"
             >
-              Upgrade
+              {t('dash_upgrade_btn')}
             </button>
           </div>
         </aside>
@@ -273,7 +294,7 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
                   href={profile?.role === 'admin' ? '/dashboard/admin/settings' : `/dashboard/${profile?.role || 'student'}/profile`}
                   className="flex items-center gap-1.5 rounded-full border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-850 shadow-sm"
                 >
-                  <ChevronDown className="h-3 w-3 text-slate-400" /> View Profile
+                  <ChevronDown className="h-3 w-3 text-slate-400" /> {t('dash_profile_link')}
                 </Link>
               </div>
             </div>

@@ -5,11 +5,12 @@ import { useRouter } from 'next/navigation';
 import ProtectedRoute from './ProtectedRoute';
 import { useAuth } from './AuthProvider';
 import DarkModeToggle from '../app/dark';
+import { useLanguage } from '../lib/language/LanguageContext';
 
 const roles = [
-  { value: 'student', label: 'Student' },
-  { value: 'teacher', label: 'Teacher' },
-  { value: 'admin', label: 'Admin' },
+  { value: 'student', labelKey: 'dash_role_student' },
+  { value: 'teacher', labelKey: 'dash_role_teacher' },
+  { value: 'admin', labelKey: 'dash_role_admin' },
 ] as const;
 
 type Role = (typeof roles)[number]['value'];
@@ -22,6 +23,7 @@ export default function Onboarding() {
   const [role, setRole] = useState<Role>('student');
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (!loading) {
@@ -65,56 +67,62 @@ export default function Onboarding() {
           <DarkModeToggle />
         </div>
         <div className="mx-auto max-w-xl rounded-[2rem] border border-slate-800 bg-slate-900/95 p-8 shadow-[0_30px_80px_rgba(2,8,23,0.55)] sm:p-10">
-          <h1 className="text-3xl font-semibold text-white">Tell us about yourself</h1>
-          <p className="mt-3 text-slate-400">Complete your profile so we can show the right dashboard and content.</p>
-          <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-950/70 p-4 text-slate-300">
+          <h1 className="text-3xl font-semibold text-white">{t('onboard_title')}</h1>
+          <p className="mt-3 text-slate-400">{t('onboard_desc')}</p>
+          <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-955/70 p-4 text-slate-300">
             <p className="text-sm">
-              You’re being redirected here because your profile is not complete yet. Finish onboarding, and you’ll be taken to the dashboard for your selected role.
+              {t('onboard_banner')}
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-          {error ? <p className="rounded-2xl border border-rose-500/20 bg-rose-500/10 p-4 text-sm text-rose-200">{error}</p> : null}
+            {error ? <p className="rounded-2xl border border-rose-500/20 bg-rose-500/10 p-4 text-sm text-rose-200">{error}</p> : null}
 
-          <label className="block text-sm font-medium text-slate-300">Full name</label>
-          <input
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            required
-            className="w-full rounded-2xl border border-slate-800 bg-slate-950 px-4 py-3 text-slate-100 outline-none focus:border-violet-400"
-          />
+            <div>
+              <label className="block text-sm font-medium text-slate-300">{t('onboard_name_label')}</label>
+              <input
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                required
+                className="mt-2 w-full rounded-2xl border border-slate-800 bg-slate-950 px-4 py-3 text-slate-100 outline-none focus:border-violet-400"
+              />
+            </div>
 
-          <label className="block text-sm font-medium text-slate-300">Institute</label>
-          <input
-            value={institute}
-            onChange={(event) => setInstitute(event.target.value)}
-            required
-            className="w-full rounded-2xl border border-slate-800 bg-slate-950 px-4 py-3 text-slate-100 outline-none focus:border-violet-400"
-          />
+            <div>
+              <label className="block text-sm font-medium text-slate-300">{t('onboard_institute_label')}</label>
+              <input
+                value={institute}
+                onChange={(event) => setInstitute(event.target.value)}
+                required
+                className="mt-2 w-full rounded-2xl border border-slate-800 bg-slate-950 px-4 py-3 text-slate-100 outline-none focus:border-violet-400"
+              />
+            </div>
 
-          <label className="block text-sm font-medium text-slate-300">Role</label>
-          <select
-            value={role}
-            onChange={(event) => setRole(event.target.value as Role)}
-            className="w-full rounded-2xl border border-slate-800 bg-slate-950 px-4 py-3 text-slate-100 outline-none focus:border-violet-400"
-          >
-            {roles.map((item) => (
-              <option key={item.value} value={item.value} className="bg-slate-950 text-slate-100">
-                {item.label}
-              </option>
-            ))}
-          </select>
+            <div>
+              <label className="block text-sm font-medium text-slate-300">{t('onboard_role_label')}</label>
+              <select
+                value={role}
+                onChange={(event) => setRole(event.target.value as Role)}
+                className="mt-2 w-full rounded-2xl border border-slate-800 bg-slate-950 px-4 py-3 text-slate-100 outline-none focus:border-violet-400"
+              >
+                {roles.map((item) => (
+                  <option key={item.value} value={item.value} className="bg-slate-950 text-slate-100">
+                    {t(item.labelKey)}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full rounded-2xl bg-violet-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-400 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            Continue to dashboard
-          </button>
-        </form>
-      </div>
-    </main>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full rounded-2xl bg-violet-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-400 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {t('onboard_btn')}
+            </button>
+          </form>
+        </div>
+      </main>
     </ProtectedRoute>
   );
 }

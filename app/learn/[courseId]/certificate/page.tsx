@@ -7,6 +7,7 @@ import ProtectedRoute from '../../../../components/ProtectedRoute';
 import CertificateCard from '../../../../components/lms/CertificateCard';
 import { useAuth } from '../../../../components/AuthProvider';
 import { useCourse, useCertificates } from '../../../../lib/lms/hooks';
+import { useLanguage } from '../../../../lib/language/LanguageContext';
 import { useMemo } from 'react';
 
 export default function CertificatePage() {
@@ -15,6 +16,7 @@ export default function CertificatePage() {
   const { user, profile } = useAuth();
   const { course } = useCourse(courseId);
   const { certificates, loading } = useCertificates(user?.uid);
+  const { t } = useLanguage();
 
   const certificate = useMemo(
     () => certificates.find((c) => c.courseId === courseId) ?? null,
@@ -45,7 +47,7 @@ export default function CertificatePage() {
               <ArrowLeft className="h-4 w-4" />
             </Link>
             <div>
-              <p className="text-xs text-slate-500">Certificate</p>
+              <p className="text-xs text-slate-500">{t('nav_dashboard')}</p>
               <p className="text-sm font-semibold text-white">{course?.title ?? 'Course'}</p>
             </div>
           </div>
@@ -58,9 +60,9 @@ export default function CertificatePage() {
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20">
               <PartyPopper className="h-8 w-8 text-violet-300" />
             </div>
-            <h1 className="text-3xl font-bold text-white">Congratulations! 🎉</h1>
+            <h1 className="text-3xl font-bold text-white">{t('cert_congrats')}</h1>
             <p className="mt-2 text-slate-400">
-              You&apos;ve successfully completed{' '}
+              {t('cert_congrats_desc')}{' '}
               <span className="font-semibold text-violet-300">{course?.title}</span>
             </p>
           </div>
@@ -80,13 +82,13 @@ export default function CertificatePage() {
               href="/dashboard/student/courses"
               className="rounded-full border border-slate-700 px-5 py-2.5 text-sm font-semibold text-slate-200 transition hover:border-violet-400 hover:text-white"
             >
-              My Courses
+              {t('dash_nav_my_courses')}
             </Link>
             <Link
               href="/courses"
               className="rounded-full bg-violet-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-violet-400"
             >
-              Explore More Courses
+              {t('dash_nav_explore')}
             </Link>
           </div>
         </div>

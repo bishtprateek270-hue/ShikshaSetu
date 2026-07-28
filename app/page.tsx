@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { BarChart3, BookOpen, ClipboardList, FileText, MessagesSquare, Sparkles } from 'lucide-react';
 import Navbar from '../components/Navbar';
@@ -8,23 +10,26 @@ import NewsletterForm from '../components/NewsletterForm';
 import Footer from '../components/Footer';
 import HeroSection from '../components/HeroSection';
 import AnimatedSection from '../components/AnimatedSection';
-
-const features = [
-  { title: 'AI Notes', description: 'Turn class material into structured summaries, flashcards, and revision points instantly.', icon: Sparkles },
-  { title: 'AI Quiz Generator', description: 'Create adaptive quizzes from any topic, chapter, or uploaded notes in seconds.', icon: BookOpen },
-  { title: 'PDF to Quiz', description: 'Upload a PDF and let the platform convert it into a study-ready quiz flow.', icon: FileText },
-  { title: 'AI Doubt Solver', description: 'Get step-by-step explanations for confusing concepts and homework questions.', icon: MessagesSquare },
-  { title: 'Progress Tracking', description: 'Monitor streaks, mastery, and completion trends with a clear dashboard view.', icon: BarChart3 },
-  { title: 'Mock Tests', description: 'Practice with realistic timed assessments tailored to your learning goals.', icon: ClipboardList }
-];
-
-const faqs = [
-  { question: 'How quickly can I get started?', answer: 'You can create an account and begin in just a few minutes.' },
-  { question: 'Do you offer support during the learning journey?', answer: 'Yes. Helpful guidance is available whenever you need a quick answer or a nudge forward.' },
-  { question: 'Is the experience easy to use on mobile?', answer: 'Yes. The experience is designed to feel smooth and clear across phones, tablets, and desktops.' }
-];
+import { useLanguage } from '../lib/language/LanguageContext';
 
 export default function HomePage() {
+  const { t } = useLanguage();
+
+  const features = [
+    { title: t('feat_ai_notes_title'), description: t('feat_ai_notes_desc'), icon: Sparkles },
+    { title: t('feat_ai_quiz_title'), description: t('feat_ai_quiz_desc'), icon: BookOpen },
+    { title: t('feat_pdf_title'), description: t('feat_pdf_desc'), icon: FileText },
+    { title: t('feat_doubt_title'), description: t('feat_doubt_desc'), icon: MessagesSquare },
+    { title: t('feat_progress_title'), description: t('feat_progress_desc'), icon: BarChart3 },
+    { title: t('feat_mock_title'), description: t('feat_mock_desc'), icon: ClipboardList }
+  ];
+
+  const faqs = [
+    { question: t('faq_q1'), answer: t('faq_a1') },
+    { question: t('faq_q2'), answer: t('faq_a2') },
+    { question: t('faq_q3'), answer: t('faq_a3') }
+  ];
+
   return (
     <main className="bg-slate-950 text-slate-100">
       <Navbar />
@@ -33,7 +38,7 @@ export default function HomePage() {
 
       <AnimatedSection id="features" className="px-6 pb-16 sm:px-10 lg:px-16">
         <div className="mx-auto max-w-7xl">
-          <SectionHeading title="Built for AI-powered study" subtitle="Turn every topic into an adaptive learning experience." />
+          <SectionHeading title={t('feat_heading')} subtitle={t('feat_subheading')} />
           <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {features.map((feature) => (
               <FeatureCard key={feature.title} icon={feature.icon} title={feature.title} description={feature.description} />
@@ -46,30 +51,30 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl rounded-[2rem] border border-slate-800 bg-slate-950/80 p-8 sm:p-10 lg:p-12">
           <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
             <div className="space-y-6">
-              <span className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">Built for focus</span>
-              <h2 className="text-4xl font-semibold text-white sm:text-5xl">From scattered notes to calm, confident prep.</h2>
+              <span className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">{t('focus_span')}</span>
+              <h2 className="text-4xl font-semibold text-white sm:text-5xl">{t('focus_heading')}</h2>
               <p className="max-w-xl text-lg leading-8 text-slate-300">
-                Students use ShikshaSetu to study smarter, convert PDFs into engaging quizzes, and stay on top of their goals.
+                {t('focus_desc')}
               </p>
               <div className="flex flex-wrap gap-3 pt-2">
                 <Link href="/signup" className="rounded-full bg-violet-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-400">
-                  Get started free
+                  {t('hero_cta_start')}
                 </Link>
                 <Link href="/login" className="rounded-full border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-200 transition hover:border-violet-400 hover:text-white">
-                  Sign in
+                  {t('nav_login')}
                 </Link>
               </div>
             </div>
             <div className="rounded-[1.75rem] border border-slate-800 bg-slate-900/90 p-6">
-              <div className="rounded-[1.25rem] border border-slate-800 bg-slate-950/80 p-5 space-y-5">
+              <div className="rounded-[1.25rem] border border-slate-800 bg-slate-955/80 p-5 space-y-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Platform features</p>
-                    <p className="mt-1 text-xl font-semibold text-white">Your AI study workspace</p>
+                    <p className="text-xs uppercase tracking-[0.25em] text-slate-500">{t('focus_span')}</p>
+                    <p className="mt-1 text-xl font-semibold text-white">{t('focus_workspace_title')}</p>
                   </div>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2">
-                  {['AI-powered notes', 'Adaptive quizzes', 'PDF to quiz', 'Doubt solver'].map((item) => (
+                  {[t('focus_feat_1'), t('focus_feat_2'), t('focus_feat_3'), t('focus_feat_4')].map((item) => (
                     <div key={item} className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
                       <p className="text-sm font-medium text-white">{item}</p>
                     </div>
@@ -85,13 +90,13 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl rounded-[2.5rem] border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 p-8 sm:p-10 lg:p-12">
           <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
             <div className="space-y-6">
-              <span className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">Product preview</span>
-              <h2 className="text-4xl font-semibold text-white sm:text-5xl">Everything your study routine needs, built into one intelligent workspace.</h2>
+              <span className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">{t('preview_span')}</span>
+              <h2 className="text-4xl font-semibold text-white sm:text-5xl">{t('preview_heading')}</h2>
               <p className="max-w-xl text-lg leading-8 text-slate-300">
-                Discover a premium experience with adaptive quizzes, instant doubt support, and clear reports that help every session feel focused.
+                {t('preview_desc')}
               </p>
               <div className="flex flex-wrap gap-3">
-                {['Adaptive quizzes', 'Instant doubt help', 'Smart analytics'].map((item) => (
+                {[t('preview_tag_1'), t('preview_tag_2'), t('preview_tag_3')].map((item) => (
                   <span key={item} className="rounded-full border border-slate-700 bg-slate-900/80 px-4 py-2 text-sm text-slate-300">
                     {item}
                   </span>
@@ -99,10 +104,10 @@ export default function HomePage() {
               </div>
               <div className="flex flex-wrap gap-3 pt-2">
                 <Link href="/signup" className="rounded-full bg-violet-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-400">
-                  Create account
+                  {t('hero_cta_start')}
                 </Link>
                 <Link href="/login" className="rounded-full border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-200 transition hover:border-violet-400 hover:text-white">
-                  Sign in
+                  {t('nav_login')}
                 </Link>
               </div>
             </div>
@@ -110,13 +115,13 @@ export default function HomePage() {
               <div className="rounded-[1.5rem] border border-slate-800 bg-slate-900/90 p-5 space-y-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-400">Study tools</p>
-                    <p className="mt-1 text-xl font-semibold text-white">AI study board</p>
+                    <p className="text-sm text-slate-400">{t('hero_stat_tools')}</p>
+                    <p className="mt-1 text-xl font-semibold text-white">{t('preview_board_title')}</p>
                   </div>
                 </div>
                 <div className="grid gap-3 md:grid-cols-2">
-                  {['AI Notes', 'Mock Tests', 'PDF Upload', 'Progress Tracking'].map((item) => (
-                    <div key={item} className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
+                  {[t('feat_ai_notes_title'), t('feat_mock_title'), t('feat_pdf_title'), t('feat_progress_title')].map((item) => (
+                    <div key={item} className="rounded-2xl border border-slate-800 bg-slate-955/80 p-4">
                       <p className="text-sm font-medium text-white">{item}</p>
                     </div>
                   ))}
@@ -127,11 +132,9 @@ export default function HomePage() {
         </div>
       </AnimatedSection>
 
-
-
       <AnimatedSection id="faqs" className="border-t border-slate-800/70 px-6 py-16 sm:px-10 lg:px-16">
         <div className="mx-auto max-w-7xl">
-          <SectionHeading title="Frequently asked questions" subtitle="Helpful answers for a smooth start." />
+          <SectionHeading title={t('faq_heading')} subtitle={t('faq_subheading')} />
           <div className="mt-10 space-y-4">
             {faqs.map((faq) => (
               <FaqItem key={faq.question} question={faq.question} answer={faq.answer} />

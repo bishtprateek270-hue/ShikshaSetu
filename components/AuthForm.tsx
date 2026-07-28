@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useAuth } from './AuthProvider';
+import { useLanguage } from '../lib/language/LanguageContext';
 
 type AuthFormProps = {
   mode: 'login' | 'signup' | 'forgot';
@@ -17,6 +18,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { signIn, signUp, signInWithGoogle, resetPassword, isConfigured } = useAuth();
+  const { t } = useLanguage();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -27,10 +29,10 @@ export default function AuthForm({ mode }: AuthFormProps) {
     try {
       if (mode === 'signup') {
         await signUp(email, password, name);
-        setMessage('Account created. A verification email has been sent.');
+        setMessage(t('auth_email_verified_sent'));
       } else if (mode === 'forgot') {
         await resetPassword(email);
-        setMessage('If the email exists, a reset link has been sent.');
+        setMessage(t('auth_reset_sent'));
       } else {
         await signIn(email, password);
       }
@@ -62,11 +64,11 @@ export default function AuthForm({ mode }: AuthFormProps) {
 
       {mode === 'signup' ? (
         <div>
-          <label className="block text-sm font-medium text-slate-400">Name</label>
+          <label className="block text-sm font-medium text-slate-400">{t('auth_name_label')}</label>
           <input
             value={name}
             onChange={(event) => setName(event.target.value)}
-            placeholder="Your full name"
+            placeholder={t('auth_name_placeholder')}
             required
             className="mt-2 w-full rounded-2xl border border-slate-800 bg-slate-900 px-4 py-3 text-slate-100 outline-none transition focus:border-violet-400"
           />
@@ -74,12 +76,12 @@ export default function AuthForm({ mode }: AuthFormProps) {
       ) : null}
 
       <div>
-        <label className="block text-sm font-medium text-slate-400">Email</label>
+        <label className="block text-sm font-medium text-slate-400">{t('auth_email_label')}</label>
         <input
           type="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          placeholder="name@example.com"
+          placeholder={t('auth_email_placeholder')}
           required
           className="mt-2 w-full rounded-2xl border border-slate-800 bg-slate-900 px-4 py-3 text-slate-100 outline-none transition focus:border-violet-400"
         />
@@ -87,12 +89,12 @@ export default function AuthForm({ mode }: AuthFormProps) {
 
       {mode !== 'forgot' ? (
         <div>
-          <label className="block text-sm font-medium text-slate-400">Password</label>
+          <label className="block text-sm font-medium text-slate-400">{t('auth_password_label')}</label>
           <input
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
-            placeholder="Enter your password"
+            placeholder={t('auth_password_placeholder')}
             required
             className="mt-2 w-full rounded-2xl border border-slate-800 bg-slate-900 px-4 py-3 text-slate-100 outline-none transition focus:border-violet-400"
           />
@@ -102,7 +104,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
       {mode !== 'forgot' ? (
         <div className="flex items-center justify-end text-sm text-slate-400">
           <Link href="/forgot-password" className="font-semibold text-slate-200 transition hover:text-white">
-            Forgot password?
+            {t('auth_forgot_link')}
           </Link>
         </div>
       ) : null}
@@ -112,14 +114,14 @@ export default function AuthForm({ mode }: AuthFormProps) {
         disabled={isSubmitting || !isConfigured}
         className="w-full rounded-2xl bg-violet-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-400 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {mode === 'login' ? 'Sign in' : mode === 'signup' ? 'Create account' : 'Send reset link'}
+        {mode === 'login' ? t('auth_btn_login') : mode === 'signup' ? t('auth_btn_signup') : t('auth_btn_forgot')}
       </button>
 
       {mode !== 'forgot' ? (
         <>
           <div className="flex items-center gap-3 text-sm text-slate-500">
             <span className="h-px flex-1 bg-slate-700" />
-            <span>or</span>
+            <span>{t('auth_or')}</span>
             <span className="h-px flex-1 bg-slate-700" />
           </div>
 
@@ -129,18 +131,18 @@ export default function AuthForm({ mode }: AuthFormProps) {
             disabled={isSubmitting || !isConfigured}
             className="w-full rounded-2xl border border-slate-800 bg-slate-900 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:border-violet-400 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Continue with Google
+            {t('auth_google')}
           </button>
         </>
       ) : null}
 
       <div className="text-center text-sm text-slate-400">
         {mode === 'login' ? (
-          <>New here? <Link href="/signup" className="font-semibold text-slate-100 hover:text-white">Create an account</Link></>
+          <>{t('auth_no_account')} <Link href="/signup" className="font-semibold text-slate-100 hover:text-white">{t('nav_signup')}</Link></>
         ) : mode === 'signup' ? (
-          <>Already have an account? <Link href="/login" className="font-semibold text-slate-100 hover:text-white">Sign in</Link></>
+          <>{t('auth_has_account')} <Link href="/login" className="font-semibold text-slate-100 hover:text-white">{t('nav_login')}</Link></>
         ) : (
-          <>Remembered your password? <Link href="/login" className="font-semibold text-slate-100 hover:text-white">Sign in</Link></>
+          <>{t('auth_remember_password')} <Link href="/login" className="font-semibold text-slate-100 hover:text-white">{t('nav_login')}</Link></>
         )}
       </div>
     </form>
