@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, LayoutDashboard, LogOut } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import DarkModeToggle from '../app/dark';
+import { useAuth } from './AuthProvider';
 
 const navItems = [
   { href: '/#features', label: 'Features' },
@@ -14,6 +15,9 @@ const navItems = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState('/#features');
+  const { user, profile, loading, logout } = useAuth();
+
+  const isLoggedIn = !loading && !!user;
 
   useEffect(() => {
     const sections = navItems
@@ -38,6 +42,12 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
+  const userInitials = profile?.name
+    ? profile.name.substring(0, 2).toUpperCase()
+    : user?.displayName
+      ? user.displayName.substring(0, 2).toUpperCase()
+      : 'U';
+
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 sm:px-10 lg:px-16">
@@ -58,12 +68,37 @@ export default function Navbar() {
               </a>
             );
           })}
-          <Link href="/login" className="rounded-full border border-slate-700 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-violet-400 hover:text-white">
-            Login
-          </Link>
-          <Link href="/signup" className="rounded-full bg-violet-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-violet-400">
-            Sign up
-          </Link>
+
+          {isLoggedIn ? (
+            <>
+              <Link href="/dashboard" className="inline-flex items-center gap-2 rounded-full bg-violet-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-violet-400">
+                <LayoutDashboard className="h-4 w-4" />
+                Dashboard
+              </Link>
+              <div className="flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-tr from-pink-500 to-orange-500 text-xs font-bold text-white">
+                  {userInitials}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => logout()}
+                  className="rounded-full border border-slate-700 p-2 text-slate-400 transition hover:border-rose-400 hover:text-rose-300"
+                  aria-label="Logout"
+                >
+                  <LogOut className="h-4 w-4" />
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="rounded-full border border-slate-700 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-violet-400 hover:text-white">
+                Login
+              </Link>
+              <Link href="/signup" className="rounded-full bg-violet-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-violet-400">
+                Sign up
+              </Link>
+            </>
+          )}
           <DarkModeToggle />
         </nav>
 
@@ -83,12 +118,31 @@ export default function Navbar() {
               </a>
             ))}
             <div className="mt-2 flex flex-col gap-2">
-              <Link href="/login" className="rounded-full border border-slate-700 px-4 py-2 text-center text-sm font-medium text-slate-200 transition hover:border-violet-400 hover:text-white">
-                Login
-              </Link>
-              <Link href="/signup" className="rounded-full bg-violet-500 px-4 py-2 text-center text-sm font-semibold text-white transition hover:bg-violet-400">
-                Sign up
-              </Link>
+              {isLoggedIn ? (
+                <>
+                  <Link href="/dashboard" onClick={() => setOpen(false)} className="inline-flex items-center justify-center gap-2 rounded-full bg-violet-500 px-4 py-2 text-center text-sm font-semibold text-white transition hover:bg-violet-400">
+                    <LayoutDashboard className="h-4 w-4" />
+                    Dashboard
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => { setOpen(false); logout(); }}
+                    className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-700 px-4 py-2 text-center text-sm font-medium text-slate-200 transition hover:border-rose-400 hover:text-rose-300"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link href="/login" className="rounded-full border border-slate-700 px-4 py-2 text-center text-sm font-medium text-slate-200 transition hover:border-violet-400 hover:text-white">
+                    Login
+                  </Link>
+                  <Link href="/signup" className="rounded-full bg-violet-500 px-4 py-2 text-center text-sm font-semibold text-white transition hover:bg-violet-400">
+                    Sign up
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>

@@ -30,17 +30,17 @@ export default function Footer() {
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">Company</h3>
             <div className="mt-5 space-y-3 text-sm text-slate-300">
-              <Link href="#features" className="block hover:text-white">About</Link>
-              <Link href="#newsletter" className="block hover:text-white">Contact</Link>
-              <Link href="#features" className="block hover:text-white">Careers</Link>
+              <Link href="/about" className="block hover:text-white">About</Link>
+              <Link href="/contact" className="block hover:text-white">Contact</Link>
+              <Link href="/about" className="block hover:text-white">Careers</Link>
             </div>
           </div>
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">Legal</h3>
             <div className="mt-5 space-y-3 text-sm text-slate-300">
-              <Link href="#features" className="block hover:text-white">Privacy</Link>
-              <Link href="#features" className="block hover:text-white">Terms</Link>
-              <Link href="#features" className="block hover:text-white">Cookies</Link>
+              <Link href="/privacy" className="block hover:text-white">Privacy</Link>
+              <Link href="/terms" className="block hover:text-white">Terms</Link>
+              <Link href="/terms" className="block hover:text-white">Cookies</Link>
             </div>
           </div>
         </div>

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight, BarChart3, BookOpen, FileText, Sparkles, Trophy, Zap } from 'lucide-react';
 
@@ -127,18 +128,21 @@ export default function HeroSection() {
                 })}
               </motion.div>
 
-              <motion.div 
-                whileHover={{ scale: 1.015, borderColor: 'rgba(139, 92, 246, 0.4)' }}
-                whileTap={{ scale: 0.99 }}
-                className="mt-4 rounded-2xl border border-violet-500/20 bg-violet-500/10 p-4 cursor-pointer transition-all duration-200"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <p className="text-sm font-semibold text-white">Get started today</p>
-                    <p className="text-sm text-slate-305">Sign up and explore your AI workspace</p>
+              <Link href="/signup">
+                <motion.div 
+                  whileHover={{ scale: 1.015, borderColor: 'rgba(139, 92, 246, 0.4)' }}
+                  whileTap={{ scale: 0.99 }}
+                  className="mt-4 rounded-2xl border border-violet-500/20 bg-violet-500/10 p-4 cursor-pointer transition-all duration-200"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <p className="text-sm font-semibold text-white">Get started today</p>
+                      <p className="text-sm text-slate-300">Sign up and explore your AI workspace</p>
+                    </div>
+                    <ArrowRight className="h-4 w-4 text-violet-300" />
                   </div>
-                </div>
-              </motion.div>
+                </motion.div>
+              </Link>
             </div>
           </motion.div>
         </div>

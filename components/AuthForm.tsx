@@ -99,19 +99,13 @@ export default function AuthForm({ mode }: AuthFormProps) {
         </div>
       ) : null}
 
-      <div className="flex items-center justify-between gap-4 text-sm text-slate-400">
-        {mode !== 'forgot' ? (
-          <label className="flex items-center gap-2">
-            <input type="checkbox" className="h-4 w-4 rounded border-slate-700 bg-slate-900 text-violet-500" />
-            Remember me
-          </label>
-        ) : null}
-        {mode !== 'forgot' ? (
+      {mode !== 'forgot' ? (
+        <div className="flex items-center justify-end text-sm text-slate-400">
           <Link href="/forgot-password" className="font-semibold text-slate-200 transition hover:text-white">
             Forgot password?
           </Link>
-        ) : null}
-      </div>
+        </div>
+      ) : null}
 
       <button
         type="submit"

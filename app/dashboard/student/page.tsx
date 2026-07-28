@@ -65,52 +65,58 @@ export default function StudentDashboardPage() {
 
               <div className="grid gap-4 md:grid-cols-3">
                 {/* Course Card 1 */}
-                <motion.div 
-                  whileHover={{ y: -4, scale: 1.015 }}
-                  transition={{ duration: 0.2 }}
-                  className="rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-soft border-l-4 border-l-indigo-500 flex flex-col justify-between h-40 relative group cursor-pointer"
-                >
-                  <div>
-                    <p className="text-sm font-extrabold text-slate-855 dark:text-white">User Experience</p>
-                    <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">Jony Deo</p>
-                  </div>
-                  <div className="flex items-center justify-between mt-auto">
-                    <span className="text-xs font-bold text-indigo-500">Master King</span>
-                    <span className="text-lg text-indigo-500 group-hover:translate-x-1 transition-transform">→</span>
-                  </div>
-                </motion.div>
+                <Link href="/dashboard/student/courses">
+                  <motion.div 
+                    whileHover={{ y: -4, scale: 1.015 }}
+                    transition={{ duration: 0.2 }}
+                    className="rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-soft border-l-4 border-l-indigo-500 flex flex-col justify-between h-40 relative group cursor-pointer"
+                  >
+                    <div>
+                      <p className="text-sm font-extrabold text-slate-855 dark:text-white">User Experience</p>
+                      <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">Jony Deo</p>
+                    </div>
+                    <div className="flex items-center justify-between mt-auto">
+                      <span className="text-xs font-bold text-indigo-500">Master King</span>
+                      <span className="text-lg text-indigo-500 group-hover:translate-x-1 transition-transform">→</span>
+                    </div>
+                  </motion.div>
+                </Link>
 
                 {/* Course Card 2 */}
-                <motion.div 
-                  whileHover={{ y: -4, scale: 1.015 }}
-                  transition={{ duration: 0.2 }}
-                  className="rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-soft border-l-4 border-l-pink-500 flex flex-col justify-between h-40 relative group cursor-pointer"
-                >
-                  <div>
-                    <p className="text-sm font-extrabold text-slate-855 dark:text-white">User Interface</p>
-                    <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">Jasmine</p>
-                  </div>
-                  <div className="flex items-center justify-between mt-auto">
-                    <span className="text-xs font-bold text-pink-500">Intermediate</span>
-                    <span className="text-lg text-pink-500 group-hover:translate-x-1 transition-transform">→</span>
-                  </div>
-                </motion.div>
+                <Link href="/dashboard/student/courses">
+                  <motion.div 
+                    whileHover={{ y: -4, scale: 1.015 }}
+                    transition={{ duration: 0.2 }}
+                    className="rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-soft border-l-4 border-l-pink-500 flex flex-col justify-between h-40 relative group cursor-pointer"
+                  >
+                    <div>
+                      <p className="text-sm font-extrabold text-slate-855 dark:text-white">User Interface</p>
+                      <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">Jasmine</p>
+                    </div>
+                    <div className="flex items-center justify-between mt-auto">
+                      <span className="text-xs font-bold text-pink-500">Intermediate</span>
+                      <span className="text-lg text-pink-500 group-hover:translate-x-1 transition-transform">→</span>
+                    </div>
+                  </motion.div>
+                </Link>
 
                 {/* Course Card 3 */}
-                <motion.div 
-                  whileHover={{ y: -4, scale: 1.015 }}
-                  transition={{ duration: 0.2 }}
-                  className="rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-soft border-l-4 border-l-orange-500 flex flex-col justify-between h-40 relative group cursor-pointer"
-                >
-                  <div>
-                    <p className="text-sm font-extrabold text-slate-855 dark:text-white">3D Designs</p>
-                    <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">Jasmine</p>
-                  </div>
-                  <div className="flex items-center justify-between mt-auto">
-                    <span className="text-xs font-bold text-orange-400">Beginer</span>
-                    <span className="text-lg text-orange-400 group-hover:translate-x-1 transition-transform">→</span>
-                  </div>
-                </motion.div>
+                <Link href="/dashboard/student/courses">
+                  <motion.div 
+                    whileHover={{ y: -4, scale: 1.015 }}
+                    transition={{ duration: 0.2 }}
+                    className="rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-soft border-l-4 border-l-orange-500 flex flex-col justify-between h-40 relative group cursor-pointer"
+                  >
+                    <div>
+                      <p className="text-sm font-extrabold text-slate-855 dark:text-white">3D Designs</p>
+                      <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">Jasmine</p>
+                    </div>
+                    <div className="flex items-center justify-between mt-auto">
+                      <span className="text-xs font-bold text-orange-400">Beginner</span>
+                      <span className="text-lg text-orange-400 group-hover:translate-x-1 transition-transform">→</span>
+                    </div>
+                  </motion.div>
+                </Link>
               </div>
             </div>
 
@@ -227,7 +233,7 @@ export default function StudentDashboardPage() {
             >
               <div className="max-w-[150px] relative z-10">
                 <p className="text-xs font-black text-slate-800 dark:text-white leading-normal">
-                  Work anywhere with the Edugate learning App
+                  Work anywhere with the ShikshaSetu learning App
                 </p>
                 <div className="mt-4 space-y-2">
                   {/* Mock store badges */}

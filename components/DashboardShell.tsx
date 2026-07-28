@@ -192,7 +192,7 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
         <aside className={sidebarClass}>
           <div className="mb-8 flex items-center justify-between gap-3 px-2">
             <span className="text-2xl font-black tracking-tight text-indigo-600 dark:text-indigo-400">
-              EduGate
+              ShikshaSetu
             </span>
           </div>
           <nav className="space-y-1">
@@ -236,6 +236,13 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
             </p>
             <button
               type="button"
+              onClick={() => {
+                const toast = document.createElement('div');
+                toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] rounded-2xl border border-violet-500/30 bg-slate-900 px-6 py-3 text-sm font-semibold text-violet-200 shadow-xl animate-in fade-in slide-in-from-bottom-4 duration-300';
+                toast.textContent = '🚀 Coming soon! PRO features are under development.';
+                document.body.appendChild(toast);
+                setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.3s'; setTimeout(() => toast.remove(), 300); }, 2500);
+              }}
               className="mt-3.5 w-full rounded-xl bg-indigo-600 dark:bg-indigo-500 py-2.5 text-xs font-bold text-white shadow-sm hover:bg-indigo-500 dark:hover:bg-indigo-400 transition"
             >
               Upgrade
