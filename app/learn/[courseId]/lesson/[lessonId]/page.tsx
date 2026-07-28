@@ -10,6 +10,7 @@ import LessonSidebar from '../../../../../components/lms/LessonSidebar';
 import BookmarkButton from '../../../../../components/lms/BookmarkButton';
 import ProgressBar from '../../../../../components/lms/ProgressBar';
 import LmsSkeletonLoader from '../../../../../components/lms/LmsSkeletonLoader';
+import LessonDiscussions from '../../../../../components/lms/LessonDiscussions';
 import { useAuth } from '../../../../../components/AuthProvider';
 import { useCourse, useEnrollment, useNotes, useBookmarks } from '../../../../../lib/lms/hooks';
 import { getLessonById, getAdjacentLessons, getTotalLessons } from '../../../../../lib/lms/utils';
@@ -226,6 +227,9 @@ export default function LessonPlayerPage() {
                 )}
               </div>
             </div>
+
+            {/* Q&A Discussions */}
+            <LessonDiscussions lessonId={lessonId} courseId={courseId} />
           </div>
 
           {/* Sidebar */}

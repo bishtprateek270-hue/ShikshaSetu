@@ -12,6 +12,7 @@ import { useAuth } from '../../../components/AuthProvider';
 import { enrollInCourse } from '../../../lib/lms/firestore';
 import { formatDurationLong, getLevelColor, getTotalLessons } from '../../../lib/lms/utils';
 import { useState } from 'react';
+import PaymentModal from '../../../components/lms/PaymentModal';
 
 export default function CourseDetailsPage() {
   const params = useParams();
@@ -21,8 +22,28 @@ export default function CourseDetailsPage() {
   const { user } = useAuth();
   const { enrollment, loading: enrollLoading } = useEnrollment(user?.uid, course?.id ?? '');
   const [enrolling, setEnrolling] = useState(false);
+  const [paymentOpen, setPaymentOpen] = useState(false);
 
   const handleEnroll = async () => {
+    if (!user || !course) return;
+    if (course.price > 0) {
+      setPaymentOpen(true);
+      return;
+    }
+
+    setEnrolling(true);
+    try {
+      await enrollInCourse(user.uid, course.id);
+      router.push(`/learn/${course.id}`);
+    } catch (err) {
+      console.error('Enrollment error:', err);
+    } finally {
+      setEnrolling(false);
+    }
+  };
+
+  const handlePaymentSuccess = async () => {
+    setPaymentOpen(false);
     if (!user || !course) return;
     setEnrolling(true);
     try {
@@ -43,6 +64,13 @@ export default function CourseDetailsPage() {
   return (
     <ProtectedRoute>
       <main className="min-h-screen bg-slate-950 text-slate-100">
+        <PaymentModal
+          isOpen={paymentOpen}
+          onClose={() => setPaymentOpen(false)}
+          onSuccess={handlePaymentSuccess}
+          courseTitle={course?.title ?? ''}
+          coursePrice={course?.price ?? 0}
+        />
         {courseLoading ? (
           <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
             <LmsSkeletonLoader type="lessonContent" />
