@@ -20,7 +20,7 @@ const translations: Record<Language, Translations> = {
 
     // Hero Section
     hero_badge: 'AI-powered learning for modern students',
-    hero_title: "Learn faster with ShikshaSetu's AI study copilot.",
+    hero_title: "Learn smarter, study faster, master anything.",
     hero_subtitle: 'Turn notes, PDFs, and goals into personalized lessons, quizzes, and progress insights without the chaos.',
     hero_cta_start: 'Start free',
     hero_cta_explore: 'Explore the platform',
@@ -194,7 +194,7 @@ const translations: Record<Language, Translations> = {
 
     // Hero Section
     hero_badge: 'आधुनिक छात्रों के लिए AI-संचालित शिक्षण',
-    hero_title: 'शिक्षासेतु के AI स्टडी कोपायलट के साथ तेजी से सीखें।',
+    hero_title: 'स्मार्ट तरीके से सीखें, तेजी से अध्ययन करें, हर विषय में महारत हासिल करें।',
     hero_subtitle: 'बिना किसी उलझन के नोट्स, पीडीएफ और लक्ष्यों को व्यक्तिगत पाठों, क्विज़ और प्रगति अंतर्दृष्टि में बदलें।',
     hero_cta_start: 'मुफ्त शुरू करें',
     hero_cta_explore: 'प्लेटफॉर्म का अन्वेषण करें',
