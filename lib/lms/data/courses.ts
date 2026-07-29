@@ -133,7 +133,7 @@ export const courses: Course[] = [
       bio: 'Research scientist and PhD holder in Applied Artificial Intelligence. Former machine learning engineer at leading technology research labs.',
       title: 'AI Research Scientist'
     },
-    price: 4999,
+    price: 0,
     rating: 4.9,
     reviewCount: 220,
     enrolledCount: 890,
@@ -199,7 +199,7 @@ export const courses: Course[] = [
       bio: 'Full Stack Engineer specializing in performance optimization and type-safe systems architecture.',
       title: 'Principal Software Engineer'
     },
-    price: 2999,
+    price: 0,
     rating: 4.95,
     reviewCount: 180,
     enrolledCount: 650,
