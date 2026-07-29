@@ -404,20 +404,24 @@ export async function submitAssignment(
 
 export async function getCourses(): Promise<Course[]> {
   const db = getDb();
-  if (!db) return [];
+  if (!db) return courses;
   try {
     const q = query(collection(db, 'courses'), where('status', '==', 'published'));
     const snap = await getDocs(q);
-    return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Course);
+    const dbCourses = snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Course);
+    if (dbCourses.length === 0) {
+      return courses;
+    }
+    return dbCourses;
   } catch (e) {
     console.error('Failed to get courses from Firestore:', e);
-    return [];
+    return courses;
   }
 }
 
 export async function getCourseBySlug(idOrSlug: string): Promise<Course | null> {
   const db = getDb();
-  if (!db) return null;
+  if (!db) return courses.find((c) => c.id === idOrSlug || c.slug === idOrSlug) || null;
   try {
     const q = query(collection(db, 'courses'), where('slug', '==', idOrSlug));
     const snap = await getDocs(q);
@@ -431,9 +435,9 @@ export async function getCourseBySlug(idOrSlug: string): Promise<Course | null> 
       return { id: docSnap.id, ...docSnap.data() } as Course;
     }
 
-    return null;
+    return courses.find((c) => c.id === idOrSlug || c.slug === idOrSlug) || null;
   } catch (e) {
     console.error('Failed to get course by slug or ID:', e);
-    return null;
+    return courses.find((c) => c.id === idOrSlug || c.slug === idOrSlug) || null;
   }
 }

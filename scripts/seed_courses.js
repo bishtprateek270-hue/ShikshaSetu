@@ -1,6 +1,19 @@
-import type { Course } from '../types';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, doc, setDoc } from 'firebase/firestore';
 
-export const courses: Course[] = [
+const firebaseConfig = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const courses = [
   {
     id: 'course-webdev-101',
     slug: 'modern-web-development-101',
@@ -235,3 +248,20 @@ export const courses: Course[] = [
     ]
   }
 ];
+
+async function seed() {
+  console.log('Starting database seeding...');
+  for (const course of courses) {
+    try {
+      console.log(`Seeding course: ${course.title}...`);
+      await setDoc(doc(db, 'courses', course.id), course);
+      console.log(`Successfully seeded course: ${course.id}`);
+    } catch (error) {
+      console.error(`Error seeding course ${course.id}:`, error);
+    }
+  }
+  console.log('Seeding completed!');
+  process.exit(0);
+}
+
+seed();
