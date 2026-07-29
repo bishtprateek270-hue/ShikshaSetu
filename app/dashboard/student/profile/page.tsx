@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import RoleProtectedRoute from '../../../../components/RoleProtectedRoute';
 import DashboardShell from '../../../../components/DashboardShell';
 import DashboardCard from '../../../../components/DashboardCard';
@@ -10,15 +10,25 @@ import { getFirebaseFirestore } from '../../../../lib/firebase';
 import { User, School, BookOpen, FileText, Loader2, Sparkles } from 'lucide-react';
 
 export default function StudentProfilePage() {
-  const { user, profile } = useAuth();
+  const { user, profile, loading } = useAuth();
   
-  const [name, setName] = useState(profile?.name ?? '');
-  const [institute, setInstitute] = useState(profile?.institute ?? '');
-  const [title, setTitle] = useState(profile?.title ?? '');
-  const [bio, setBio] = useState(profile?.bio ?? '');
+  const [name, setName] = useState('');
+  const [institute, setInstitute] = useState('');
+  const [title, setTitle] = useState('');
+  const [bio, setBio] = useState('');
   
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+
+  // Sync state when profile is loaded
+  useEffect(() => {
+    if (profile) {
+      setName(profile.name ?? '');
+      setInstitute(profile.institute ?? '');
+      setTitle(profile.title ?? '');
+      setBio(profile.bio ?? '');
+    }
+  }, [profile]);
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,6 +65,25 @@ export default function StudentProfilePage() {
       setSaving(false);
     }
   };
+
+  if (loading) {
+    return (
+      <RoleProtectedRoute allowedRoles={['student']}>
+        <DashboardShell
+          title="Student Profile"
+          subtitle="Manage your personal learning profile and credentials."
+          breadcrumbs={[
+            { label: 'Dashboard', href: '/dashboard/student' },
+            { label: 'Profile' }
+          ]}
+        >
+          <div className="flex min-h-[400px] items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin text-violet-500" />
+          </div>
+        </DashboardShell>
+      </RoleProtectedRoute>
+    );
+  }
 
   return (
     <RoleProtectedRoute allowedRoles={['student']}>
@@ -101,7 +130,7 @@ export default function StudentProfilePage() {
                       required
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder="e.g. Vicky Kumar"
+                      placeholder="Vicky Kumar"
                       className="w-full rounded-2xl border border-slate-850 bg-slate-900/60 py-3 pl-11 pr-4 text-sm text-white placeholder-slate-650 outline-none focus:border-violet-500 transition-colors"
                     />
                   </div>
@@ -116,7 +145,7 @@ export default function StudentProfilePage() {
                       required
                       value={institute}
                       onChange={(e) => setInstitute(e.target.value)}
-                      placeholder="e.g. Indian Institute of Technology"
+                      placeholder="Indian Institute of Technology"
                       className="w-full rounded-2xl border border-slate-850 bg-slate-900/60 py-3 pl-11 pr-4 text-sm text-white placeholder-slate-650 outline-none focus:border-violet-500 transition-colors"
                     />
                   </div>
@@ -130,7 +159,7 @@ export default function StudentProfilePage() {
                       type="text"
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
-                      placeholder="e.g. Computer Science Undergrad"
+                      placeholder="Computer Science Undergrad"
                       className="w-full rounded-2xl border border-slate-850 bg-slate-900/60 py-3 pl-11 pr-4 text-sm text-white placeholder-slate-650 outline-none focus:border-violet-500 transition-colors"
                     />
                   </div>
