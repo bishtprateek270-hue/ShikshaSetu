@@ -231,42 +231,6 @@ export default function StudentDashboardPage() {
               </MotionLink>
             </div>
 
-            {/* Mobile App Promo Card */}
-            <motion.div 
-              whileHover={{ y: -4, scale: 1.015 }}
-              transition={{ duration: 0.2 }}
-              className="rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-soft relative overflow-hidden flex flex-col justify-between min-h-[220px]"
-            >
-              <div className="max-w-[150px] relative z-10">
-                <p className="text-xs font-black text-slate-800 dark:text-white leading-normal">
-                  {t('student_promo_title')}
-                </p>
-                <div className="mt-4 space-y-2">
-                  {/* Mock store badges */}
-                  <div className="flex items-center gap-1.5 py-1 px-2 rounded bg-slate-900 text-white text-[8px] font-bold w-24 cursor-pointer hover:bg-slate-850 transition">
-                    <span className="text-xs">▶</span>
-                    <div>
-                      <p className="text-[6px] text-slate-400 uppercase font-semibold">Get it on</p>
-                      <p className="leading-none text-slate-100">{t('student_promo_play')}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-1.5 py-1 px-2 rounded bg-slate-900 text-white text-[8px] font-bold w-24 cursor-pointer hover:bg-slate-850 transition">
-                    <span className="text-xs"></span>
-                    <div>
-                      <p className="text-[6px] text-slate-400 uppercase font-semibold">Download on the</p>
-                      <p className="leading-none text-slate-100">{t('student_promo_appstore')}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="absolute right-2 bottom-0 w-[140px] z-10 pointer-events-none">
-                <img
-                  src="/hand_phone_3d.png"
-                  alt="Edugate mobile illustration"
-                  className="h-44 object-contain ml-auto"
-                />
-              </div>
-            </motion.div>
 
           </motion.div>
         </div>
