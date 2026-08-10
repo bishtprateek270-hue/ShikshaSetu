@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import SectionHeading from './SectionHeading';
 import { useLanguage } from '../lib/language/LanguageContext';
@@ -20,29 +21,45 @@ export default function FeaturesSection({ features }: FeaturesSectionProps) {
   const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Raw scroll progress
+  // Faster scroll height (260vh) for responsive speed
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
   });
 
-  // Smooth out scroll progression with spring physics for 60fps momentum
+  // Snappy spring physics for smooth, responsive transitions
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 90,
-    damping: 25,
+    stiffness: 140,
+    damping: 20,
     restDelta: 0.001,
   });
 
+  // Smooth scroll programmatically to a specific feature index
+  const scrollToFeature = (targetIndex: number) => {
+    if (!containerRef.current) return;
+    const clampedIndex = Math.max(0, Math.min(features.length - 1, targetIndex));
+    const rect = containerRef.current.getBoundingClientRect();
+    const containerTop = window.scrollY + rect.top;
+    const containerHeight = containerRef.current.offsetHeight;
+    const scrollableDistance = containerHeight - window.innerHeight;
+    const targetY = containerTop + (clampedIndex / Math.max(1, features.length - 1)) * scrollableDistance;
+
+    window.scrollTo({
+      top: targetY,
+      behavior: 'smooth',
+    });
+  };
+
   return (
-    <div ref={containerRef} id="features" className="relative h-[480vh] bg-white dark:bg-zinc-950">
-      {/* Sticky Full-Viewport Stage */}
+    <div ref={containerRef} id="features" className="relative h-[260vh] bg-white dark:bg-zinc-950">
+      {/* Sticky Viewport Stage */}
       <div className="sticky top-0 flex h-screen w-full flex-col justify-between overflow-hidden px-4 sm:px-8 py-6 sm:py-10 lg:px-12">
         
-        {/* Sticky Header */}
+        {/* Sticky Header & Interactive Step Indicators */}
         <div className="mx-auto w-full max-w-7xl text-center shrink-0">
           <SectionHeading title={t('feat_heading')} subtitle={t('feat_subheading')} />
           
-          {/* Step Pill Indicators */}
+          {/* Interactive Step Pill Bar */}
           <div className="mt-4 sm:mt-6 flex items-center justify-center gap-2">
             {features.map((f, i) => (
               <StepIndicator
@@ -50,12 +67,13 @@ export default function FeaturesSection({ features }: FeaturesSectionProps) {
                 index={i}
                 total={features.length}
                 smoothProgress={smoothProgress}
+                onClick={() => scrollToFeature(i)}
               />
             ))}
           </div>
         </div>
 
-        {/* Prominent Feature Card (Spans ~88% Page Width) */}
+        {/* Prominent Large Feature Card Container */}
         <div className="relative mx-auto my-auto w-[90%] max-w-6xl h-[400px] sm:h-[440px] lg:h-[460px]">
           {features.map((feature, index) => (
             <LargeFeatureCard
@@ -64,13 +82,15 @@ export default function FeaturesSection({ features }: FeaturesSectionProps) {
               index={index}
               total={features.length}
               smoothProgress={smoothProgress}
+              onPrev={() => scrollToFeature(index - 1)}
+              onNext={() => scrollToFeature(index + 1)}
             />
           ))}
         </div>
 
-        {/* Bottom Scroll Guide */}
-        <div className="pb-1 text-center text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-500 shrink-0">
-          ✦ Scroll down to reveal next feature
+        {/* Bottom Interactive Navigation & Guide */}
+        <div className="pb-1 text-center text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-500 shrink-0 flex items-center justify-center gap-4">
+          <span>✦ Scroll or use arrows to navigate features</span>
         </div>
       </div>
     </div>
@@ -81,10 +101,12 @@ function StepIndicator({
   index,
   total,
   smoothProgress,
+  onClick,
 }: {
   index: number;
   total: number;
   smoothProgress: any;
+  onClick: () => void;
 }) {
   const step = 1 / total;
   const start = index * step;
@@ -103,9 +125,12 @@ function StepIndicator({
   );
 
   return (
-    <motion.div
+    <motion.button
+      type="button"
+      onClick={onClick}
       style={{ width, opacity }}
-      className="h-2 rounded-full bg-zinc-900 dark:bg-white transition-colors duration-200"
+      className="h-2.5 rounded-full bg-zinc-900 dark:bg-white transition-colors duration-200 cursor-pointer hover:scale-110"
+      aria-label={`Go to feature ${index + 1}`}
     />
   );
 }
@@ -115,24 +140,28 @@ function LargeFeatureCard({
   index,
   total,
   smoothProgress,
+  onPrev,
+  onNext,
 }: {
   feature: FeatureItem;
   index: number;
   total: number;
   smoothProgress: any;
+  onPrev: () => void;
+  onNext: () => void;
 }) {
   const Icon = feature.icon;
   const step = 1 / total;
   const start = index * step;
   const end = (index + 1) * step;
 
-  // Ultra-light 2D GPU-accelerated transforms for 60fps performance
+  // Faster 2D GPU-accelerated transforms
   const opacity = useTransform(
     smoothProgress,
     [
-      start - step * 0.3,
+      start - step * 0.25,
       start,
-      end - step * 0.2,
+      end - step * 0.15,
       index === total - 1 ? 1 : end,
     ],
     [0, 1, 1, index === total - 1 ? 1 : 0]
@@ -141,23 +170,23 @@ function LargeFeatureCard({
   const scale = useTransform(
     smoothProgress,
     [
-      start - step * 0.3,
+      start - step * 0.25,
       start,
-      end - step * 0.2,
+      end - step * 0.15,
       index === total - 1 ? 1 : end,
     ],
-    [0.93, 1, 1, index === total - 1 ? 1 : 0.95]
+    [0.94, 1, 1, index === total - 1 ? 1 : 0.96]
   );
 
   const y = useTransform(
     smoothProgress,
     [
-      start - step * 0.3,
+      start - step * 0.25,
       start,
-      end - step * 0.2,
+      end - step * 0.15,
       index === total - 1 ? 1 : end,
     ],
-    [60, 0, 0, index === total - 1 ? 0 : -45]
+    [50, 0, 0, index === total - 1 ? 0 : -35]
   );
 
   return (
@@ -170,7 +199,7 @@ function LargeFeatureCard({
       }}
       className="absolute inset-0 w-full h-full rounded-[2.5rem] border border-rose-200/80 dark:border-zinc-800 bg-[#FDF4F8] dark:bg-zinc-900/90 p-6 sm:p-10 lg:p-12 shadow-soft flex flex-col justify-between overflow-hidden"
     >
-      {/* Top Meta Header */}
+      {/* Top Meta Header & Interactive Arrow Navigation */}
       <div className="flex items-center justify-between border-b border-rose-200/60 dark:border-zinc-800/60 pb-4">
         <div className="flex items-center gap-3">
           <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm">
@@ -186,9 +215,26 @@ function LargeFeatureCard({
           </div>
         </div>
 
-        <div className="hidden sm:inline-flex items-center gap-2 rounded-full border border-rose-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 px-4 py-1.5 text-xs font-mono font-medium text-zinc-700 dark:text-zinc-300">
-          <span>✦</span>
-          <span>ADAPTIVE AI MODULE</span>
+        {/* Arrow Navigation Controls */}
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={onPrev}
+            disabled={index === 0}
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-rose-200/90 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 shadow-sm hover:scale-105 active:scale-95 transition disabled:opacity-30 disabled:hover:scale-100"
+            aria-label="Previous feature"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            onClick={onNext}
+            disabled={index === total - 1}
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm hover:scale-105 active:scale-95 transition disabled:opacity-30 disabled:hover:scale-100"
+            aria-label="Next feature"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
         </div>
       </div>
 
@@ -223,7 +269,7 @@ function LargeFeatureCard({
 
       {/* Bottom Action Footer */}
       <div className="pt-4 flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-zinc-900 dark:text-white border-t border-rose-200/60 dark:border-zinc-800/60">
-        <span className="font-mono text-[10px] text-zinc-500">EXPLICIT CONTROL FLOW</span>
+        <span className="font-mono text-[10px] text-zinc-500">FEATURE 0{index + 1} OF 0{total}</span>
         <a href="/signup" className="inline-flex items-center gap-2 hover:underline">
           <span>GET STARTED WITH {feature.title}</span>
           <span>↗</span>
