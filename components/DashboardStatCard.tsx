@@ -9,10 +9,11 @@ type DashboardStatCardProps = {
 
 export default function DashboardStatCard({ label, value, subtext, accent }: DashboardStatCardProps) {
   return (
-    <div className={`rounded-2xl border border-slate-100 dark:border-slate-800/50 bg-white dark:bg-slate-900 p-5 shadow-soft text-slate-800 dark:text-slate-100 ${accent ?? ''}`}>
-      <p className="text-xs uppercase tracking-[0.25em] text-slate-500 dark:text-slate-400 font-semibold">{label}</p>
-      <p className="mt-2.5 text-3xl font-semibold text-slate-900 dark:text-white">{value}</p>
-      {subtext ? <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{subtext}</p> : null}
+    <div className={`rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/70 dark:bg-zinc-900/50 p-5 shadow-soft text-zinc-900 dark:text-zinc-100 ${accent ?? ''}`}>
+      <p className="text-[11px] font-mono uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400 font-medium">{label}</p>
+      <p className="mt-2 text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">{value}</p>
+      {subtext ? <p className="mt-1.5 text-xs text-zinc-500 dark:text-zinc-400">{subtext}</p> : null}
     </div>
   );
 }
+

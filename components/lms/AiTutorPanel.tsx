@@ -45,7 +45,7 @@ Select a query below or type your question:`,
     setLoading(true);
 
     try {
-      const history = messages.slice(1); // skip greeting
+      const history = messages.slice(1);
       const reply = await askAiTutor(text, history);
       setMessages((prev) => [...prev, { role: 'assistant', content: reply }]);
     } catch (err) {
@@ -62,7 +62,7 @@ Select a query below or type your question:`,
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_300px] h-[550px] overflow-hidden">
       {/* Main chat window */}
-      <div className="rounded-[1.75rem] border border-slate-800 bg-slate-950/80 flex flex-col justify-between overflow-hidden">
+      <div className="rounded-[2rem] border border-rose-200/80 dark:border-zinc-800 bg-[#FDF4F8] dark:bg-zinc-950/60 flex flex-col justify-between overflow-hidden shadow-soft">
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-5 space-y-4">
           {messages.map((m, idx) => {
@@ -77,10 +77,10 @@ Select a query below or type your question:`,
               >
                 <div
                   className={clsx(
-                    'h-8 w-8 flex-shrink-0 rounded-full flex items-center justify-center text-xs font-bold border',
+                    'h-8 w-8 flex-shrink-0 rounded-full flex items-center justify-center text-xs font-bold border shadow-sm',
                     isUser
-                      ? 'bg-violet-500 border-violet-500 text-white'
-                      : 'bg-slate-900 border-slate-800 text-violet-300'
+                      ? 'bg-zinc-900 border-zinc-900 !text-white dark:bg-white dark:border-white dark:!text-zinc-900'
+                      : 'bg-white border-rose-200 text-zinc-900 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-100'
                   )}
                 >
                   {isUser ? <User className="h-4 w-4" /> : <GraduationCap className="h-4 w-4" />}
@@ -88,10 +88,10 @@ Select a query below or type your question:`,
 
                 <div
                   className={clsx(
-                    'rounded-2xl p-4 text-xs leading-relaxed whitespace-pre-wrap',
+                    'rounded-2xl p-4 text-xs leading-relaxed whitespace-pre-wrap shadow-sm',
                     isUser
-                      ? 'bg-violet-500/10 border border-violet-500/30 text-white'
-                      : 'bg-slate-900/60 border border-slate-900 text-slate-300'
+                      ? 'bg-zinc-900 !text-white dark:bg-white dark:!text-zinc-900'
+                      : 'bg-white border border-rose-200/80 text-zinc-900 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-200'
                   )}
                 >
                   {m.content}
@@ -102,13 +102,13 @@ Select a query below or type your question:`,
 
           {loading && (
             <div className="flex gap-3 mr-auto max-w-[85%]">
-              <div className="h-8 w-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-violet-300">
+              <div className="h-8 w-8 rounded-full bg-white border border-rose-200 flex items-center justify-center text-zinc-900 dark:bg-zinc-900 dark:border-zinc-800 dark:text-white">
                 <GraduationCap className="h-4 w-4" />
               </div>
-              <div className="rounded-2xl p-4 bg-slate-900/60 border border-slate-900 text-slate-500 text-xs flex items-center gap-1.5">
-                <div className="h-1.5 w-1.5 bg-violet-400 rounded-full animate-bounce" />
-                <div className="h-1.5 w-1.5 bg-violet-400 rounded-full animate-bounce [animation-delay:0.2s]" />
-                <div className="h-1.5 w-1.5 bg-violet-400 rounded-full animate-bounce [animation-delay:0.4s]" />
+              <div className="rounded-2xl p-4 bg-white border border-rose-200 text-zinc-500 text-xs flex items-center gap-1.5 dark:bg-zinc-900 dark:border-zinc-800">
+                <div className="h-1.5 w-1.5 bg-zinc-900 dark:bg-white rounded-full animate-bounce" />
+                <div className="h-1.5 w-1.5 bg-zinc-900 dark:bg-white rounded-full animate-bounce [animation-delay:0.2s]" />
+                <div className="h-1.5 w-1.5 bg-zinc-900 dark:bg-white rounded-full animate-bounce [animation-delay:0.4s]" />
               </div>
             </div>
           )}
@@ -116,19 +116,19 @@ Select a query below or type your question:`,
         </div>
 
         {/* Input box */}
-        <div className="p-4 border-t border-slate-900 bg-slate-950 flex gap-2">
+        <div className="p-4 border-t border-rose-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-950 flex gap-2">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend(input)}
             placeholder="Ask a doubt or paste a code block..."
-            className="flex-1 rounded-xl border border-slate-850 bg-slate-900/60 px-4 py-3 text-xs text-white placeholder-slate-600 outline-none focus:border-violet-500"
+            className="flex-1 rounded-full border border-rose-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-5 py-3 text-xs text-zinc-900 dark:text-white placeholder-zinc-400 outline-none focus:border-zinc-400 dark:focus:border-zinc-600"
           />
           <button
             onClick={() => handleSend(input)}
             disabled={!input.trim() || loading}
-            className="rounded-xl bg-violet-500 px-4 py-3 text-white hover:bg-violet-400 transition disabled:opacity-40"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-zinc-900 dark:bg-white !text-white dark:!text-zinc-900 hover:scale-105 transition disabled:opacity-40"
           >
             <Send className="h-4 w-4" />
           </button>
@@ -136,13 +136,13 @@ Select a query below or type your question:`,
       </div>
 
       {/* Suggested doubt topics sidebar */}
-      <div className="rounded-[1.75rem] border border-slate-800 bg-slate-950/80 p-5 space-y-4 self-start">
+      <div className="rounded-[2rem] border border-rose-200/80 dark:border-zinc-800 bg-[#FDF4F8] dark:bg-zinc-950/60 p-5 space-y-4 self-start shadow-soft">
         <div className="flex items-center gap-1.5">
-          <Sparkles className="h-4.5 w-4.5 text-violet-400" />
-          <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Suggested Queries</span>
+          <Sparkles className="h-4 w-4 text-zinc-900 dark:text-white" />
+          <span className="text-xs font-mono font-bold text-zinc-900 dark:text-white uppercase tracking-wider">Suggested Queries</span>
         </div>
 
-        <p className="text-[10px] text-slate-500 leading-normal">
+        <p className="text-[11px] text-zinc-600 dark:text-zinc-400 leading-normal">
           Click any of these quick queries to test the tutor explaining topics with code guidelines.
         </p>
 
@@ -152,7 +152,7 @@ Select a query below or type your question:`,
               key={prompt}
               type="button"
               onClick={() => handleSend(prompt)}
-              className="w-full text-left rounded-xl border border-slate-900 bg-slate-900/30 p-3 text-[11px] text-slate-300 hover:border-violet-500/40 hover:text-white transition"
+              className="w-full text-left rounded-2xl border border-rose-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3 text-xs font-medium text-zinc-800 dark:text-zinc-200 hover:border-zinc-400 dark:hover:border-zinc-600 transition shadow-sm"
             >
               {prompt}
             </button>
@@ -162,3 +162,4 @@ Select a query below or type your question:`,
     </div>
   );
 }
+

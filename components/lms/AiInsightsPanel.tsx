@@ -57,9 +57,8 @@ export default function AiInsightsPanel({ enrollments }: AiInsightsPanelProps) {
     const total = enrollments.length;
     const completed = enrollments.filter((e) => e.progress >= 100).length;
     const active = total - completed;
-    const currentStreak = 4; // Mock active streak
+    const currentStreak = 4;
     
-    // Find the course with the lowest progress that is still active
     const activeEnrollments = enrollments.filter((e) => e.progress > 0 && e.progress < 100);
     const primaryFocusEnrollment = activeEnrollments.sort((a, b) => a.progress - b.progress)[0] ?? null;
     const focusCourse = primaryFocusEnrollment 
@@ -90,38 +89,38 @@ export default function AiInsightsPanel({ enrollments }: AiInsightsPanelProps) {
       {/* Overview Analytics row */}
       <div className="grid gap-6 md:grid-cols-3">
         {/* Streak card */}
-        <div className="rounded-[1.75rem] border border-slate-800 bg-slate-950/80 p-5 flex items-center gap-4">
+        <div className="rounded-[2rem] border border-rose-200/80 dark:border-zinc-800 bg-[#FDF4F8] dark:bg-zinc-950/60 p-6 flex items-center gap-4 shadow-soft">
           <div className="h-12 w-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center flex-shrink-0">
-            <Flame className="h-6 w-6 text-amber-400 fill-amber-400/20" />
+            <Flame className="h-6 w-6 text-amber-500 fill-amber-500/20" />
           </div>
           <div>
-            <p className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Active Study Streak</p>
-            <p className="text-xl font-bold text-white mt-0.5">{stats.currentStreak} Days</p>
-            <span className="text-[9px] text-slate-450 mt-1 block">Keep it up to unlock reward badges!</span>
+            <p className="text-[10px] font-mono text-zinc-500 font-semibold uppercase tracking-wider">Active Study Streak</p>
+            <p className="text-xl font-bold text-zinc-900 dark:text-white mt-0.5">{stats.currentStreak} Days</p>
+            <span className="text-[10px] text-zinc-500 mt-0.5 block">Keep it up to unlock reward badges!</span>
           </div>
         </div>
 
         {/* Finished certifications */}
-        <div className="rounded-[1.75rem] border border-slate-800 bg-slate-950/80 p-5 flex items-center gap-4">
+        <div className="rounded-[2rem] border border-rose-200/80 dark:border-zinc-800 bg-[#FDF4F8] dark:bg-zinc-950/60 p-6 flex items-center gap-4 shadow-soft">
           <div className="h-12 w-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center flex-shrink-0">
-            <Award className="h-6 w-6 text-emerald-400" />
+            <Award className="h-6 w-6 text-emerald-500" />
           </div>
           <div>
-            <p className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Certificates Earned</p>
-            <p className="text-xl font-bold text-white mt-0.5">{stats.completed} Verified</p>
-            <span className="text-[9px] text-slate-450 mt-1 block">Inspect on your progress tab.</span>
+            <p className="text-[10px] font-mono text-zinc-500 font-semibold uppercase tracking-wider">Certificates Earned</p>
+            <p className="text-xl font-bold text-zinc-900 dark:text-white mt-0.5">{stats.completed} Verified</p>
+            <span className="text-[10px] text-zinc-500 mt-0.5 block">Inspect on your progress tab.</span>
           </div>
         </div>
 
         {/* Ongoing learning paths */}
-        <div className="rounded-[1.75rem] border border-slate-800 bg-slate-950/80 p-5 flex items-center gap-4">
-          <div className="h-12 w-12 rounded-2xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center flex-shrink-0">
-            <BookOpen className="h-6 w-6 text-violet-400" />
+        <div className="rounded-[2rem] border border-rose-200/80 dark:border-zinc-800 bg-[#FDF4F8] dark:bg-zinc-950/60 p-6 flex items-center gap-4 shadow-soft">
+          <div className="h-12 w-12 rounded-2xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 flex items-center justify-center flex-shrink-0">
+            <BookOpen className="h-6 w-6" />
           </div>
           <div>
-            <p className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Ongoing Courses</p>
-            <p className="text-xl font-bold text-white mt-0.5">{stats.active} Classes</p>
-            <span className="text-[9px] text-slate-450 mt-1 block">Syllabus modules in execution.</span>
+            <p className="text-[10px] font-mono text-zinc-500 font-semibold uppercase tracking-wider">Ongoing Courses</p>
+            <p className="text-xl font-bold text-zinc-900 dark:text-white mt-0.5">{stats.active} Classes</p>
+            <span className="text-[10px] text-zinc-500 mt-0.5 block">Syllabus modules in execution.</span>
           </div>
         </div>
       </div>
@@ -129,28 +128,28 @@ export default function AiInsightsPanel({ enrollments }: AiInsightsPanelProps) {
       {/* Focus & Recommendations Split */}
       <div className="grid gap-6 md:grid-cols-2">
         {/* Core Study focus recommendation */}
-        <section className="rounded-[1.75rem] border border-slate-800/80 bg-slate-950/90 p-6 space-y-4">
-          <div className="flex items-center gap-1.5 border-b border-slate-900 pb-2">
-            <Lightbulb className="h-4.5 w-4.5 text-amber-400" />
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">AI Study Recommendation</span>
+        <section className="rounded-[2rem] border border-rose-200/80 dark:border-zinc-800 bg-[#FDF4F8] dark:bg-zinc-950/60 p-6 space-y-4 shadow-soft">
+          <div className="flex items-center gap-2 border-b border-rose-200/60 dark:border-zinc-800 pb-3">
+            <Lightbulb className="h-4 w-4 text-amber-500" />
+            <span className="text-xs font-mono font-bold text-zinc-900 dark:text-white uppercase tracking-wider">AI Study Recommendation</span>
           </div>
 
           {loadingRecs ? (
-            <div className="flex flex-col items-center justify-center py-10 text-center text-slate-500">
-              <div className="h-6 w-6 rounded-full border-2 border-violet-500 border-t-transparent animate-spin mb-2" />
+            <div className="flex flex-col items-center justify-center py-10 text-center text-zinc-500">
+              <div className="h-6 w-6 rounded-full border-2 border-zinc-900 dark:border-white border-t-transparent animate-spin mb-2" />
               <p className="text-xs">Analyzing study focus recommendations...</p>
             </div>
           ) : recommendations?.focusRecommendation ? (
             <div className="space-y-4 text-xs">
-              <p className="text-slate-350 leading-relaxed leading-normal">
+              <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed">
                 {recommendations.focusRecommendation}
               </p>
 
               {stats.focusCourse && stats.focusEnrollment && (
-                <div className="rounded-2xl border border-slate-900 bg-slate-900/30 p-4 space-y-3">
+                <div className="rounded-2xl border border-rose-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3 shadow-sm">
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-white">{stats.focusCourse.title}</span>
-                    <span className="text-slate-500 font-bold">{stats.focusEnrollment.progress}% done</span>
+                    <span className="font-semibold text-zinc-900 dark:text-white">{stats.focusCourse.title}</span>
+                    <span className="text-zinc-500 font-bold">{stats.focusEnrollment.progress}% done</span>
                   </div>
                   <ProgressBar value={stats.focusEnrollment.progress} size="sm" showLabel={false} />
                 </div>
@@ -160,7 +159,7 @@ export default function AiInsightsPanel({ enrollments }: AiInsightsPanelProps) {
                 <div className="pt-2 flex justify-end">
                   <Link
                     href={`/learn/${stats.focusCourse.id}`}
-                    className="rounded-full bg-violet-500 px-4 py-2 font-semibold text-white hover:bg-violet-400 transition"
+                    className="rounded-full bg-zinc-900 dark:bg-white px-5 py-2.5 text-xs font-semibold uppercase tracking-wider !text-white dark:!text-zinc-900 hover:bg-black dark:hover:bg-zinc-100 transition shadow-sm"
                   >
                     Resume Course
                   </Link>
@@ -168,26 +167,26 @@ export default function AiInsightsPanel({ enrollments }: AiInsightsPanelProps) {
               )}
             </div>
           ) : (
-            <p className="text-xs text-slate-500 py-6">
+            <p className="text-xs text-zinc-500 py-6">
               You are caught up on all active study materials! Browse the catalog to start a new learning track.
             </p>
           )}
         </section>
 
         {/* Content Suggestions */}
-        <section className="rounded-[1.75rem] border border-slate-800/80 bg-slate-950/90 p-6 space-y-4">
-          <div className="flex items-center gap-1.5 border-b border-slate-900 pb-2">
-            <Sparkles className="h-4.5 w-4.5 text-violet-400" />
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Recommended Courses</span>
+        <section className="rounded-[2rem] border border-rose-200/80 dark:border-zinc-800 bg-[#FDF4F8] dark:bg-zinc-950/60 p-6 space-y-4 shadow-soft">
+          <div className="flex items-center gap-2 border-b border-rose-200/60 dark:border-zinc-800 pb-3">
+            <Sparkles className="h-4 w-4 text-zinc-900 dark:text-white" />
+            <span className="text-xs font-mono font-bold text-zinc-900 dark:text-white uppercase tracking-wider">Recommended Courses</span>
           </div>
 
-          <p className="text-xs text-slate-400 leading-normal">
+          <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
             Based on your dynamic interest profile, we recommend adding these courses to your library:
           </p>
 
           {loadingRecs ? (
-            <div className="flex flex-col items-center justify-center py-10 text-center text-slate-500">
-              <div className="h-6 w-6 rounded-full border-2 border-violet-500 border-t-transparent animate-spin mb-2" />
+            <div className="flex flex-col items-center justify-center py-10 text-center text-zinc-500">
+              <div className="h-6 w-6 rounded-full border-2 border-zinc-900 dark:border-white border-t-transparent animate-spin mb-2" />
               <p className="text-xs">Curating catalog recommendations...</p>
             </div>
           ) : (
@@ -195,15 +194,15 @@ export default function AiInsightsPanel({ enrollments }: AiInsightsPanelProps) {
               {recommendedCourses.map((course) => (
                 <div
                   key={course.id}
-                  className="rounded-2xl border border-slate-900 bg-slate-900/30 p-3 flex justify-between items-center text-xs"
+                  className="rounded-2xl border border-rose-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 flex justify-between items-center text-xs shadow-sm"
                 >
                   <div>
-                    <h4 className="font-semibold text-white truncate max-w-[200px]">{course.title}</h4>
-                    <p className="text-[10px] text-slate-500 mt-0.5">{course.category} • {course.level}</p>
+                    <h4 className="font-semibold text-zinc-900 dark:text-white truncate max-w-[200px]">{course.title}</h4>
+                    <p className="text-[10px] text-zinc-500 mt-0.5">{course.category} • {course.level}</p>
                   </div>
                   <Link
                     href={`/courses/${course.slug}`}
-                    className="text-violet-400 hover:text-violet-300 font-bold font-semibold shrink-0"
+                    className="text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white hover:underline shrink-0"
                   >
                     Details →
                   </Link>
@@ -216,4 +215,5 @@ export default function AiInsightsPanel({ enrollments }: AiInsightsPanelProps) {
     </div>
   );
 }
+
 

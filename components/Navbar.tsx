@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Menu, X, LayoutDashboard, LogOut, Globe } from 'lucide-react';
+import { Menu, X, LayoutDashboard, LogOut, Globe, Sparkles } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import DarkModeToggle from '../app/dark';
 import { useAuth } from './AuthProvider';
@@ -42,7 +42,7 @@ export default function Navbar() {
 
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
-  }, [language]); // Re-observe if navitems labels translate
+  }, [language]);
 
   const userInitials = profile?.name
     ? profile.name.substring(0, 2).toUpperCase()
@@ -55,103 +55,136 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-zinc-200/60 dark:border-zinc-800/60 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl transition-colors duration-200">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 sm:px-10 lg:px-16">
-        <Link href="/" className="text-xl font-semibold tracking-tight text-white">
-          {t('brand_name')}
+        <Link href="/" className="flex items-center gap-2.5 text-lg font-bold tracking-tight text-zinc-900 dark:text-white transition hover:opacity-90">
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm">
+            <Sparkles className="h-4 w-4" />
+          </div>
+          <span className="font-semibold text-xl tracking-tight">{t('brand_name')}</span>
         </Link>
-        <nav className="hidden items-center gap-6 md:flex">
+        
+        <nav className="hidden items-center gap-8 md:flex">
           {navItems.map((item) => {
             const isActive = active === item.href;
             return (
               <a
                 key={item.href}
                 href={item.href}
-                className={`relative text-sm transition ${isActive ? 'text-white' : 'text-slate-300 hover:text-white'}`}
+                className={`relative text-xs font-semibold tracking-[0.15em] uppercase transition ${isActive ? 'text-zinc-900 dark:text-white' : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'}`}
               >
                 <span>{item.label}</span>
-                <span className={`absolute -bottom-1 left-0 h-0.5 rounded-full bg-violet-400 transition-all ${isActive ? 'w-full' : 'w-0 group-hover:w-full'}`} />
+                {isActive && (
+                  <span className="absolute -bottom-1 left-0 h-0.5 w-full rounded-full bg-zinc-900 dark:bg-white" />
+                )}
               </a>
             );
           })}
+
+          <div className="h-4 w-px bg-zinc-200 dark:bg-zinc-800" />
 
           {/* Language Toggle Button */}
           <button
             type="button"
             onClick={toggleLanguage}
-            className="flex items-center gap-1.5 rounded-full border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/90 px-3 py-1.5 text-xs font-semibold text-slate-650 dark:text-slate-200 hover:border-indigo-400 dark:hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-450 transition shadow-soft"
+            className="flex items-center gap-1.5 rounded-full border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50 dark:bg-zinc-900/60 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 hover:border-zinc-400 dark:hover:border-zinc-600 transition shadow-sm"
           >
-            <Globe className="h-3.5 w-3.5" />
+            <Globe className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
             <span>{language === 'en' ? 'हिन्दी' : 'English'}</span>
           </button>
 
+          <DarkModeToggle />
+
           {isLoggedIn ? (
-            <>
-              <Link href="/dashboard" className="inline-flex items-center gap-2 rounded-full bg-violet-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-violet-400">
-                <LayoutDashboard className="h-4 w-4" />
+            <div className="flex items-center gap-3">
+              <Link
+                href="/dashboard"
+                className="inline-flex items-center gap-2 rounded-full bg-zinc-900 dark:bg-white px-5 py-2 text-xs font-semibold uppercase tracking-wider !text-white dark:!text-zinc-900 shadow-sm transition hover:bg-black dark:hover:bg-zinc-100 active:scale-[0.98]"
+              >
+                <LayoutDashboard className="h-3.5 w-3.5" />
                 {t('nav_dashboard')}
               </Link>
               <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-tr from-pink-500 to-orange-500 text-xs font-bold text-white">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-900 dark:bg-zinc-100 text-xs font-bold !text-white dark:!text-zinc-900">
                   {userInitials}
                 </div>
                 <button
                   type="button"
                   onClick={() => logout()}
-                  className="rounded-full border border-slate-700 p-2 text-slate-400 transition hover:border-rose-400 hover:text-rose-300"
+                  className="rounded-full border border-zinc-200 dark:border-zinc-800 p-2 text-zinc-500 hover:text-rose-600 dark:hover:text-rose-400 transition"
                   aria-label="Logout"
                 >
                   <LogOut className="h-4 w-4" />
                 </button>
               </div>
-            </>
+            </div>
           ) : (
-            <>
-              <Link href="/login" className="rounded-full border border-slate-700 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-violet-400 hover:text-white">
+            <div className="flex items-center gap-3">
+              <Link
+                href="/login"
+                className="rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 transition hover:border-zinc-400 dark:hover:border-zinc-600"
+              >
                 {t('nav_login')}
               </Link>
-              <Link href="/signup" className="rounded-full bg-violet-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-violet-400">
-                {t('nav_signup')}
+              <Link
+                href="/signup"
+                className="rounded-full bg-zinc-900 dark:bg-white px-5 py-2 text-xs font-semibold uppercase tracking-wider !text-white dark:!text-zinc-900 shadow-sm transition hover:bg-black dark:hover:bg-zinc-100 active:scale-[0.98]"
+              >
+                {t('nav_signup')} ↗
               </Link>
-            </>
+            </div>
           )}
-          <DarkModeToggle />
+
         </nav>
 
         <div className="flex items-center gap-3 md:hidden">
           <button
             type="button"
             onClick={toggleLanguage}
-            className="rounded-full border border-slate-800 bg-slate-900/90 p-2.5 text-slate-200 transition hover:border-indigo-400"
+            className="rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-2 text-zinc-700 dark:text-zinc-300"
             aria-label="Toggle language"
           >
             <Globe className="h-4 w-4" />
           </button>
           <DarkModeToggle />
-          <button type="button" onClick={() => setOpen(!open)} className="rounded-full p-2 text-slate-200 ring-1 ring-slate-700/60 transition hover:bg-slate-900/80">
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="rounded-full p-2 text-zinc-700 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-800"
+          >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </div>
+
       {open ? (
-        <div className="border-t border-slate-800 bg-slate-950/95 px-6 py-4 md:hidden">
-          <div className="flex flex-col gap-3">
+        <div className="border-t border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-950/95 px-6 py-6 md:hidden">
+          <div className="flex flex-col gap-4">
             {navItems.map((item) => (
-              <a key={item.href} href={item.href} onClick={() => setOpen(false)} className="text-sm text-slate-300 transition hover:text-white">
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                className="text-xs font-semibold tracking-widest uppercase text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
+              >
                 {item.label}
               </a>
             ))}
-            <div className="mt-2 flex flex-col gap-2">
+            <div className="mt-4 flex flex-col gap-3 pt-3 border-t border-zinc-200 dark:border-zinc-800">
               {isLoggedIn ? (
                 <>
-                  <Link href="/dashboard" onClick={() => setOpen(false)} className="inline-flex items-center justify-center gap-2 rounded-full bg-violet-500 px-4 py-2 text-center text-sm font-semibold text-white transition hover:bg-violet-400">
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setOpen(false)}
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-zinc-900 dark:bg-white px-5 py-3 text-xs font-semibold uppercase tracking-wider text-white dark:text-zinc-900"
+                  >
                     <LayoutDashboard className="h-4 w-4" />
                     {t('nav_dashboard')}
                   </Link>
                   <button
                     type="button"
                     onClick={() => { setOpen(false); logout(); }}
-                    className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-700 px-4 py-2 text-center text-sm font-medium text-slate-200 transition hover:border-rose-400 hover:text-rose-300"
+                    className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-200 dark:border-zinc-800 px-5 py-3 text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300"
                   >
                     <LogOut className="h-4 w-4" />
                     {t('nav_logout')}
@@ -159,11 +192,19 @@ export default function Navbar() {
                 </>
               ) : (
                 <>
-                  <Link href="/login" className="rounded-full border border-slate-700 px-4 py-2 text-center text-sm font-medium text-slate-200 transition hover:border-violet-400 hover:text-white">
+                  <Link
+                    href="/login"
+                    onClick={() => setOpen(false)}
+                    className="rounded-full border border-zinc-200 dark:border-zinc-800 text-center px-5 py-3 text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300"
+                  >
                     {t('nav_login')}
                   </Link>
-                  <Link href="/signup" className="rounded-full bg-violet-500 px-4 py-2 text-center text-sm font-semibold text-white transition hover:bg-violet-400">
-                    {t('nav_signup')}
+                  <Link
+                    href="/signup"
+                    onClick={() => setOpen(false)}
+                    className="rounded-full bg-zinc-900 dark:bg-white text-center px-5 py-3 text-xs font-semibold uppercase tracking-wider text-white dark:text-zinc-900"
+                  >
+                    {t('nav_signup')} ↗
                   </Link>
                 </>
               )}
@@ -174,3 +215,4 @@ export default function Navbar() {
     </header>
   );
 }
+

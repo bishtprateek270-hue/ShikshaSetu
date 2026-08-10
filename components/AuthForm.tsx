@@ -58,52 +58,52 @@ export default function AuthForm({ mode }: AuthFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 rounded-3xl border border-slate-800 bg-slate-950/80 p-8 shadow-[0_0_120px_rgba(15,23,42,0.35)]">
-      {message ? <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-4 text-sm text-emerald-200">{message}</div> : null}
-      {error ? <div className="rounded-2xl border border-rose-500/20 bg-rose-500/10 p-4 text-sm text-rose-200">{error}</div> : null}
+    <form onSubmit={handleSubmit} className="space-y-5">
+      {message ? <div className="rounded-2xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/40 p-4 text-xs font-medium text-emerald-800 dark:text-emerald-200">{message}</div> : null}
+      {error ? <div className="rounded-2xl border border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/40 p-4 text-xs font-medium text-rose-800 dark:text-rose-200">{error}</div> : null}
 
       {mode === 'signup' ? (
-        <div>
-          <label className="block text-sm font-medium text-slate-400">{t('auth_name_label')}</label>
+        <div className="space-y-1.5">
+          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">{t('auth_name_label')}</label>
           <input
             value={name}
             onChange={(event) => setName(event.target.value)}
             placeholder={t('auth_name_placeholder')}
             required
-            className="mt-2 w-full rounded-2xl border border-slate-800 bg-slate-900 px-4 py-3 text-slate-100 outline-none transition focus:border-violet-400"
+            className="w-full rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-5 py-3.5 text-sm text-zinc-900 dark:text-white outline-none transition focus:border-zinc-400 dark:focus:border-zinc-600"
           />
         </div>
       ) : null}
 
-      <div>
-        <label className="block text-sm font-medium text-slate-400">{t('auth_email_label')}</label>
+      <div className="space-y-1.5">
+        <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">{t('auth_email_label')}</label>
         <input
           type="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           placeholder={t('auth_email_placeholder')}
           required
-          className="mt-2 w-full rounded-2xl border border-slate-800 bg-slate-900 px-4 py-3 text-slate-100 outline-none transition focus:border-violet-400"
+          className="w-full rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-5 py-3.5 text-sm text-zinc-900 dark:text-white outline-none transition focus:border-zinc-400 dark:focus:border-zinc-600"
         />
       </div>
 
       {mode !== 'forgot' ? (
-        <div>
-          <label className="block text-sm font-medium text-slate-400">{t('auth_password_label')}</label>
+        <div className="space-y-1.5">
+          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">{t('auth_password_label')}</label>
           <input
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             placeholder={t('auth_password_placeholder')}
             required
-            className="mt-2 w-full rounded-2xl border border-slate-800 bg-slate-900 px-4 py-3 text-slate-100 outline-none transition focus:border-violet-400"
+            className="w-full rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-5 py-3.5 text-sm text-zinc-900 dark:text-white outline-none transition focus:border-zinc-400 dark:focus:border-zinc-600"
           />
         </div>
       ) : null}
 
       {mode !== 'forgot' ? (
-        <div className="flex items-center justify-end text-sm text-slate-400">
-          <Link href="/forgot-password" className="font-semibold text-slate-200 transition hover:text-white">
+        <div className="flex items-center justify-end text-xs">
+          <Link href="/forgot-password" className="font-medium text-zinc-600 dark:text-zinc-400 transition hover:text-zinc-900 dark:hover:text-white">
             {t('auth_forgot_link')}
           </Link>
         </div>
@@ -112,39 +112,40 @@ export default function AuthForm({ mode }: AuthFormProps) {
       <button
         type="submit"
         disabled={isSubmitting || !isConfigured}
-        className="w-full rounded-2xl bg-violet-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-400 disabled:cursor-not-allowed disabled:opacity-60"
+        className="w-full rounded-full bg-zinc-900 dark:bg-white px-5 py-3.5 text-xs font-semibold uppercase tracking-wider text-white dark:text-zinc-900 shadow-sm transition hover:bg-black dark:hover:bg-zinc-100 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
       >
         {mode === 'login' ? t('auth_btn_login') : mode === 'signup' ? t('auth_btn_signup') : t('auth_btn_forgot')}
       </button>
 
       {mode !== 'forgot' ? (
         <>
-          <div className="flex items-center gap-3 text-sm text-slate-500">
-            <span className="h-px flex-1 bg-slate-700" />
-            <span>{t('auth_or')}</span>
-            <span className="h-px flex-1 bg-slate-700" />
+          <div className="flex items-center gap-3 text-xs text-zinc-400">
+            <span className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800" />
+            <span className="uppercase font-mono text-[10px] tracking-wider">{t('auth_or')}</span>
+            <span className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800" />
           </div>
 
           <button
             type="button"
             onClick={handleGoogleSignIn}
             disabled={isSubmitting || !isConfigured}
-            className="w-full rounded-2xl border border-slate-800 bg-slate-900 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:border-violet-400 disabled:cursor-not-allowed disabled:opacity-60"
+            className="w-full rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-5 py-3.5 text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 transition hover:border-zinc-400 dark:hover:border-zinc-600 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {t('auth_google')}
           </button>
         </>
       ) : null}
 
-      <div className="text-center text-sm text-slate-400">
+      <div className="text-center text-xs text-zinc-500 dark:text-zinc-400 pt-2">
         {mode === 'login' ? (
-          <>{t('auth_no_account')} <Link href="/signup" className="font-semibold text-slate-100 hover:text-white">{t('nav_signup')}</Link></>
+          <>{t('auth_no_account')} <Link href="/signup" className="font-semibold text-zinc-900 dark:text-white hover:underline">{t('nav_signup')}</Link></>
         ) : mode === 'signup' ? (
-          <>{t('auth_has_account')} <Link href="/login" className="font-semibold text-slate-100 hover:text-white">{t('nav_login')}</Link></>
+          <>{t('auth_has_account')} <Link href="/login" className="font-semibold text-zinc-900 dark:text-white hover:underline">{t('nav_login')}</Link></>
         ) : (
-          <>{t('auth_remember_password')} <Link href="/login" className="font-semibold text-slate-100 hover:text-white">{t('nav_login')}</Link></>
+          <>{t('auth_remember_password')} <Link href="/login" className="font-semibold text-zinc-900 dark:text-white hover:underline">{t('nav_login')}</Link></>
         )}
       </div>
     </form>
   );
 }
+

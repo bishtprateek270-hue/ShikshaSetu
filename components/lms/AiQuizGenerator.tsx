@@ -66,27 +66,29 @@ export default function AiQuizGenerator() {
     <div className="space-y-6">
       {/* Generate parameters form */}
       {!quiz && (
-        <div className="max-w-xl mx-auto rounded-[1.75rem] border border-slate-800 bg-slate-950/80 p-6 space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-900 pb-2">
-            <div className="flex items-center gap-1.5">
-              <Sparkles className="h-4.5 w-4.5 text-violet-400" />
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Dynamic Quiz Builder</span>
+        <div className="max-w-xl mx-auto rounded-[2rem] border border-rose-200/80 dark:border-zinc-800 bg-[#FDF4F8] dark:bg-zinc-950/60 p-6 sm:p-8 space-y-5 shadow-soft">
+          <div className="flex items-center justify-between border-b border-rose-200/60 dark:border-zinc-800 pb-3">
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-4 w-4 text-zinc-900 dark:text-white" />
+              <span className="text-xs font-mono font-bold text-zinc-900 dark:text-white uppercase tracking-wider">Dynamic Quiz Builder</span>
             </div>
             
             {/* Mode Toggle Button Tabs */}
-            <div className="flex rounded-lg bg-slate-900 p-0.5 border border-slate-850">
+            <div className="flex rounded-full bg-white dark:bg-zinc-900 p-1 border border-rose-200/80 dark:border-zinc-800">
               <button
+                type="button"
                 onClick={() => setMode('topic')}
-                className={`rounded-md px-3 py-1 text-[10px] font-bold uppercase transition ${
-                  mode === 'topic' ? 'bg-violet-500 text-white' : 'text-slate-400 hover:text-slate-350'
+                className={`rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-wider transition ${
+                  mode === 'topic' ? 'bg-zinc-900 !text-white dark:bg-white dark:!text-zinc-900 shadow-sm' : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
                 }`}
               >
                 Topic
               </button>
               <button
+                type="button"
                 onClick={() => setMode('pdf')}
-                className={`rounded-md px-3 py-1 text-[10px] font-bold uppercase transition ${
-                  mode === 'pdf' ? 'bg-violet-500 text-white' : 'text-slate-400 hover:text-slate-350'
+                className={`rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-wider transition ${
+                  mode === 'pdf' ? 'bg-zinc-900 !text-white dark:bg-white dark:!text-zinc-900 shadow-sm' : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
                 }`}
               >
                 PDF File
@@ -96,23 +98,24 @@ export default function AiQuizGenerator() {
 
           {mode === 'topic' ? (
             <>
-              <p className="text-xs text-slate-400 leading-normal">
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
                 Enter any subject topic (e.g. &quot;CSS grids&quot;, &quot;Linear algebra&quot;) and the AI will generate 3 customized multiple-choice questions for you to practice.
               </p>
 
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <input
                   type="text"
                   value={topic}
                   onChange={(e) => setTopic(e.target.value)}
                   placeholder="e.g. React hooks, Auto Layout, Python analytics..."
-                  className="w-full rounded-xl border border-slate-850 bg-slate-900/60 px-4 py-3 text-xs text-white placeholder-slate-650 outline-none focus:border-violet-500"
+                  className="w-full rounded-full border border-rose-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-5 py-3.5 text-xs text-zinc-900 dark:text-white placeholder-zinc-400 outline-none focus:border-zinc-400 dark:focus:border-zinc-600"
                 />
 
                 <button
+                  type="button"
                   onClick={handleGenerate}
                   disabled={!topic.trim() || loading}
-                  className="w-full rounded-xl bg-violet-500 py-3 text-xs font-semibold text-white hover:bg-violet-400 transition disabled:opacity-40"
+                  className="w-full rounded-full bg-zinc-900 dark:bg-white py-3.5 text-xs font-semibold uppercase tracking-wider !text-white dark:!text-zinc-900 hover:bg-black dark:hover:bg-zinc-100 transition shadow-sm disabled:opacity-40"
                 >
                   {loading ? 'Generating practice questions...' : 'Generate custom Quiz'}
                 </button>
@@ -120,17 +123,18 @@ export default function AiQuizGenerator() {
             </>
           ) : (
             <>
-              <p className="text-xs text-slate-400 leading-normal">
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
                 Upload or drag & drop any PDF document, and our AI will build custom quiz questions directly from its text context!
               </p>
 
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <PdfDragDropUpload onTextExtracted={handleTextExtracted} />
 
                 <button
+                  type="button"
                   onClick={handleGenerate}
                   disabled={!extractedText || loading}
-                  className="w-full rounded-xl bg-violet-500 py-3 text-xs font-semibold text-white hover:bg-violet-400 transition disabled:opacity-40"
+                  className="w-full rounded-full bg-zinc-900 dark:bg-white py-3.5 text-xs font-semibold uppercase tracking-wider !text-white dark:!text-zinc-900 hover:bg-black dark:hover:bg-zinc-100 transition shadow-sm disabled:opacity-40"
                 >
                   {loading ? 'Analyzing document & building questions...' : 'Generate Quiz from PDF'}
                 </button>
@@ -144,14 +148,15 @@ export default function AiQuizGenerator() {
       {quiz && (
         <div className="max-w-2xl mx-auto space-y-4">
           <div className="flex justify-between items-center">
-            <h3 className="text-sm font-semibold text-white">Dynamic Quiz Playroom</h3>
+            <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">Dynamic Quiz Playroom</h3>
             <button
+              type="button"
               onClick={() => {
                 setQuiz(null);
                 setExtractedText('');
                 setPdfFilename('');
               }}
-              className="text-xs text-slate-500 hover:text-white"
+              className="text-xs text-zinc-500 hover:text-zinc-900 dark:hover:text-white"
             >
               Build another Quiz
             </button>
@@ -162,3 +167,4 @@ export default function AiQuizGenerator() {
     </div>
   );
 }
+

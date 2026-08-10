@@ -3,19 +3,34 @@
 @tailwind utilities;
 
 :root {
+  color-scheme: light;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #ffffff;
+  color: #09090b;
+}
+
+html.dark {
   color-scheme: dark;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background-color: #0f172a;
+  background-color: #09090b;
+  color: #f4f4f5;
 }
 
 html {
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   min-height: 100vh;
   margin: 0;
-  background: radial-gradient(circle at top, rgba(99, 102, 241, 0.08), transparent 36%), #020617;
+  background-color: #ffffff;
+  color: #09090b;
+}
+
+html.dark body {
+  background-color: #09090b;
+  color: #f4f4f5;
 }
 
 * {
@@ -30,8 +45,13 @@ select {
 }
 
 ::selection {
-  background: rgba(124, 58, 237, 0.35);
-  color: #fff;
+  background: rgba(9, 9, 11, 0.9);
+  color: #ffffff;
+}
+
+html.dark ::selection {
+  background: rgba(255, 255, 255, 0.9);
+  color: #09090b;
 }
 
 /* Flashcard 3D flip helper classes */
@@ -51,93 +71,54 @@ select {
   transform: rotateY(180deg);
 }
 
-/* ── Light Mode Color Overrides ───────────────────────────── */
-html:not(.dark) {
-  color-scheme: light;
-  background-color: #f8fafc;
+/* ── Light Mode / Dark Mode Container & Color Adaptations ─────── */
+/* In Light Mode: Replace dark grey box layouts with very light soft pink `#FDF4F8` / `#FAF0F6` */
+html:not(.dark) .bg-slate-950,
+html:not(.dark) .bg-slate-900,
+html:not(.dark) .bg-slate-850,
+html:not(.dark) .bg-slate-800,
+html:not(.dark) .bg-zinc-800,
+html:not(.dark) .bg-zinc-900 {
+  background-color: #FDF4F8 !important;
+  color: #18181b !important;
 }
 
-html:not(.dark) body {
-  background: radial-gradient(circle at top, rgba(99, 102, 241, 0.03), transparent 36%), #f8fafc;
-  color: #0f172a;
+html:not(.dark) .bg-slate-900\/90,
+html:not(.dark) .bg-slate-950\/90,
+html:not(.dark) .bg-slate-950\/80,
+html:not(.dark) .bg-slate-950\/95,
+html:not(.dark) .bg-slate-900\/80,
+html:not(.dark) .bg-slate-900\/60,
+html:not(.dark) .bg-slate-900\/50,
+html:not(.dark) .bg-zinc-900\/60,
+html:not(.dark) .bg-zinc-900\/50,
+html:not(.dark) .bg-zinc-900\/40 {
+  background-color: #FAF0F6 !important;
+  color: #18181b !important;
 }
 
-/* Background overrides */
-html:not(.dark) .bg-slate-950:not(.dark *),
-html:not(.dark) .bg-slate-900:not(.dark *),
-html:not(.dark) .bg-slate-900\/40:not(.dark *),
-html:not(.dark) .bg-slate-900\/80:not(.dark *),
-html:not(.dark) .bg-slate-955\/90:not(.dark *),
-html:not(.dark) .bg-slate-950\/90:not(.dark *),
-html:not(.dark) .bg-slate-950\/95:not(.dark *),
-html:not(.dark) .bg-slate-955\/70:not(.dark *),
-html:not(.dark) .bg-slate-950\/70:not(.dark *),
-html:not(.dark) .bg-slate-955\/80:not(.dark *),
-html:not(.dark) .bg-slate-955\/90:not(.dark *),
-html:not(.dark) .bg-slate-950\/80:not(.dark *),
-html:not(.dark) .bg-slate-900\/60:not(.dark *),
-html:not(.dark) .bg-slate-955\/50:not(.dark *),
-html:not(.dark) .bg-slate-900\/95:not(.dark *) {
-  background-color: #ffffff !important;
-  color: #0f172a;
+html:not(.dark) .border-slate-800,
+html:not(.dark) .border-slate-800\/70,
+html:not(.dark) .border-slate-800\/80,
+html:not(.dark) .border-slate-700,
+html:not(.dark) .border-zinc-800,
+html:not(.dark) .border-zinc-800\/80 {
+  border-color: #FBCFE8 !important;
 }
 
-html:not(.dark) .bg-slate-900\/20:not(.dark *),
-html:not(.dark) .bg-slate-900\/30:not(.dark *),
-html:not(.dark) .bg-slate-850:not(.dark *),
-html:not(.dark) .bg-slate-800:not(.dark *),
-html:not(.dark) .bg-violet-500\/10:not(.dark *),
-html:not(.dark) .bg-violet-500\/15:not(.dark *) {
-  background-color: #f1f5f9 !important;
+/* Ensure text inside dark buttons or dark headers is explicitly pure white in light mode */
+.bg-zinc-900 *,
+.bg-black *,
+.bg-violet-600 *,
+.bg-indigo-600 * {
+  color: inherit;
 }
 
-/* Border overrides */
-html:not(.dark) .border-slate-800:not(.dark *),
-html:not(.dark) .border-slate-900:not(.dark *),
-html:not(.dark) .border-slate-805\/50:not(.dark *),
-html:not(.dark) .border-slate-800\/50:not(.dark *),
-html:not(.dark) .border-slate-805\/70:not(.dark *),
-html:not(.dark) .border-slate-800\/70:not(.dark *),
-html:not(.dark) .border-slate-805\/80:not(.dark *),
-html:not(.dark) .border-slate-800\/80:not(.dark *),
-html:not(.dark) .border-slate-850:not(.dark *) {
-  border-color: #e2e8f0 !important;
+html.dark .bg-slate-950,
+html.dark .bg-slate-900 {
+  background-color: #09090b !important;
 }
 
-/* Text overrides */
-html:not(.dark) .text-slate-100:not(.dark *),
-html:not(.dark) .text-slate-200:not(.dark *),
-html:not(.dark) .text-white:not(.dark *) {
-  color: #0f172a !important;
-}
-
-html:not(.dark) .text-slate-300:not(.dark *),
-html:not(.dark) .text-slate-350:not(.dark *),
-html:not(.dark) .text-slate-400:not(.dark *),
-html:not(.dark) .text-slate-500:not(.dark *),
-html:not(.dark) .text-violet-300:not(.dark *) {
-  color: #475569 !important;
-}
-
-html:not(.dark) input:not(.dark *),
-html:not(.dark) select:not(.dark *),
-html:not(.dark) textarea:not(.dark *) {
-  background-color: #ffffff !important;
-  color: #0f172a !important;
-  border-color: #cbd5e1 !important;
-}
-
-html:not(.dark) input::placeholder:not(.dark *),
-html:not(.dark) textarea::placeholder:not(.dark *) {
-  color: #94a3b8 !important;
-}
-
-/* Interactive elements */
-html:not(.dark) .hover\:bg-slate-900:hover:not(.dark *),
-html:not(.dark) .hover\:bg-slate-900\/20:hover:not(.dark *) {
-  background-color: #f1f5f9 !important;
-}
-
-html:not(.dark) .hover\:text-white:hover:not(.dark *) {
-  color: #000000 !important;
-}
+html.dark .border-slate-800 {
+  border-color: #27272a !important;
+}
