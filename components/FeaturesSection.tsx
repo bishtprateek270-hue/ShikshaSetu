@@ -2,9 +2,8 @@
 
 import { useRef } from 'react';
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowUp, Sparkles, FileText, CheckCircle2, Flame, Award, BookOpen, Clock } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import SectionHeading from './SectionHeading';
 import { useLanguage } from '../lib/language/LanguageContext';
 
 export type FeatureItem = {
@@ -21,16 +20,16 @@ export default function FeaturesSection({ features }: FeaturesSectionProps) {
   const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Faster scroll height (260vh) for responsive speed
+  // Fast & responsive scroll height (260vh)
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
   });
 
-  // Snappy spring physics for smooth, responsive transitions
+  // Snappy 60fps spring physics momentum
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 140,
-    damping: 20,
+    stiffness: 130,
+    damping: 22,
     restDelta: 0.001,
   });
 
@@ -50,19 +49,34 @@ export default function FeaturesSection({ features }: FeaturesSectionProps) {
     });
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <div ref={containerRef} id="features" className="relative h-[260vh] bg-white dark:bg-zinc-950">
-      {/* Sticky Viewport Stage */}
-      <div className="sticky top-0 flex h-screen w-full flex-col justify-between overflow-hidden px-4 sm:px-8 py-6 sm:py-10 lg:px-12">
+    <div ref={containerRef} id="features" className="relative h-[260vh] bg-white dark:bg-zinc-950 transition-colors duration-200">
+      {/* Sticky Full-Viewport Stage */}
+      <div className="sticky top-0 flex h-screen w-full flex-col justify-between overflow-hidden px-4 sm:px-8 py-6 sm:py-8 lg:px-12">
         
-        {/* Sticky Header & Interactive Step Indicators */}
-        <div className="mx-auto w-full max-w-7xl text-center shrink-0">
-          <SectionHeading title={t('feat_heading')} subtitle={t('feat_subheading')} />
+        {/* Sticky Header Section */}
+        <div className="mx-auto w-full max-w-4xl text-center shrink-0 space-y-3">
+          {/* Eyebrow Pill Tag */}
+          <div className="inline-flex items-center gap-1.5 rounded-full border border-rose-200/90 dark:border-zinc-800 bg-rose-50/60 dark:bg-zinc-900 px-4 py-1 text-xs font-mono font-medium tracking-[0.18em] uppercase text-rose-600 dark:text-rose-400 shadow-sm">
+            <span>✦</span>
+            <span>{t('hero_badge')}</span>
+          </div>
+
+          <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white sm:text-5xl lg:text-5xl">
+            {t('feat_heading')}
+          </h2>
+          <p className="text-sm sm:text-base leading-relaxed text-zinc-600 dark:text-zinc-400 max-w-xl mx-auto">
+            {t('feat_subheading')}
+          </p>
           
-          {/* Interactive Step Pill Bar */}
-          <div className="mt-4 sm:mt-6 flex items-center justify-center gap-2">
+          {/* Top Horizontal Pill Progress Bar */}
+          <div className="pt-1 flex items-center justify-center gap-2">
             {features.map((f, i) => (
-              <StepIndicator
+              <TopPillIndicator
                 key={f.title}
                 index={i}
                 total={features.length}
@@ -73,31 +87,92 @@ export default function FeaturesSection({ features }: FeaturesSectionProps) {
           </div>
         </div>
 
-        {/* Prominent Large Feature Card Container */}
-        <div className="relative mx-auto my-auto w-[90%] max-w-6xl h-[400px] sm:h-[440px] lg:h-[460px]">
-          {features.map((feature, index) => (
-            <LargeFeatureCard
-              key={feature.title}
-              feature={feature}
-              index={index}
-              total={features.length}
-              smoothProgress={smoothProgress}
-              onPrev={() => scrollToFeature(index - 1)}
-              onNext={() => scrollToFeature(index + 1)}
-            />
-          ))}
+        {/* Center Section Stage with Card & External Controls */}
+        <div className="relative mx-auto my-auto w-full max-w-7xl flex items-center justify-center px-4 sm:px-12">
+          
+          {/* External Left PREV Button */}
+          <div className="hidden lg:flex flex-col items-center gap-2 absolute left-0 z-20">
+            <button
+              type="button"
+              onClick={() => scrollToFeature(getActiveIndex(smoothProgress.get(), features.length) - 1)}
+              className="flex h-12 w-12 items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 shadow-md hover:scale-105 active:scale-95 transition"
+              aria-label="Previous feature"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <span className="text-[10px] font-mono font-bold tracking-wider uppercase text-zinc-500">PREV</span>
+          </div>
+
+          {/* Prominent Large Feature Card Frame */}
+          <div className="relative w-full max-w-5xl h-[380px] sm:h-[420px] lg:h-[440px]">
+            {features.map((feature, index) => (
+              <LargeFeatureCard
+                key={feature.title}
+                feature={feature}
+                index={index}
+                total={features.length}
+                smoothProgress={smoothProgress}
+              />
+            ))}
+          </div>
+
+          {/* External Right NEXT Button */}
+          <div className="hidden lg:flex flex-col items-center gap-2 absolute right-8 z-20">
+            <button
+              type="button"
+              onClick={() => scrollToFeature(getActiveIndex(smoothProgress.get(), features.length) + 1)}
+              className="flex h-12 w-12 items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 shadow-md hover:scale-105 active:scale-95 transition"
+              aria-label="Next feature"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+            <span className="text-[10px] font-mono font-bold tracking-wider uppercase text-zinc-500">NEXT</span>
+          </div>
+
+          {/* External Far-Right Vertical Number Navigation (01 - 06) */}
+          <div className="hidden xl:flex flex-col gap-3 absolute right-0 top-1/2 -translate-y-1/2 z-20">
+            {features.map((_, i) => (
+              <VerticalStepNumber
+                key={i}
+                index={i}
+                total={features.length}
+                smoothProgress={smoothProgress}
+                onClick={() => scrollToFeature(i)}
+              />
+            ))}
+          </div>
         </div>
 
-        {/* Bottom Interactive Navigation & Guide */}
-        <div className="pb-1 text-center text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-500 shrink-0 flex items-center justify-center gap-4">
-          <span>✦ Scroll or use arrows to navigate features</span>
+        {/* Bottom Bar: Scroll Hint & Floating Back-To-Top Button */}
+        <div className="relative mx-auto w-full max-w-7xl flex items-center justify-between shrink-0 pt-2">
+          <div className="w-10" />
+          
+          <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-500">
+            <span className="inline-block animate-bounce">🖱</span>
+            <span>SCROLL TO EXPLORE FEATURES</span>
+          </div>
+
+          <button
+            type="button"
+            onClick={scrollToTop}
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-rose-400 text-white shadow-md hover:bg-rose-500 hover:scale-105 active:scale-95 transition"
+            aria-label="Scroll to top"
+          >
+            <ArrowUp className="h-4 w-4" />
+          </button>
         </div>
+
       </div>
     </div>
   );
 }
 
-function StepIndicator({
+function getActiveIndex(progress: number, total: number) {
+  const step = 1 / total;
+  return Math.min(total - 1, Math.max(0, Math.floor(progress / step)));
+}
+
+function TopPillIndicator({
   index,
   total,
   smoothProgress,
@@ -115,13 +190,13 @@ function StepIndicator({
   const width = useTransform(
     smoothProgress,
     [start, (start + end) / 2, end],
-    ['12px', '40px', '12px']
+    ['12px', '32px', '12px']
   );
 
   const opacity = useTransform(
     smoothProgress,
-    [start - step * 0.25, start, end - step * 0.25, end],
-    [0.3, 1, 1, 0.3]
+    [start - step * 0.2, start, end - step * 0.2, end],
+    [0.35, 1, 1, 0.35]
   );
 
   return (
@@ -129,9 +204,48 @@ function StepIndicator({
       type="button"
       onClick={onClick}
       style={{ width, opacity }}
-      className="h-2.5 rounded-full bg-zinc-900 dark:bg-white transition-colors duration-200 cursor-pointer hover:scale-110"
+      className="h-2 rounded-full bg-rose-500 transition-colors duration-200 cursor-pointer"
       aria-label={`Go to feature ${index + 1}`}
     />
+  );
+}
+
+function VerticalStepNumber({
+  index,
+  total,
+  smoothProgress,
+  onClick,
+}: {
+  index: number;
+  total: number;
+  smoothProgress: any;
+  onClick: () => void;
+}) {
+  const step = 1 / total;
+  const start = index * step;
+  const end = (index + 1) * step;
+
+  const color = useTransform(
+    smoothProgress,
+    [start - step * 0.2, start, end - step * 0.2, end],
+    ['#a1a1aa', '#f43f5e', '#f43f5e', '#a1a1aa']
+  );
+
+  const isCurrent = useTransform(
+    smoothProgress,
+    [start - step * 0.2, start, end - step * 0.2, end],
+    [0, 1, 1, 0]
+  );
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex items-center gap-1 text-xs font-mono font-bold transition hover:text-rose-500"
+    >
+      <motion.span style={{ color }}>0{index + 1}</motion.span>
+      <motion.span style={{ opacity: isCurrent, color: '#f43f5e' }}>|</motion.span>
+    </button>
   );
 }
 
@@ -140,22 +254,18 @@ function LargeFeatureCard({
   index,
   total,
   smoothProgress,
-  onPrev,
-  onNext,
 }: {
   feature: FeatureItem;
   index: number;
   total: number;
   smoothProgress: any;
-  onPrev: () => void;
-  onNext: () => void;
 }) {
   const Icon = feature.icon;
   const step = 1 / total;
   const start = index * step;
   const end = (index + 1) * step;
 
-  // Faster 2D GPU-accelerated transforms
+  // Ultra-smooth 2D GPU accelerated transforms
   const opacity = useTransform(
     smoothProgress,
     [
@@ -175,7 +285,7 @@ function LargeFeatureCard({
       end - step * 0.15,
       index === total - 1 ? 1 : end,
     ],
-    [0.94, 1, 1, index === total - 1 ? 1 : 0.96]
+    [0.95, 1, 1, index === total - 1 ? 1 : 0.96]
   );
 
   const y = useTransform(
@@ -186,7 +296,7 @@ function LargeFeatureCard({
       end - step * 0.15,
       index === total - 1 ? 1 : end,
     ],
-    [50, 0, 0, index === total - 1 ? 0 : -35]
+    [40, 0, 0, index === total - 1 ? 0 : -30]
   );
 
   return (
@@ -197,84 +307,212 @@ function LargeFeatureCard({
         y,
         willChange: 'transform, opacity',
       }}
-      className="absolute inset-0 w-full h-full rounded-[2.5rem] border border-rose-200/80 dark:border-zinc-800 bg-[#FDF4F8] dark:bg-zinc-900/90 p-6 sm:p-10 lg:p-12 shadow-soft flex flex-col justify-between overflow-hidden"
+      className="absolute inset-0 w-full h-full rounded-[3rem] border border-rose-100 dark:border-zinc-800 bg-[#FDF4F8] dark:bg-zinc-900/90 p-6 sm:p-10 lg:p-12 shadow-soft flex flex-col justify-between overflow-hidden"
     >
-      {/* Top Meta Header & Interactive Arrow Navigation */}
-      <div className="flex items-center justify-between border-b border-rose-200/60 dark:border-zinc-800/60 pb-4">
-        <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm">
-            <Icon className="h-6 w-6 sm:h-7 sm:w-7" />
-          </div>
+      {/* Card Content Grid */}
+      <div className="grid gap-6 md:grid-cols-[1.1fr_0.9fr] md:items-center h-full">
+        
+        {/* Left Column: Icon, Badges, Title, Description */}
+        <div className="flex flex-col justify-between h-full py-2">
           <div>
-            <span className="text-[11px] font-mono tracking-[0.2em] uppercase text-zinc-500 font-semibold block">
-              FEATURE 0{index + 1} / 0{total}
-            </span>
-            <span className="text-xs font-semibold text-zinc-900 dark:text-white uppercase tracking-wider">
-              SHIKSHASETU PLATFORM
-            </span>
+            {/* Square Icon Badge */}
+            <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl bg-rose-100/80 dark:bg-zinc-800 text-rose-600 dark:text-rose-400 shadow-sm">
+              <Icon className="h-6 w-6 sm:h-7 sm:w-7" />
+            </div>
+
+            {/* Step Counter Tag */}
+            <div className="mt-6 flex items-center gap-2 text-xs font-mono font-semibold tracking-wider text-zinc-500 uppercase">
+              <span className="text-rose-500 font-bold">0{index + 1}</span>
+              <span>/</span>
+              <span>0{total}</span>
+              <span>•</span>
+              <span>AI PLATFORM</span>
+            </div>
+
+            {/* Feature Title */}
+            <h3 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-zinc-900 dark:text-white leading-[1.15]">
+              {feature.title}
+            </h3>
+
+            {/* Feature Description */}
+            <p className="mt-3 text-sm sm:text-base leading-relaxed text-zinc-600 dark:text-zinc-400 max-w-md">
+              {feature.description}
+            </p>
+          </div>
+
+          {/* Bottom Card Footer Links */}
+          <div className="pt-4 flex items-center justify-between text-xs font-mono font-semibold uppercase tracking-wider text-zinc-500 border-t border-rose-200/60 dark:border-zinc-800/60">
+            <span>SHIKSHASETU FEATURE</span>
+            <a href="/signup" className="text-zinc-900 dark:text-white hover:text-rose-500 dark:hover:text-rose-400 transition flex items-center gap-1 font-bold">
+              <span>EXPLORE FEATURE</span>
+              <span>→</span>
+            </a>
           </div>
         </div>
 
-        {/* Arrow Navigation Controls */}
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={onPrev}
-            disabled={index === 0}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-rose-200/90 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 shadow-sm hover:scale-105 active:scale-95 transition disabled:opacity-30 disabled:hover:scale-100"
-            aria-label="Previous feature"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </button>
-          <button
-            type="button"
-            onClick={onNext}
-            disabled={index === total - 1}
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm hover:scale-105 active:scale-95 transition disabled:opacity-30 disabled:hover:scale-100"
-            aria-label="Next feature"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </button>
-        </div>
-      </div>
-
-      {/* Center Content Body */}
-      <div className="grid gap-6 md:grid-cols-[1.2fr_0.8fr] md:items-center my-auto">
-        <div className="space-y-4">
-          <h3 className="text-2xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-zinc-900 dark:text-white leading-[1.15]">
-            {feature.title}
-          </h3>
-          <p className="text-sm sm:text-base lg:text-lg leading-relaxed text-zinc-600 dark:text-zinc-400 max-w-xl">
-            {feature.description}
-          </p>
+        {/* Right Column: Custom Visual Preview Graphic matching screenshot */}
+        <div className="relative hidden md:flex h-full w-full items-center justify-center p-4">
+          <FeatureVisualPreview index={index} title={feature.title} />
         </div>
 
-        {/* Feature Visual Showcase Pill Box */}
-        <div className="hidden md:flex flex-col justify-center rounded-3xl border border-rose-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-6 shadow-sm space-y-3">
-          <div className="flex items-center justify-between border-b border-rose-200/60 dark:border-zinc-800/60 pb-3">
-            <span className="text-xs font-mono font-semibold uppercase text-zinc-500">SYSTEM STATUS</span>
-            <span className="flex items-center gap-1.5 text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-semibold bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">
-              ● READY
-            </span>
-          </div>
-          <p className="text-xs font-medium text-zinc-800 dark:text-zinc-200">
-            {feature.title} is powered by ShikshaSetu&apos;s adaptive machine learning engine.
-          </p>
-          <div className="pt-2 flex items-center justify-between text-[11px] font-mono text-zinc-400">
-            <span>AUTOMATED PIPELINE</span>
-            <span>100% RELIABLE</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom Action Footer */}
-      <div className="pt-4 flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-zinc-900 dark:text-white border-t border-rose-200/60 dark:border-zinc-800/60">
-        <span className="font-mono text-[10px] text-zinc-500">FEATURE 0{index + 1} OF 0{total}</span>
-        <a href="/signup" className="inline-flex items-center gap-2 hover:underline">
-          <span>GET STARTED WITH {feature.title}</span>
-          <span>↗</span>
-        </a>
       </div>
     </motion.div>
+  );
+}
+
+function FeatureVisualPreview({ index, title }: { index: number; title: string }) {
+  // Feature 3: PDF to Quiz (Matches uploaded screenshot!)
+  if (index === 2) {
+    return (
+      <div className="relative w-full max-w-md h-64 flex items-center justify-center">
+        {/* Document Card: Notes.pdf */}
+        <div className="absolute left-0 top-2 w-48 rounded-2xl border border-white/80 bg-white/90 dark:bg-zinc-950 p-4 shadow-md backdrop-blur-sm space-y-2 z-10">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-zinc-800 dark:text-zinc-200">Notes.pdf</span>
+            <div className="h-5 w-5 rounded-md bg-rose-500 flex items-center justify-center text-[9px] font-bold text-white uppercase">
+              PDF
+            </div>
+          </div>
+          <div className="h-2 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full" />
+          <div className="h-2 w-3/4 bg-zinc-100 dark:bg-zinc-800 rounded-full" />
+          <div className="h-2 w-5/6 bg-zinc-100 dark:bg-zinc-800 rounded-full" />
+        </div>
+
+        {/* Curved Dotted Arrow Graphic */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none text-rose-300 dark:text-rose-800 opacity-70" viewBox="0 0 300 200" fill="none">
+          <path d="M 120 70 Q 180 30 220 80" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" />
+        </svg>
+
+        {/* Quiz Result Card */}
+        <div className="absolute right-0 bottom-2 w-52 rounded-2xl border border-white/80 bg-white/95 dark:bg-zinc-950 p-4 shadow-lg backdrop-blur-sm space-y-2 z-20">
+          <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-1.5">
+            <span className="text-xs font-bold text-zinc-900 dark:text-white">Quiz</span>
+            <div className="h-6 w-6 rounded-lg bg-rose-50 dark:bg-rose-950/60 text-rose-500 flex items-center justify-center">
+              <Sparkles className="h-3.5 w-3.5" />
+            </div>
+          </div>
+
+          <div className="space-y-1.5 text-[11px]">
+            <div className="flex items-center justify-between p-1.5 rounded-lg bg-zinc-50 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400">
+              <span>A</span>
+            </div>
+            <div className="flex items-center justify-between p-1.5 rounded-lg bg-rose-100/70 dark:bg-rose-950/60 font-semibold text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800">
+              <span>B</span>
+              <CheckCircle2 className="h-3.5 w-3.5 text-rose-500" />
+            </div>
+            <div className="flex items-center justify-between p-1.5 rounded-lg bg-zinc-50 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400">
+              <span>C</span>
+            </div>
+            <div className="flex items-center justify-between p-1.5 rounded-lg bg-zinc-50 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400">
+              <span>D</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Feature 1: AI Notes
+  if (index === 0) {
+    return (
+      <div className="relative w-full max-w-md h-64 flex items-center justify-center">
+        <div className="w-64 rounded-2xl border border-white/80 bg-white/95 dark:bg-zinc-950 p-5 shadow-lg space-y-3">
+          <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-2">
+            <span className="text-xs font-bold text-zinc-900 dark:text-white">Executive Summary</span>
+            <Sparkles className="h-4 w-4 text-rose-500" />
+          </div>
+          <p className="text-[11px] text-zinc-600 dark:text-zinc-400 leading-relaxed">
+            Distilled 12 syllabus chapters into core formulas, key terms, and active recall points.
+          </p>
+          <div className="flex items-center gap-2 pt-1">
+            <span className="text-[10px] font-mono uppercase bg-rose-50 dark:bg-rose-950/60 text-rose-600 px-2 py-0.5 rounded-full font-bold">
+              3D FLASHCARDS READY
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Feature 2: AI Quiz Generator
+  if (index === 1) {
+    return (
+      <div className="relative w-full max-w-md h-64 flex items-center justify-center">
+        <div className="w-64 rounded-2xl border border-white/80 bg-white/95 dark:bg-zinc-950 p-5 shadow-lg space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-zinc-900 dark:text-white">Adaptive Quiz</span>
+            <span className="text-[10px] font-mono text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full">
+              90% SCORE
+            </span>
+          </div>
+          <div className="space-y-1.5">
+            <div className="h-2 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full" />
+            <div className="h-2 w-4/5 bg-rose-400 rounded-full" />
+          </div>
+          <p className="text-[11px] text-zinc-500">3 practice questions generated for target revision.</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Feature 4: AI Doubt Solver
+  if (index === 3) {
+    return (
+      <div className="relative w-full max-w-md h-64 flex items-center justify-center space-y-2">
+        <div className="w-64 rounded-2xl border border-white/80 bg-white/95 dark:bg-zinc-950 p-4 shadow-lg space-y-2">
+          <div className="flex justify-end">
+            <div className="rounded-xl bg-zinc-100 dark:bg-zinc-800 p-2 text-[10px] text-zinc-700 dark:text-zinc-300">
+              How does useEffect cleanup work?
+            </div>
+          </div>
+          <div className="flex justify-start gap-2 items-start">
+            <div className="h-6 w-6 rounded-full bg-rose-500 text-white flex items-center justify-center text-[10px]">
+              <Sparkles className="h-3 w-3" />
+            </div>
+            <div className="rounded-xl bg-rose-50/80 dark:bg-zinc-900 p-2.5 text-[10px] text-zinc-800 dark:text-zinc-200 border border-rose-200/60 dark:border-zinc-800">
+              The cleanup function runs before the component unmounts...
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Feature 5: Progress Tracking
+  if (index === 4) {
+    return (
+      <div className="relative w-full max-w-md h-64 flex items-center justify-center">
+        <div className="w-64 rounded-2xl border border-white/80 bg-white/95 dark:bg-zinc-950 p-5 shadow-lg space-y-3">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center">
+              <Flame className="h-5 w-5 fill-amber-500/20" />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-zinc-900 dark:text-white">4 Days Streak</p>
+              <p className="text-[10px] text-zinc-500">65% weekly target completed</p>
+            </div>
+          </div>
+          <div className="h-2 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+            <div className="h-full w-2/3 bg-rose-500 rounded-full" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Default / Feature 6: Mock Tests
+  return (
+    <div className="relative w-full max-w-md h-64 flex items-center justify-center">
+      <div className="w-64 rounded-2xl border border-white/80 bg-white/95 dark:bg-zinc-950 p-5 shadow-lg space-y-3">
+        <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-2">
+          <span className="text-xs font-bold text-zinc-900 dark:text-white">Mock Test Sprint</span>
+          <div className="flex items-center gap-1 text-[10px] font-mono text-rose-500 font-bold">
+            <Clock className="h-3 w-3" />
+            <span>10:00 MINS</span>
+          </div>
+        </div>
+        <p className="text-[11px] text-zinc-600 dark:text-zinc-400">Timed practice assessment with instant answer rationale.</p>
+      </div>
+    </div>
   );
 }
