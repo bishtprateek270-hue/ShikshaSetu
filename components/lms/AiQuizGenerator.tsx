@@ -74,12 +74,12 @@ export default function AiQuizGenerator() {
             </div>
             
             {/* Mode Toggle Button Tabs */}
-            <div className="flex rounded-full bg-white dark:bg-zinc-900 p-1 border border-rose-200/80 dark:border-zinc-800">
+            <div className="flex rounded-lg bg-white dark:bg-zinc-900 p-1 border border-[#DCDCDC] dark:border-zinc-800">
               <button
                 type="button"
                 onClick={() => setMode('topic')}
-                className={`rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-wider transition ${
-                  mode === 'topic' ? 'bg-zinc-900 !text-white dark:bg-white dark:!text-zinc-900 shadow-sm' : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
+                className={`rounded-md px-3 py-1 text-[10px] font-medium uppercase tracking-wider transition-colors ${
+                  mode === 'topic' ? 'bg-[#171717] !text-white dark:bg-white dark:!text-[#171717]' : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
                 }`}
               >
                 Topic
@@ -87,8 +87,8 @@ export default function AiQuizGenerator() {
               <button
                 type="button"
                 onClick={() => setMode('pdf')}
-                className={`rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-wider transition ${
-                  mode === 'pdf' ? 'bg-zinc-900 !text-white dark:bg-white dark:!text-zinc-900 shadow-sm' : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
+                className={`rounded-md px-3 py-1 text-[10px] font-medium uppercase tracking-wider transition-colors ${
+                  mode === 'pdf' ? 'bg-[#171717] !text-white dark:bg-white dark:!text-[#171717]' : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
                 }`}
               >
                 PDF File
@@ -108,14 +108,14 @@ export default function AiQuizGenerator() {
                   value={topic}
                   onChange={(e) => setTopic(e.target.value)}
                   placeholder="e.g. React hooks, Auto Layout, Python analytics..."
-                  className="w-full rounded-full border border-rose-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-5 py-3.5 text-xs text-zinc-900 dark:text-white placeholder-zinc-400 outline-none focus:border-zinc-400 dark:focus:border-zinc-600"
+                  className="w-full rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-3 text-xs text-zinc-900 dark:text-white placeholder-zinc-400 outline-none focus:border-zinc-400 dark:focus:border-zinc-600"
                 />
 
                 <button
                   type="button"
                   onClick={handleGenerate}
                   disabled={!topic.trim() || loading}
-                  className="w-full rounded-full bg-zinc-900 dark:bg-white py-3.5 text-xs font-semibold uppercase tracking-wider !text-white dark:!text-zinc-900 hover:bg-black dark:hover:bg-zinc-100 transition shadow-sm disabled:opacity-40"
+                  className="w-full rounded-lg bg-[#171717] hover:bg-[#262626] dark:bg-white dark:hover:bg-zinc-100 py-3 text-xs font-medium uppercase tracking-wider !text-white dark:!text-[#171717] transition-colors shadow-none disabled:opacity-40"
                 >
                   {loading ? 'Generating practice questions...' : 'Generate custom Quiz'}
                 </button>
@@ -134,7 +134,7 @@ export default function AiQuizGenerator() {
                   type="button"
                   onClick={handleGenerate}
                   disabled={!extractedText || loading}
-                  className="w-full rounded-full bg-zinc-900 dark:bg-white py-3.5 text-xs font-semibold uppercase tracking-wider !text-white dark:!text-zinc-900 hover:bg-black dark:hover:bg-zinc-100 transition shadow-sm disabled:opacity-40"
+                  className="w-full rounded-lg bg-[#171717] hover:bg-[#262626] dark:bg-white dark:hover:bg-zinc-100 py-3 text-xs font-medium uppercase tracking-wider !text-white dark:!text-[#171717] transition-colors shadow-none disabled:opacity-40"
                 >
                   {loading ? 'Analyzing document & building questions...' : 'Generate Quiz from PDF'}
                 </button>
@@ -156,7 +156,7 @@ export default function AiQuizGenerator() {
                 setExtractedText('');
                 setPdfFilename('');
               }}
-              className="text-xs text-zinc-500 hover:text-zinc-900 dark:hover:text-white"
+              className="rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 text-xs font-medium text-[#171717] dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors shadow-none"
             >
               Build another Quiz
             </button>
@@ -164,6 +164,7 @@ export default function AiQuizGenerator() {
           <QuizPlayer quiz={quiz} />
         </div>
       )}
+
     </div>
   );
 }

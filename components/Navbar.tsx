@@ -87,7 +87,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={toggleLanguage}
-            className="flex items-center gap-1.5 rounded-full border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50 dark:bg-zinc-900/60 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 hover:border-zinc-400 dark:hover:border-zinc-600 transition shadow-sm"
+            className="flex items-center gap-1.5 rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 text-xs font-medium text-[#171717] dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors shadow-none"
           >
             <Globe className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
             <span>{language === 'en' ? 'हिन्दी' : 'English'}</span>
@@ -99,19 +99,19 @@ export default function Navbar() {
             <div className="flex items-center gap-3">
               <Link
                 href="/dashboard"
-                className="inline-flex items-center gap-2 rounded-full bg-zinc-900 dark:bg-white px-5 py-2 text-xs font-semibold uppercase tracking-wider !text-white dark:!text-zinc-900 shadow-sm transition hover:bg-black dark:hover:bg-zinc-100 active:scale-[0.98]"
+                className="inline-flex items-center gap-2 rounded-lg bg-[#171717] hover:bg-[#262626] dark:bg-white dark:hover:bg-zinc-100 px-4 py-2 text-xs font-medium !text-white dark:!text-[#171717] transition-colors shadow-none"
               >
                 <LayoutDashboard className="h-3.5 w-3.5" />
                 {t('nav_dashboard')}
               </Link>
               <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-900 dark:bg-zinc-100 text-xs font-bold !text-white dark:!text-zinc-900">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#171717] dark:bg-zinc-100 text-xs font-bold !text-white dark:!text-zinc-900">
                   {userInitials}
                 </div>
                 <button
                   type="button"
                   onClick={() => logout()}
-                  className="rounded-full border border-zinc-200 dark:border-zinc-800 p-2 text-zinc-500 hover:text-rose-600 dark:hover:text-rose-400 transition"
+                  className="rounded-lg border border-[#DCDCDC] dark:border-zinc-800 p-2 text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800 transition-colors"
                   aria-label="Logout"
                 >
                   <LogOut className="h-4 w-4" />
@@ -119,16 +119,16 @@ export default function Navbar() {
               </div>
             </div>
           ) : (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5">
               <Link
                 href="/login"
-                className="rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 transition hover:border-zinc-400 dark:hover:border-zinc-600"
+                className="rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-2 text-xs font-medium text-[#171717] dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors shadow-none"
               >
                 {t('nav_login')}
               </Link>
               <Link
                 href="/signup"
-                className="rounded-full bg-zinc-900 dark:bg-white px-5 py-2 text-xs font-semibold uppercase tracking-wider !text-white dark:!text-zinc-900 shadow-sm transition hover:bg-black dark:hover:bg-zinc-100 active:scale-[0.98]"
+                className="rounded-lg bg-[#171717] hover:bg-[#262626] dark:bg-white dark:hover:bg-zinc-100 px-4 py-2 text-xs font-medium !text-white dark:!text-[#171717] transition-colors shadow-none"
               >
                 {t('nav_signup')} ↗
               </Link>
@@ -141,7 +141,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={toggleLanguage}
-            className="rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-2 text-zinc-700 dark:text-zinc-300"
+            className="rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2 text-zinc-700 dark:text-zinc-300"
             aria-label="Toggle language"
           >
             <Globe className="h-4 w-4" />
@@ -150,7 +150,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => setOpen(!open)}
-            className="rounded-full p-2 text-zinc-700 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-800"
+            className="rounded-lg p-2 text-zinc-700 dark:text-zinc-200 border border-[#DCDCDC] dark:border-zinc-800"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -176,7 +176,7 @@ export default function Navbar() {
                   <Link
                     href="/dashboard"
                     onClick={() => setOpen(false)}
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-zinc-900 dark:bg-white px-5 py-3 text-xs font-semibold uppercase tracking-wider text-white dark:text-zinc-900"
+                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#171717] hover:bg-[#262626] dark:bg-white dark:hover:bg-zinc-100 px-5 py-3 text-xs font-semibold uppercase tracking-wider text-white dark:text-zinc-900"
                   >
                     <LayoutDashboard className="h-4 w-4" />
                     {t('nav_dashboard')}
@@ -184,7 +184,7 @@ export default function Navbar() {
                   <button
                     type="button"
                     onClick={() => { setOpen(false); logout(); }}
-                    className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-200 dark:border-zinc-800 px-5 py-3 text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300"
+                    className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#DCDCDC] dark:border-zinc-800 px-5 py-3 text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300"
                   >
                     <LogOut className="h-4 w-4" />
                     {t('nav_logout')}
@@ -195,14 +195,14 @@ export default function Navbar() {
                   <Link
                     href="/login"
                     onClick={() => setOpen(false)}
-                    className="rounded-full border border-zinc-200 dark:border-zinc-800 text-center px-5 py-3 text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300"
+                    className="rounded-lg border border-[#DCDCDC] dark:border-zinc-800 text-center px-5 py-3 text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300"
                   >
                     {t('nav_login')}
                   </Link>
                   <Link
                     href="/signup"
                     onClick={() => setOpen(false)}
-                    className="rounded-full bg-zinc-900 dark:bg-white text-center px-5 py-3 text-xs font-semibold uppercase tracking-wider text-white dark:text-zinc-900"
+                    className="rounded-lg bg-[#171717] hover:bg-[#262626] dark:bg-white dark:hover:bg-zinc-100 text-center px-5 py-3 text-xs font-semibold uppercase tracking-wider text-white dark:text-zinc-900"
                   >
                     {t('nav_signup')} ↗
                   </Link>
@@ -212,6 +212,7 @@ export default function Navbar() {
           </div>
         </div>
       ) : null}
+
     </header>
   );
 }

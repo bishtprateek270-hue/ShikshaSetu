@@ -8,8 +8,10 @@ import DashboardCard from '../../../../components/DashboardCard';
 import { useAuth } from '../../../../components/AuthProvider';
 import { getFirebaseFirestore } from '../../../../lib/firebase';
 import { doc, setDoc } from 'firebase/firestore';
+import UserProfileCard from '../../../../components/UserProfileCard';
 
 export default function EducatorProfilePage() {
+
   const { user, profile } = useAuth();
   
   const [name, setName] = useState(profile?.name ?? user?.displayName ?? '');
@@ -72,8 +74,10 @@ export default function EducatorProfilePage() {
         subtitle="Update your professional credentials, biography, and institution details."
         breadcrumbs={[{ label: 'Dashboard', href: '/dashboard/teacher' }, { label: 'Profile' }]}
       >
-        <div className="max-w-2xl mx-auto space-y-6">
+        <div className="max-w-4xl mx-auto grid gap-6 md:grid-cols-[1fr_2fr] items-start">
+          <UserProfileCard className="mx-auto" />
           <form onSubmit={handleSubmit}>
+
             <DashboardCard
               title="Instructor Profile Card"
               description="Personalize your identity as seen by enrolled students."

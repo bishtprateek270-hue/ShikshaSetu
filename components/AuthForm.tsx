@@ -70,7 +70,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
             onChange={(event) => setName(event.target.value)}
             placeholder={t('auth_name_placeholder')}
             required
-            className="w-full rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-5 py-3.5 text-sm text-zinc-900 dark:text-white outline-none transition focus:border-zinc-400 dark:focus:border-zinc-600"
+            className="w-full rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-3 text-sm text-zinc-900 dark:text-white outline-none transition focus:border-zinc-400 dark:focus:border-zinc-600"
           />
         </div>
       ) : null}
@@ -83,7 +83,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
           onChange={(event) => setEmail(event.target.value)}
           placeholder={t('auth_email_placeholder')}
           required
-          className="w-full rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-5 py-3.5 text-sm text-zinc-900 dark:text-white outline-none transition focus:border-zinc-400 dark:focus:border-zinc-600"
+          className="w-full rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-3 text-sm text-zinc-900 dark:text-white outline-none transition focus:border-zinc-400 dark:focus:border-zinc-600"
         />
       </div>
 
@@ -96,7 +96,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
             onChange={(event) => setPassword(event.target.value)}
             placeholder={t('auth_password_placeholder')}
             required
-            className="w-full rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-5 py-3.5 text-sm text-zinc-900 dark:text-white outline-none transition focus:border-zinc-400 dark:focus:border-zinc-600"
+            className="w-full rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-3 text-sm text-zinc-900 dark:text-white outline-none transition focus:border-zinc-400 dark:focus:border-zinc-600"
           />
         </div>
       ) : null}
@@ -112,7 +112,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
       <button
         type="submit"
         disabled={isSubmitting || !isConfigured}
-        className="w-full rounded-full bg-zinc-900 dark:bg-white px-5 py-3.5 text-xs font-semibold uppercase tracking-wider text-white dark:text-zinc-900 shadow-sm transition hover:bg-black dark:hover:bg-zinc-100 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
+        className="w-full rounded-lg bg-[#171717] hover:bg-[#262626] dark:bg-white dark:hover:bg-zinc-100 px-5 py-3 text-xs font-medium uppercase tracking-wider !text-white dark:!text-[#171717] transition-colors shadow-none disabled:cursor-not-allowed disabled:opacity-60"
       >
         {mode === 'login' ? t('auth_btn_login') : mode === 'signup' ? t('auth_btn_signup') : t('auth_btn_forgot')}
       </button>
@@ -129,12 +129,13 @@ export default function AuthForm({ mode }: AuthFormProps) {
             type="button"
             onClick={handleGoogleSignIn}
             disabled={isSubmitting || !isConfigured}
-            className="w-full rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-5 py-3.5 text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 transition hover:border-zinc-400 dark:hover:border-zinc-600 disabled:cursor-not-allowed disabled:opacity-60"
+            className="w-full rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-white dark:bg-zinc-900 px-5 py-3 text-xs font-medium uppercase tracking-wider text-[#171717] dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors shadow-none disabled:cursor-not-allowed disabled:opacity-60"
           >
             {t('auth_google')}
           </button>
         </>
       ) : null}
+
 
       <div className="text-center text-xs text-zinc-500 dark:text-zinc-400 pt-2">
         {mode === 'login' ? (

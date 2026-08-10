@@ -11,6 +11,8 @@ import LmsSkeletonLoader from '../../../components/lms/LmsSkeletonLoader';
 import { useAuth } from '../../../components/AuthProvider';
 import { useAdminAnalytics, useAdminIssues } from '../../../lib/lms/hooks-admin';
 import { formatDate } from '../../../lib/lms/utils';
+import UserProfileCard from '../../../components/UserProfileCard';
+
 
 export default function AdminDashboardPage() {
   const { profile } = useAuth();
@@ -150,8 +152,12 @@ export default function AdminDashboardPage() {
 
             {/* Right hand columns */}
             <div className="space-y-6">
+              {/* Enterprise User Profile Card */}
+              <UserProfileCard className="mx-auto" />
+
               {/* User Roles ratio Widget */}
               <DashboardCard
+
                 title="User Demographics"
                 description="Percentage ratio of platform registrations."
               >

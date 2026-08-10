@@ -51,7 +51,7 @@ export default function EnrolledCourseCard({ enrollment }: EnrolledCourseCardPro
 
           <Link
             href={isComplete ? `/learn/${course.id}/certificate` : `/learn/${course.id}`}
-            className="inline-flex items-center gap-2 rounded-full bg-violet-500 px-4 py-2 text-xs font-semibold text-white transition hover:bg-violet-400"
+            className="inline-flex items-center gap-2 rounded-lg bg-[#171717] hover:bg-[#262626] dark:bg-white dark:hover:bg-zinc-100 px-4 py-2 text-xs font-medium !text-white dark:!text-[#171717] transition-colors shadow-none"
           >
             <Play className="h-3.5 w-3.5" />
             {isComplete ? 'View Certificate' : 'Continue'}
@@ -61,3 +61,4 @@ export default function EnrolledCourseCard({ enrollment }: EnrolledCourseCardPro
     </div>
   );
 }
+

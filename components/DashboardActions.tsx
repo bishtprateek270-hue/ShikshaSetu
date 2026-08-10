@@ -29,7 +29,7 @@ export default function DashboardActions({ items }: DashboardActionsProps) {
             <Link
               key={item.label}
               href={item.href}
-              className="group block rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/40 px-4 py-4 text-left text-xs font-medium text-zinc-700 dark:text-zinc-300 transition-all hover:border-zinc-400 dark:hover:border-zinc-600 hover:shadow-soft"
+              className="group block rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-3.5 text-left text-xs font-medium text-[#171717] dark:text-zinc-200 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800 shadow-none"
             >
               {content}
             </Link>
@@ -41,11 +41,12 @@ export default function DashboardActions({ items }: DashboardActionsProps) {
             key={item.label}
             onClick={item.onClick}
             type="button"
-            className="group rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/40 px-4 py-4 text-left text-xs font-medium text-zinc-700 dark:text-zinc-300 transition-all hover:border-zinc-400 dark:hover:border-zinc-600 hover:shadow-soft"
+            className="group rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-3.5 text-left text-xs font-medium text-[#171717] dark:text-zinc-200 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800 shadow-none"
           >
             {content}
           </button>
         );
+
       })}
     </div>
   );

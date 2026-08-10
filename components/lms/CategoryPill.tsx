@@ -15,15 +15,16 @@ export default function CategoryPill({ label, icon, active, onClick }: CategoryP
       type="button"
       onClick={onClick}
       className={clsx(
-        'inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-wider transition-all duration-200 shadow-sm',
+        'inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg border px-3.5 py-1.5 text-xs font-medium uppercase tracking-wider transition-colors shadow-none',
         active
-          ? 'border-zinc-900 dark:border-white bg-zinc-900 dark:bg-white text-white dark:text-zinc-900'
-          : 'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-400 dark:hover:border-zinc-600'
+          ? 'border-transparent bg-[#171717] dark:bg-white !text-white dark:!text-[#171717] hover:bg-[#262626] dark:hover:bg-zinc-100'
+          : 'border-[#DCDCDC] dark:border-zinc-800 bg-white dark:bg-zinc-900 text-[#171717] dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800'
       )}
     >
       {icon && <span className="text-xs">{icon}</span>}
       {label}
     </button>
+
   );
 }
 

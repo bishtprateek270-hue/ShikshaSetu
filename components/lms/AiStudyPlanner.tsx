@@ -53,7 +53,7 @@ export default function AiStudyPlanner() {
               value={courseTitle}
               onChange={(e) => setCourseTitle(e.target.value)}
               placeholder="e.g. Master React, UI design fundamentals..."
-              className="w-full rounded-full border border-rose-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-5 py-3 text-xs text-zinc-900 dark:text-white placeholder-zinc-400 outline-none focus:border-zinc-400 dark:focus:border-zinc-600"
+              className="w-full rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-2.5 text-xs text-zinc-900 dark:text-white placeholder-zinc-400 outline-none focus:border-zinc-400 dark:focus:border-zinc-600"
             />
           </div>
 
@@ -63,7 +63,7 @@ export default function AiStudyPlanner() {
               <select
                 value={days}
                 onChange={(e) => setDays(Number(e.target.value))}
-                className="w-full rounded-full border border-rose-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-2.5 text-xs text-zinc-800 dark:text-zinc-200 outline-none"
+                className="w-full rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2.5 text-xs text-zinc-800 dark:text-zinc-200 outline-none"
               >
                 <option value={7}>7 Days Sprint</option>
                 <option value={14}>14 Days Track</option>
@@ -76,7 +76,7 @@ export default function AiStudyPlanner() {
               <select
                 value={hours}
                 onChange={(e) => setHours(Number(e.target.value))}
-                className="w-full rounded-full border border-rose-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-2.5 text-xs text-zinc-800 dark:text-zinc-200 outline-none"
+                className="w-full rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-2.5 text-xs text-zinc-800 dark:text-zinc-200 outline-none"
               >
                 <option value={1}>1 Hour / day</option>
                 <option value={2}>2 Hours / day</option>
@@ -89,11 +89,12 @@ export default function AiStudyPlanner() {
             type="button"
             onClick={handleGenerate}
             disabled={!courseTitle.trim() || loading}
-            className="w-full rounded-full bg-zinc-900 dark:bg-white py-3.5 text-xs font-semibold uppercase tracking-wider !text-white dark:!text-zinc-900 hover:bg-black dark:hover:bg-zinc-100 transition shadow-sm disabled:opacity-40"
+            className="w-full rounded-lg bg-[#171717] hover:bg-[#262626] dark:bg-white dark:hover:bg-zinc-100 py-3 text-xs font-medium uppercase tracking-wider !text-white dark:!text-[#171717] transition-colors shadow-none disabled:opacity-40"
           >
             {loading ? 'Synthesizing task timelines...' : 'Generate Study Planner'}
           </button>
         </div>
+
       </div>
 
       {/* Results timeline */}

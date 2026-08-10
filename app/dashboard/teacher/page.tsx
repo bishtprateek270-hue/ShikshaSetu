@@ -12,6 +12,8 @@ import { useAuth } from '../../../components/AuthProvider';
 import { useTeacherAnalytics, useCourseSubmissions } from '../../../lib/lms/hooks-teacher';
 import { formatDate } from '../../../lib/lms/utils';
 import MiniCalendar from '../../../components/lms/MiniCalendar';
+import UserProfileCard from '../../../components/UserProfileCard';
+
 
 export default function TeacherDashboardPage() {
   const { profile, user } = useAuth();
@@ -127,27 +129,9 @@ export default function TeacherDashboardPage() {
 
           {/* Right hand details cards */}
           <div className="space-y-6">
-            <DashboardCard title="Profile Snapshot" description="Educator credentials and institution details.">
-              <div className="space-y-3 text-sm text-slate-600 dark:text-slate-300">
-                <p>
-                  <span className="font-semibold text-slate-700 dark:text-slate-100">Name:</span> {profile?.name ?? user?.displayName}
-                </p>
-                <p>
-                  <span className="font-semibold text-slate-700 dark:text-slate-100">Institute:</span> {profile?.institute}
-                </p>
-                <p>
-                  <span className="font-semibold text-slate-700 dark:text-slate-100">Role:</span> {profile?.role?.toUpperCase()}
-                </p>
-              </div>
-              <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/60">
-                <Link
-                  href="/dashboard/teacher/profile"
-                  className="block text-center rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40 py-2.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-white hover:border-indigo-400 transition"
-                >
-                  Edit Profile Biography
-                </Link>
-              </div>
-            </DashboardCard>
+            {/* Enterprise User Profile Card */}
+            <UserProfileCard className="mx-auto" />
+
 
             <DashboardCard title="Calendar Study scheduler" description="Upcoming deadlines and lecture scheduling.">
               <div className="space-y-4 text-xs">

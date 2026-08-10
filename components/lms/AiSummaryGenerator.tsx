@@ -70,18 +70,19 @@ export default function AiSummaryGenerator() {
             onChange={(e) => setText(e.target.value)}
             placeholder="Paste syllabus text or notes here (minimum 20 characters)..."
             rows={8}
-            className="w-full rounded-2xl border border-rose-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 text-xs text-zinc-900 dark:text-white placeholder-zinc-400 outline-none focus:border-zinc-400 dark:focus:border-zinc-600 resize-none leading-relaxed"
+            className="w-full rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 text-xs text-zinc-900 dark:text-white placeholder-zinc-400 outline-none focus:border-zinc-400 dark:focus:border-zinc-600 resize-none leading-relaxed"
           />
 
           <button
             type="button"
             onClick={handleSummarize}
             disabled={text.length < 20 || loading}
-            className="w-full rounded-full bg-zinc-900 dark:bg-white py-3.5 text-xs font-semibold uppercase tracking-wider !text-white dark:!text-zinc-900 hover:bg-black dark:hover:bg-zinc-100 transition shadow-sm disabled:opacity-40"
+            className="w-full rounded-lg bg-[#171717] hover:bg-[#262626] dark:bg-white dark:hover:bg-zinc-100 py-3 text-xs font-medium uppercase tracking-wider !text-white dark:!text-[#171717] transition-colors shadow-none disabled:opacity-40"
           >
             {loading ? 'Synthesizing summaries...' : 'Summarize Text'}
           </button>
         </div>
+
       </div>
 
       {/* Results panel */}

@@ -123,12 +123,12 @@ Select a query below or type your question:`,
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend(input)}
             placeholder="Ask a doubt or paste a code block..."
-            className="flex-1 rounded-full border border-rose-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-5 py-3 text-xs text-zinc-900 dark:text-white placeholder-zinc-400 outline-none focus:border-zinc-400 dark:focus:border-zinc-600"
+            className="flex-1 rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-4 py-2.5 text-xs text-zinc-900 dark:text-white placeholder-zinc-400 outline-none focus:border-zinc-400 dark:focus:border-zinc-600"
           />
           <button
             onClick={() => handleSend(input)}
             disabled={!input.trim() || loading}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-zinc-900 dark:bg-white !text-white dark:!text-zinc-900 hover:scale-105 transition disabled:opacity-40"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#171717] hover:bg-[#262626] dark:bg-white dark:hover:bg-zinc-100 !text-white dark:!text-[#171717] transition-colors shadow-none disabled:opacity-40"
           >
             <Send className="h-4 w-4" />
           </button>
@@ -136,7 +136,7 @@ Select a query below or type your question:`,
       </div>
 
       {/* Suggested doubt topics sidebar */}
-      <div className="rounded-[2rem] border border-rose-200/80 dark:border-zinc-800 bg-[#FDF4F8] dark:bg-zinc-950/60 p-5 space-y-4 self-start shadow-soft">
+      <div className="rounded-2xl border border-rose-200/80 dark:border-zinc-800 bg-[#FDF4F8] dark:bg-zinc-950/60 p-5 space-y-4 self-start shadow-none">
         <div className="flex items-center gap-1.5">
           <Sparkles className="h-4 w-4 text-zinc-900 dark:text-white" />
           <span className="text-xs font-mono font-bold text-zinc-900 dark:text-white uppercase tracking-wider">Suggested Queries</span>
@@ -152,13 +152,14 @@ Select a query below or type your question:`,
               key={prompt}
               type="button"
               onClick={() => handleSend(prompt)}
-              className="w-full text-left rounded-2xl border border-rose-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3 text-xs font-medium text-zinc-800 dark:text-zinc-200 hover:border-zinc-400 dark:hover:border-zinc-600 transition shadow-sm"
+              className="w-full text-left rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3 text-xs font-medium text-[#171717] dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors shadow-none"
             >
               {prompt}
             </button>
           ))}
         </div>
       </div>
+
     </div>
   );
 }

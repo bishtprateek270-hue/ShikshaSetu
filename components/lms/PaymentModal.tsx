@@ -148,11 +148,11 @@ export default function PaymentModal({ courseTitle, coursePrice, isOpen, onClose
           </div>
 
           {/* Payment Method Selector Tabs */}
-          <div className="grid grid-cols-3 gap-2 rounded-2xl bg-slate-900/60 border border-slate-900 p-1">
+          <div className="grid grid-cols-3 gap-2 rounded-lg bg-slate-900/60 border border-slate-900 p-1">
             <button
               onClick={() => setMethod('card')}
-              className={`flex flex-col items-center justify-center py-2.5 rounded-xl text-xs font-semibold gap-1 transition ${
-                method === 'card' ? 'bg-violet-500 text-white shadow-soft' : 'text-slate-400 hover:text-white'
+              className={`flex flex-col items-center justify-center py-2 rounded-md text-xs font-medium gap-1 transition-colors ${
+                method === 'card' ? 'bg-[#171717] !text-white dark:bg-white dark:!text-[#171717]' : 'text-slate-400 hover:text-white'
               }`}
             >
               <CreditCard className="h-4 w-4" />
@@ -160,8 +160,8 @@ export default function PaymentModal({ courseTitle, coursePrice, isOpen, onClose
             </button>
             <button
               onClick={() => setMethod('upi')}
-              className={`flex flex-col items-center justify-center py-2.5 rounded-xl text-xs font-semibold gap-1 transition ${
-                method === 'upi' ? 'bg-violet-500 text-white shadow-soft' : 'text-slate-400 hover:text-white'
+              className={`flex flex-col items-center justify-center py-2 rounded-md text-xs font-medium gap-1 transition-colors ${
+                method === 'upi' ? 'bg-[#171717] !text-white dark:bg-white dark:!text-[#171717]' : 'text-slate-400 hover:text-white'
               }`}
             >
               <Smartphone className="h-4 w-4" />
@@ -169,8 +169,8 @@ export default function PaymentModal({ courseTitle, coursePrice, isOpen, onClose
             </button>
             <button
               onClick={() => setMethod('netbanking')}
-              className={`flex flex-col items-center justify-center py-2.5 rounded-xl text-xs font-semibold gap-1 transition ${
-                method === 'netbanking' ? 'bg-violet-500 text-white shadow-soft' : 'text-slate-400 hover:text-white'
+              className={`flex flex-col items-center justify-center py-2 rounded-md text-xs font-medium gap-1 transition-colors ${
+                method === 'netbanking' ? 'bg-[#171717] !text-white dark:bg-white dark:!text-[#171717]' : 'text-slate-400 hover:text-white'
               }`}
             >
               <Landmark className="h-4 w-4" />
@@ -190,7 +190,7 @@ export default function PaymentModal({ courseTitle, coursePrice, isOpen, onClose
                     onChange={handleCardNumberChange}
                     placeholder="4111 2222 3333 4444"
                     required
-                    className="w-full rounded-xl border border-slate-850 bg-slate-900 px-4 py-3 text-xs text-white placeholder-slate-650 outline-none focus:border-violet-500 transition"
+                    className="w-full rounded-lg border border-slate-800 bg-slate-900 px-4 py-2.5 text-xs text-white placeholder-slate-500 outline-none focus:border-zinc-400 transition-colors"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
@@ -203,7 +203,7 @@ export default function PaymentModal({ courseTitle, coursePrice, isOpen, onClose
                       placeholder="MM/YY"
                       maxLength={5}
                       required
-                      className="w-full rounded-xl border border-slate-850 bg-slate-900 px-4 py-3 text-xs text-white placeholder-slate-650 outline-none focus:border-violet-500 transition text-center"
+                      className="w-full rounded-lg border border-slate-800 bg-slate-900 px-4 py-2.5 text-xs text-white placeholder-slate-500 outline-none focus:border-zinc-400 transition-colors text-center"
                     />
                   </div>
                   <div>
@@ -215,7 +215,7 @@ export default function PaymentModal({ courseTitle, coursePrice, isOpen, onClose
                       placeholder="•••"
                       maxLength={3}
                       required
-                      className="w-full rounded-xl border border-slate-850 bg-slate-900 px-4 py-3 text-xs text-white placeholder-slate-650 outline-none focus:border-violet-500 transition text-center"
+                      className="w-full rounded-lg border border-slate-800 bg-slate-900 px-4 py-2.5 text-xs text-white placeholder-slate-500 outline-none focus:border-zinc-400 transition-colors text-center"
                     />
                   </div>
                 </div>
@@ -232,19 +232,19 @@ export default function PaymentModal({ courseTitle, coursePrice, isOpen, onClose
                     onChange={(e) => setUpiId(e.target.value)}
                     placeholder="username@upi"
                     required={method === 'upi'}
-                    className="w-full rounded-xl border border-slate-850 bg-slate-900 px-4 py-3 text-xs text-white placeholder-slate-650 outline-none focus:border-violet-500 transition"
+                    className="w-full rounded-lg border border-slate-800 bg-slate-900 px-4 py-2.5 text-xs text-white placeholder-slate-500 outline-none focus:border-zinc-400 transition-colors"
                   />
                 </div>
-                <div className="flex flex-col items-center justify-center p-4 rounded-2xl border border-slate-900 bg-slate-900/30">
+                <div className="flex flex-col items-center justify-center p-4 rounded-xl border border-slate-900 bg-slate-900/30">
                   {/* Simulated QR Code box */}
-                  <div className="h-28 w-28 rounded-xl bg-white p-2 flex items-center justify-center shadow-md">
+                  <div className="h-28 w-28 rounded-lg bg-white p-2 flex items-center justify-center shadow-none">
                     <img
                       src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect x='0' y='0' width='30' height='30' fill='black'/><rect x='70' y='0' width='30' height='30' fill='black'/><rect x='0' y='70' width='30' height='30' fill='black'/><rect x='30' y='30' width='40' height='40' fill='black'/></svg>"
                       alt="Simulated QR Code"
                       className="h-full w-full object-contain"
                     />
                   </div>
-                  <p className="mt-2 text-[10px] text-slate-500 font-semibold uppercase tracking-wider">or scan simulated QR Code</p>
+                  <p className="mt-2 text-[10px] text-slate-500 font-mono font-semibold uppercase tracking-wider">or scan simulated QR Code</p>
                 </div>
               </div>
             )}
@@ -256,7 +256,7 @@ export default function PaymentModal({ courseTitle, coursePrice, isOpen, onClose
                   value={selectedBank}
                   onChange={(e) => setSelectedBank(e.target.value)}
                   required={method === 'netbanking'}
-                  className="w-full rounded-xl border border-slate-850 bg-slate-900 px-4 py-3 text-xs text-white placeholder-slate-650 outline-none focus:border-violet-500 transition"
+                  className="w-full rounded-lg border border-slate-800 bg-slate-900 px-4 py-2.5 text-xs text-white placeholder-slate-500 outline-none focus:border-zinc-400 transition-colors"
                 >
                   <option value="" className="bg-slate-950 text-slate-450">-- Choose Bank --</option>
                   <option value="sbi" className="bg-slate-950 text-slate-100">State Bank of India</option>
@@ -270,11 +270,12 @@ export default function PaymentModal({ courseTitle, coursePrice, isOpen, onClose
 
             <button
               type="submit"
-              className="mt-2 w-full rounded-xl bg-violet-500 py-3 text-xs font-bold text-white hover:bg-violet-400 transition shadow-soft flex items-center justify-center gap-1.5"
+              className="mt-2 w-full rounded-lg bg-[#171717] hover:bg-[#262626] dark:bg-white dark:hover:bg-zinc-100 py-3 text-xs font-medium !text-white dark:!text-[#171717] transition-colors shadow-none flex items-center justify-center gap-1.5"
             >
               Pay ₹{coursePrice}
             </button>
           </form>
+
         </div>
       </motion.div>
     </div>

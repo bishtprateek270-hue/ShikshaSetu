@@ -21,7 +21,7 @@ export default function HeroSection() {
             transition={{ duration: 0.5 }}
             className="space-y-8"
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-zinc-200/90 dark:border-zinc-800/90 bg-zinc-50 dark:bg-zinc-900/60 px-4 py-1.5 text-xs font-mono font-medium tracking-[0.18em] uppercase text-zinc-800 dark:text-zinc-200 shadow-sm">
+            <div className="inline-flex items-center gap-2 rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/60 px-3.5 py-1.5 text-xs font-mono font-medium tracking-[0.18em] uppercase text-zinc-800 dark:text-zinc-200">
               <span className="text-zinc-500">✦</span>
               <span>{t('hero_badge')}</span>
             </div>
@@ -38,19 +38,18 @@ export default function HeroSection() {
             <div className="flex flex-wrap items-center gap-3">
               <a
                 href="/signup"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-zinc-900 dark:bg-white px-7 py-3.5 text-xs font-semibold uppercase tracking-wider !text-white dark:!text-zinc-900 shadow-sm transition hover:bg-black dark:hover:bg-zinc-100 active:scale-[0.98]"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#171717] hover:bg-[#262626] dark:bg-white dark:hover:bg-zinc-100 px-6 py-3 text-xs font-medium uppercase tracking-wider !text-white dark:!text-[#171717] transition-colors shadow-none"
               >
                 <span>{t('hero_cta_start')}</span>
                 <ArrowUpRight className="h-4 w-4" />
               </a>
               <a
                 href="#features"
-                className="inline-flex items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-7 py-3.5 text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 transition hover:border-zinc-400 dark:hover:border-zinc-600"
+                className="inline-flex items-center justify-center rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-white dark:bg-zinc-900 px-6 py-3 text-xs font-medium uppercase tracking-wider text-[#171717] dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors shadow-none"
               >
                 {t('hero_cta_explore')}
               </a>
             </div>
-
 
             {/* Highlights Row */}
             <div className="pt-6 border-t border-zinc-200/80 dark:border-zinc-800/80 grid grid-cols-3 gap-6 max-w-lg">
@@ -77,17 +76,17 @@ export default function HeroSection() {
             transition={{ duration: 0.6, delay: 0.15 }}
             className="relative"
           >
-            <div className="rounded-[2.5rem] border border-zinc-200/90 dark:border-zinc-800/80 bg-zinc-50/80 dark:bg-zinc-900/40 p-6 sm:p-8 shadow-elevated backdrop-blur-xl">
+            <div className="rounded-2xl border border-zinc-200/90 dark:border-zinc-800/80 bg-zinc-50/80 dark:bg-zinc-900/40 p-6 sm:p-8 shadow-none backdrop-blur-xl">
               
               {/* Top Card Header */}
               <div className="flex items-center justify-between pb-6 border-b border-zinc-200/60 dark:border-zinc-800/60">
                 <div className="flex items-center gap-2">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-900 text-white dark:bg-white dark:text-zinc-900">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#171717] text-white dark:bg-white dark:text-zinc-900">
                     <Sparkles className="h-3.5 w-3.5" />
                   </div>
                   <span className="text-xs font-semibold tracking-wider text-zinc-900 dark:text-white uppercase">ShikshaSetu AI Tutor</span>
                 </div>
-                <span className="flex items-center gap-1.5 text-[11px] font-mono text-emerald-600 dark:text-emerald-400 font-semibold bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded-full border border-emerald-200/60 dark:border-emerald-800/50">
+                <span className="flex items-center gap-1.5 text-[11px] font-mono text-[#2F7D5A] dark:text-emerald-400 font-semibold bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded-lg border border-emerald-200/60 dark:border-emerald-800/50">
                   <CheckCircle className="h-3 w-3" /> ACTIVE
                 </span>
               </div>
@@ -95,30 +94,30 @@ export default function HeroSection() {
               {/* Chat Bubble Simulation */}
               <div className="py-6 space-y-4">
                 <div className="flex justify-end">
-                  <div className="max-w-[80%] rounded-2xl bg-zinc-200/70 dark:bg-zinc-800/70 px-4 py-3 text-xs text-zinc-800 dark:text-zinc-200 leading-relaxed">
+                  <div className="max-w-[80%] rounded-xl bg-zinc-200/70 dark:bg-zinc-800/70 px-4 py-3 text-xs text-zinc-800 dark:text-zinc-200 leading-relaxed">
                     Hi, I need a summary of my study progress and custom quiz targets for this week.
                   </div>
                 </div>
 
                 <div className="flex justify-start gap-3 items-start">
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 text-xs mt-1">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#171717] text-white dark:bg-white dark:text-zinc-900 text-xs mt-1">
                     <Sparkles className="h-3.5 w-3.5" />
                   </div>
-                  <div className="max-w-[85%] rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900 px-4 py-3 text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed shadow-sm">
+                  <div className="max-w-[85%] rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900 px-4 py-3 text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed">
                     Sure! Your course completion increased by 14% this week. I generated 3 practice quizzes and customized flashcards for your upcoming exam.
                   </div>
                 </div>
               </div>
 
-              {/* SynthAI Bottom Floating Pill Input Bar */}
-              <div className="mt-4 flex items-center justify-between rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 px-4 py-2.5 shadow-sm">
-                <span className="text-xs text-zinc-400 dark:text-zinc-500 pl-2">Ask AI study assistant...</span>
+              {/* Bottom Input Bar */}
+              <div className="mt-4 flex items-center justify-between rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-white dark:bg-zinc-950 px-4 py-2">
+                <span className="text-xs text-zinc-400 dark:text-zinc-500 pl-1">Ask AI study assistant...</span>
                 <button
                   type="button"
                   aria-label="Send query"
-                  className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 transition hover:scale-105 active:scale-95"
+                  className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#171717] hover:bg-[#262626] text-white dark:bg-white dark:hover:bg-zinc-100 dark:text-[#171717] transition-colors"
                 >
-                  <ArrowUp className="h-4 w-4" />
+                  <ArrowUp className="h-3.5 w-3.5" />
                 </button>
               </div>
 
@@ -128,6 +127,7 @@ export default function HeroSection() {
         </div>
       </div>
     </section>
+
   );
 }
 

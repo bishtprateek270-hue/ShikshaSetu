@@ -11,6 +11,8 @@ import DonutChart from '../../../components/lms/DonutChart';
 import MiniCalendar from '../../../components/lms/MiniCalendar';
 import { useLanguage } from '../../../lib/language/LanguageContext';
 import { motion } from 'framer-motion';
+import UserProfileCard from '../../../components/UserProfileCard';
+
 
 const MotionLink = motion(Link);
 
@@ -186,8 +188,12 @@ export default function StudentDashboardPage() {
             transition={{ duration: 0.45, delay: 0.15 }}
             className="space-y-6"
           >
+            {/* Enterprise Profile Card */}
+            <UserProfileCard className="mx-auto" />
+
             {/* Calendar widget */}
             <div>
+
               <div className="mb-3 flex items-center justify-between">
                 <h3 className="text-base font-bold text-slate-855 dark:text-white">{t('student_schedule_title')}</h3>
               </div>

@@ -60,8 +60,8 @@ export default function FeaturesSection({ features }: FeaturesSectionProps) {
         
         {/* Sticky Header Section */}
         <div className="mx-auto w-full max-w-4xl text-center shrink-0 space-y-3">
-          {/* Eyebrow Pill Tag */}
-          <div className="inline-flex items-center gap-1.5 rounded-full border border-rose-200/90 dark:border-zinc-800 bg-rose-50/60 dark:bg-zinc-900 px-4 py-1 text-xs font-mono font-medium tracking-[0.18em] uppercase text-rose-600 dark:text-rose-400 shadow-sm">
+          {/* Eyebrow Tag */}
+          <div className="inline-flex items-center gap-1.5 rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-rose-50/60 dark:bg-zinc-900 px-3.5 py-1 text-xs font-mono font-medium tracking-[0.18em] uppercase text-rose-600 dark:text-rose-400">
             <span>✦</span>
             <span>{t('hero_badge')}</span>
           </div>
@@ -73,7 +73,7 @@ export default function FeaturesSection({ features }: FeaturesSectionProps) {
             {t('feat_subheading')}
           </p>
           
-          {/* Top Horizontal Pill Progress Bar */}
+          {/* Top Horizontal Progress Bar */}
           <div className="pt-1 flex items-center justify-center gap-2">
             {features.map((f, i) => (
               <TopPillIndicator
@@ -95,7 +95,7 @@ export default function FeaturesSection({ features }: FeaturesSectionProps) {
             <button
               type="button"
               onClick={() => scrollToFeature(getActiveIndex(smoothProgress.get(), features.length) - 1)}
-              className="flex h-12 w-12 items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 shadow-md hover:scale-105 active:scale-95 transition"
+              className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-white dark:bg-zinc-900 text-[#171717] dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors shadow-none"
               aria-label="Previous feature"
             >
               <ChevronLeft className="h-5 w-5" />
@@ -121,7 +121,7 @@ export default function FeaturesSection({ features }: FeaturesSectionProps) {
             <button
               type="button"
               onClick={() => scrollToFeature(getActiveIndex(smoothProgress.get(), features.length) + 1)}
-              className="flex h-12 w-12 items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 shadow-md hover:scale-105 active:scale-95 transition"
+              className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-white dark:bg-zinc-900 text-[#171717] dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors shadow-none"
               aria-label="Next feature"
             >
               <ChevronRight className="h-5 w-5" />
@@ -155,12 +155,13 @@ export default function FeaturesSection({ features }: FeaturesSectionProps) {
           <button
             type="button"
             onClick={scrollToTop}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-rose-400 text-white shadow-md hover:bg-rose-500 hover:scale-105 active:scale-95 transition"
+            className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#171717] hover:bg-[#262626] text-white dark:bg-white dark:hover:bg-zinc-100 dark:text-[#171717] transition-colors shadow-none"
             aria-label="Scroll to top"
           >
             <ArrowUp className="h-4 w-4" />
           </button>
         </div>
+
 
       </div>
     </div>

@@ -8,6 +8,7 @@ import { useAuth } from '../../../../components/AuthProvider';
 import { doc, setDoc } from 'firebase/firestore';
 import { getFirebaseFirestore } from '../../../../lib/firebase';
 import { User, School, BookOpen, FileText, Loader2, Sparkles } from 'lucide-react';
+import UserProfileCard from '../../../../components/UserProfileCard';
 
 export default function StudentProfilePage() {
   const { user, profile, loading } = useAuth();
@@ -102,21 +103,10 @@ export default function StudentProfilePage() {
             </div>
           )}
 
-          <div className="grid gap-6 md:grid-cols-[1fr_2.5fr]">
-            {/* Avatar Preview */}
-            <div className="rounded-3xl border border-slate-800 bg-slate-950/80 p-6 flex flex-col items-center justify-center text-center shadow-soft">
-              <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 text-3xl font-bold text-white shadow-soft">
-                {name ? name.slice(0, 2).toUpperCase() : 'ST'}
-              </div>
-              <h3 className="mt-4 text-base font-bold text-white truncate max-w-full">{name || 'Student Name'}</h3>
-              <p className="text-xs text-slate-500 font-medium uppercase mt-1 tracking-wider">{profile?.role ?? 'Student'}</p>
-              {institute && (
-                <p className="mt-3 text-xs text-slate-400 font-semibold flex items-center justify-center gap-1">
-                  <School className="h-3.5 w-3.5 text-violet-400" />
-                  {institute}
-                </p>
-              )}
-            </div>
+          <div className="grid gap-6 md:grid-cols-[1fr_2fr] items-start">
+            {/* Enterprise User Profile Card */}
+            <UserProfileCard className="mx-auto" />
+
 
             {/* Profile Form */}
             <DashboardCard title="Edit Details" description="Update your default information on ShikshaSetu.">

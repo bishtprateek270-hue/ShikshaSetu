@@ -35,7 +35,7 @@ export default function NewsletterForm() {
   if (submitted) {
     return (
       <div className="text-center py-10 space-y-4">
-        <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/40 px-4 py-1.5 text-xs font-mono font-medium tracking-[0.2em] uppercase text-emerald-700 dark:text-emerald-300">
+        <div className="inline-flex items-center gap-2 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-[#2F7D5A] px-4 py-1.5 text-xs font-mono font-medium tracking-[0.2em] uppercase !text-white">
           <span>✦ SUBSCRIBED</span>
         </div>
         <h3 className="text-3xl font-semibold text-zinc-900 dark:text-white sm:text-4xl">Welcome to the inner circle! 🎉</h3>
@@ -49,7 +49,7 @@ export default function NewsletterForm() {
   return (
     <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
       <div className="space-y-4">
-        <div className="inline-flex items-center gap-2 rounded-full border border-zinc-200/90 dark:border-zinc-800/90 bg-zinc-50 dark:bg-zinc-900/60 px-4 py-1.5 text-xs font-mono font-medium tracking-[0.18em] uppercase text-zinc-700 dark:text-zinc-300">
+        <div className="inline-flex items-center gap-2 rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/60 px-3.5 py-1.5 text-xs font-mono font-medium tracking-[0.18em] uppercase text-zinc-700 dark:text-zinc-300">
           <span>✦ STAY INFORMED</span>
         </div>
         <h3 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white sm:text-4xl">
@@ -68,13 +68,13 @@ export default function NewsletterForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email address..."
-            className="w-full rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-6 py-4 text-sm text-zinc-900 dark:text-white outline-none shadow-sm transition focus:border-zinc-400 dark:focus:border-zinc-600"
+            className="w-full rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-3 text-sm text-zinc-900 dark:text-white outline-none shadow-none transition focus:border-zinc-400 dark:focus:border-zinc-600"
           />
         </div>
         <button
           type="submit"
           disabled={submitting}
-          className="inline-flex shrink-0 w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-zinc-900 dark:bg-white px-7 py-4 text-xs font-semibold uppercase tracking-wider text-white dark:text-zinc-900 shadow-sm transition hover:bg-black dark:hover:bg-zinc-100 active:scale-[0.98] disabled:opacity-60"
+          className="inline-flex shrink-0 w-full sm:w-auto items-center justify-center gap-2 rounded-lg bg-[#171717] hover:bg-[#262626] dark:bg-white dark:hover:bg-zinc-100 px-6 py-3 text-xs font-medium uppercase tracking-wider !text-white dark:!text-[#171717] transition-colors shadow-none disabled:opacity-60"
         >
           <span>Subscribe</span>
           <ArrowUpRight className="h-4 w-4" />
@@ -83,4 +83,5 @@ export default function NewsletterForm() {
     </div>
   );
 }
+
 

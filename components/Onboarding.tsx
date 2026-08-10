@@ -84,7 +84,7 @@ export default function Onboarding() {
                 value={name}
                 onChange={(event) => setName(event.target.value)}
                 required
-                className="mt-2 w-full rounded-2xl border border-slate-800 bg-slate-950 px-4 py-3 text-slate-100 outline-none focus:border-violet-400"
+                className="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-4 py-3 text-slate-100 outline-none focus:border-zinc-400"
               />
             </div>
 
@@ -94,7 +94,7 @@ export default function Onboarding() {
                 value={institute}
                 onChange={(event) => setInstitute(event.target.value)}
                 required
-                className="mt-2 w-full rounded-2xl border border-slate-800 bg-slate-950 px-4 py-3 text-slate-100 outline-none focus:border-violet-400"
+                className="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-4 py-3 text-slate-100 outline-none focus:border-zinc-400"
               />
             </div>
 
@@ -103,7 +103,7 @@ export default function Onboarding() {
               <select
                 value={role}
                 onChange={(event) => setRole(event.target.value as Role)}
-                className="mt-2 w-full rounded-2xl border border-slate-800 bg-slate-950 px-4 py-3 text-slate-100 outline-none focus:border-violet-400"
+                className="mt-2 w-full rounded-lg border border-slate-800 bg-slate-950 px-4 py-3 text-slate-100 outline-none focus:border-zinc-400"
               >
                 {roles.map((item) => (
                   <option key={item.value} value={item.value} className="bg-slate-950 text-slate-100">
@@ -116,10 +116,11 @@ export default function Onboarding() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full rounded-2xl bg-violet-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-400 disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full rounded-lg bg-[#171717] hover:bg-[#262626] dark:bg-white dark:hover:bg-zinc-100 px-5 py-3 text-xs font-medium uppercase tracking-wider !text-white dark:!text-[#171717] transition-colors shadow-none disabled:cursor-not-allowed disabled:opacity-60"
             >
               {t('onboard_btn')}
             </button>
+
           </form>
         </div>
       </main>

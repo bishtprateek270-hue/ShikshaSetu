@@ -1,41 +1,27 @@
 'use client';
 
 import ProtectedRoute from '../../components/ProtectedRoute';
+
 import { useAuth } from '../../components/AuthProvider';
+import UserProfileCard from '../../components/UserProfileCard';
 
 export default function ProfilePage() {
-  const { user, profile, logout } = useAuth();
+  const { logout } = useAuth();
 
   return (
     <ProtectedRoute>
-      <main className="min-h-screen px-6 py-16 text-slate-100">
-        <div className="mx-auto max-w-3xl rounded-xl border border-slate-800 bg-slate-900/90 p-8">
-          <h1 className="text-2xl font-semibold">Your profile</h1>
-          <div className="mt-6 space-y-4 text-slate-300">
-            <div>
-              <p className="text-sm text-slate-500">Email</p>
-              <p className="font-medium text-white">{user?.email}</p>
-            </div>
-            <div>
-              <p className="text-sm text-slate-500">Name</p>
-              <p className="font-medium text-white">{profile?.name || user?.displayName || '—'}</p>
-            </div>
-            <div>
-              <p className="text-sm text-slate-500">Institute</p>
-              <p className="font-medium text-white">{profile?.institute || '—'}</p>
-            </div>
-            <div>
-              <p className="text-sm text-slate-500">Role</p>
-              <p className="font-medium text-white">{profile?.role || 'student'}</p>
-            </div>
-            <div>
-              <p className="text-sm text-slate-500">Onboarding</p>
-              <p className="font-medium text-white">{profile?.onboardingComplete ? 'Complete' : 'Not complete'}</p>
-            </div>
-          </div>
-          <button onClick={() => logout()} className="mt-8 rounded bg-violet-600 px-4 py-2 text-white">Logout</button>
+      <main className="min-h-screen px-6 py-16 text-zinc-900 dark:text-zinc-100 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-6">
+          <UserProfileCard />
+          <button
+            onClick={() => logout()}
+            className="rounded-lg border border-[#DCDCDC] dark:border-zinc-800 bg-white dark:bg-zinc-900 px-6 py-2.5 text-xs font-medium text-[#171717] dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors shadow-none"
+          >
+            Logout
+          </button>
         </div>
       </main>
     </ProtectedRoute>
   );
 }
+
