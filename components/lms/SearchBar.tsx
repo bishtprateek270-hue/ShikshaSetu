@@ -1,7 +1,8 @@
 'use client';
 
-import { Search, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { LogoIcon } from '../Logo';
 
 type SearchBarProps = {
   value: string;
@@ -39,7 +40,10 @@ export default function SearchBar({
 
   return (
     <div className="relative w-full">
-      <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500" />
+      <div className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 flex items-center justify-center">
+        <LogoIcon className="h-5 w-5" />
+      </div>
+
       <input
         type="text"
         value={local}

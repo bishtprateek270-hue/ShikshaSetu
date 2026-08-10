@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { Sparkles } from 'lucide-react';
 import { useLanguage } from '../lib/language/LanguageContext';
 
+import Logo from './Logo';
+
 export default function Footer() {
   const { t } = useLanguage();
 
@@ -12,12 +14,8 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-12 lg:grid-cols-[1.3fr_0.7fr_0.7fr_0.7fr_0.7fr] lg:items-start">
           <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-2 text-lg font-bold tracking-tight text-zinc-900 dark:text-white">
-              <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900">
-                <Sparkles className="h-3.5 w-3.5" />
-              </div>
-              <span className="font-semibold text-xl tracking-tight">{t('brand_name')}</span>
-            </Link>
+            <Logo />
+
             <p className="max-w-sm text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
               {t('footer_desc')}
             </p>

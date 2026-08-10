@@ -7,6 +7,8 @@ import DarkModeToggle from '../app/dark';
 import { useAuth } from './AuthProvider';
 import { useLanguage } from '../lib/language/LanguageContext';
 
+import Logo from './Logo';
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState('/#features');
@@ -57,12 +59,8 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-40 border-b border-zinc-200/60 dark:border-zinc-800/60 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl transition-colors duration-200">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 sm:px-10 lg:px-16">
-        <Link href="/" className="flex items-center gap-2.5 text-lg font-bold tracking-tight text-zinc-900 dark:text-white transition hover:opacity-90">
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm">
-            <Sparkles className="h-4 w-4" />
-          </div>
-          <span className="font-semibold text-xl tracking-tight">{t('brand_name')}</span>
-        </Link>
+        <Logo />
+
         
         <nav className="hidden items-center gap-8 md:flex">
           {navItems.map((item) => {

@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import DarkModeToggle from '../app/dark';
+import Logo from './Logo';
+
 
 type AuthPageShellProps = {
   accentTitle: string;
@@ -18,10 +20,12 @@ export default function AuthPageShell({ accentTitle, title, description, childre
         <div className="grid w-full gap-8 rounded-[2.5rem] border border-zinc-200/90 dark:border-zinc-800/80 bg-zinc-50/70 dark:bg-zinc-900/40 p-8 sm:p-12 lg:grid-cols-[0.95fr_1.05fr] shadow-elevated">
           <div className="space-y-6 rounded-[2rem] border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-8 flex flex-col justify-between">
             <div className="space-y-5">
+              <Logo className="mb-4" />
               <div className="inline-flex items-center gap-2 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-3.5 py-1 text-xs font-mono font-medium tracking-[0.2em] uppercase text-zinc-700 dark:text-zinc-300">
                 <span>✦</span>
                 <span>{accentTitle}</span>
               </div>
+
               <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white sm:text-4xl">{title}</h1>
               <p className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{description}</p>
               

@@ -12,7 +12,10 @@ import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import Logo from './Logo';
+
 export default function DashboardShell({ title, subtitle, breadcrumbs, children }: {
+
   title: string;
   subtitle: string;
   breadcrumbs: Array<{ label: string; href?: string }>;
@@ -211,14 +214,10 @@ export default function DashboardShell({ title, subtitle, breadcrumbs, children 
           />
         )}
         <aside className={sidebarClass}>
-          <div className="mb-6 flex items-center gap-2 px-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-900 text-white dark:bg-white dark:text-zinc-900">
-              <Sparkles className="h-3.5 w-3.5" />
-            </div>
-            <span className="text-lg font-bold tracking-tight text-zinc-900 dark:text-white">
-              {t('brand_name')}
-            </span>
+          <div className="mb-6 px-2">
+            <Logo />
           </div>
+
 
           <nav className="space-y-1">
             {links.map((item) => {
