@@ -5,6 +5,7 @@ import { BarChart3, BookOpen, ClipboardList, FileText, MessagesSquare, Sparkles,
 import Navbar from '../components/Navbar';
 import SectionHeading from '../components/SectionHeading';
 import FeatureCard from '../components/FeatureCard';
+import FeaturesSection from '../components/FeaturesSection';
 import FaqItem from '../components/FaqItem';
 import NewsletterForm from '../components/NewsletterForm';
 import Footer from '../components/Footer';
@@ -36,16 +37,8 @@ export default function HomePage() {
 
       <HeroSection />
 
-      <AnimatedSection id="features" className="px-6 py-20 sm:px-10 lg:px-16">
-        <div className="mx-auto max-w-7xl">
-          <SectionHeading title={t('feat_heading')} subtitle={t('feat_subheading')} />
-          <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {features.map((feature) => (
-              <FeatureCard key={feature.title} icon={feature.icon} title={feature.title} description={feature.description} />
-            ))}
-          </div>
-        </div>
-      </AnimatedSection>
+      <FeaturesSection features={features} />
+
 
       {/* Focus Section: Image 3 callout banner style */}
       <AnimatedSection className="px-6 py-20 sm:px-10 lg:px-16 border-t border-zinc-200/80 dark:border-zinc-800/80">
